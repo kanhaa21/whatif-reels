@@ -28,12 +28,12 @@ The owner preferred the first "everyone shrank" reel (`reels/everyone-shrank`) o
 
 1. **Pick the topic.** Open the ideas Sheet, https://claude.ai/artifact/VJmEgxpFpMsakpwdZubwN7, with the Claude Docs tools (Sheets topics). Take the highest-ranked idea in the "Top 15" tab whose Status in "All 50 Ideas" is blank. When the Top 15 are used up, take the highest viral score left. Set its Status to "In progress".
 2. **Research.** Verify every fact the reel will state, and write the sources to `reels/<slug>/sources.md`.
-3. **Write `reels/<slug>/script.json`.** Copy the shape of `reels/everyone-shrank/script.json`: lines (one per scene, phrases with style, pause, speed 0.9, caption), `title_chip`, `post.caption`, `post.hashtags` (5) and `post.youtube_title` (ending in `#shorts`).
+3. **Write `reels/<slug>/script.json`.** Copy the shape of `reels/everyone-shrank/script.json`: lines (one per scene, phrases with style, pause, speed 0.9, caption), `title_chip`, `post.instagram`, `post.facebook`, `post.youtube_title`, `post.youtube_description` and `post.youtube_tags`, following the caption rules in Metricool details.
 4. **Write `reels/<slug>/scenes.py`.** Use `reelkit.lib`, and reuse props and characters before drawing new ones. Sync visual beats to word times with `wt(scene, "word")`. Add `sfx(A)` for sound effects.
 5. **Preview.** Run `python3 -m reelkit.make reels/<slug> --stills ...` with about 10 times spread over the reel. Look at `build/contact_sheet.png` and fix overlaps, off-screen elements, unreadable text and wrong scale. Repeat until clean.
 6. **Build.** Run `python3 -m reelkit.make reels/<slug>`. Check that the length is 45 to 55 seconds. If it is longer, cut a line instead of speeding up the voice.
 7. **Commit.** Commit `reels/<slug>/` (script, scenes, sources and the final `out/<slug>.mp4`) to `main`.
-8. **Queue for approval.** Send the video to the owner. Put it into Metricool for Instagram Reels, Facebook Reels and YouTube Shorts as a draft or a post waiting for approval, with the caption, hashtags and YouTube title. Set the Sheet Status to "Awaiting approval".
+8. **Queue for approval.** Send the video to the owner. Put it into Metricool as three drafts (Instagram Reel, Facebook Reel, YouTube Short) at the next day's best times, with network-specific captions (see Metricool details). Set the Sheet Status to "Awaiting approval".
 9. **After approval.** Schedule or publish it in Metricool and set the Sheet Status to "Posted" with the date. If the owner asks for changes, make them, rebuild and send the video again.
 
 ## Library notes
@@ -47,6 +47,10 @@ The owner preferred the first "everyone shrank" reel (`reels/everyone-shrank`) o
 
 - Brand "kaamkagyann", blogId `8189079`, timezone Asia/Calcutta. Instagram, Facebook Page and YouTube are connected.
 - Media must be a public URL. After pushing, use `https://raw.githubusercontent.com/kanhaa21/whatif-reels/main/reels/<slug>/out/<slug>.mp4`. Metricool copies the file to its own storage.
-- Queue each reel with `createScheduledPost` and `"draft": true` for 19:00 IST on the day of the run. A draft never publishes by itself. The owner approves by opening the `plannerUrl` and scheduling it. If the owner approves in the conversation instead, call `updateScheduledPost` to set `draft` to false.
+- Queue each reel as **three separate drafts**, one per network, with `createScheduledPost` and `"draft": true`, for the **next day**. Each draft goes at that network's best hour from `getBestTimeToPostByNetwork` (brand 8189079, Asia/Calcutta) and must not clash with a post already scheduled that day; check `getScheduledPosts`. Typical peaks: Instagram about 10:00 (second peak 18:00), Facebook about 12:00, YouTube about 16:00. A draft never publishes by itself. The owner approves by opening the `plannerUrl` and scheduling it. If the owner approves in the conversation instead, call `updateScheduledPost` to set `draft` to false.
 - Providers: instagram `{"type": "REEL", "showReelOnFeed": true, "isAiGenerated": true}`; facebook `{"type": "REEL", "title": <short title>}`; youtube `{"title": <youtube_title>, "type": "short", "privacy": "public", "category": "EDUCATION", "madeForKids": false, "isAiGeneratedContent": false, "tags": [...]}`.
-- Post text: `post.caption`, a blank line, then the 5 hashtags.
+- Write the text separately for each network:
+  - **Instagram:** line 1 is the hook, the scariest or funniest fact in under 15 words, with one emoji. Then 1 or 2 lines of payoff that use the reel's best joke. Then an engagement question that is easy to answer ("Comment YES or NO", "How many did you know? Comment the number"). Then "Follow @kaamkagyann for a new what-if every day." Then **exactly 5 hashtags**, the maximum Instagram allows: #WhatIf plus 4 specific to the topic (for example #RoadSafety #DrivingTips, #ScienceFacts #Physics). Never use generic tags like #viral or #reels.
+  - **Facebook:** the same hook and question, with a "share this with..." line, and 3 hashtags.
+  - **YouTube:** the title is under 70 characters: a curiosity hook, one emoji and `#shorts`. The description is a 2 to 3 sentence summary with the key facts (good for search), then the question, "Subscribe for a new what-if every day.", then `#shorts` plus 2 topic hashtags. Add 6 to 8 tags, including the topic phrases and "kaamkagyann".
+  - Every claim in a caption must come from the reel's verified facts. No "most people..." claims without a source.
