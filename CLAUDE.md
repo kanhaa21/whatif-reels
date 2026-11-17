@@ -42,3 +42,11 @@ The owner preferred the first "everyone shrank" reel (`reels/everyone-shrank`) o
 - `popchip(ctx, text, x, y, t_since_start, bg, fg, size)` shows the small labels. `stamp(...)` shows a slammed red stamp.
 - `person(ctx, x, feet_y, height, shirt, expr, arms, t)`: expr is smile, shock, worry or cheeks. arms is down, up, wave, run or cheeks.
 - In `World(ctx, k)`, 17 cm is a person shrunk to 1/10. Props use typical real sizes: door 200 cm with the handle at 100 cm, counter 90 cm, chair seat 45 cm, phone 15 cm, stair step 17 cm.
+
+## Metricool details
+
+- Brand "kaamkagyann", blogId `8189079`, timezone Asia/Calcutta. Instagram, Facebook Page and YouTube are connected.
+- Media must be a public URL. After pushing, use `https://raw.githubusercontent.com/kanhaa21/whatif-reels/main/reels/<slug>/out/<slug>.mp4`. Metricool copies the file to its own storage.
+- Queue each reel with `createScheduledPost` and `"draft": true` for 19:00 IST on the day of the run. A draft never publishes by itself. The owner approves by opening the `plannerUrl` and scheduling it. If the owner approves in the conversation instead, call `updateScheduledPost` to set `draft` to false.
+- Providers: instagram `{"type": "REEL", "showReelOnFeed": true, "isAiGenerated": true}`; facebook `{"type": "REEL", "title": <short title>}`; youtube `{"title": <youtube_title>, "type": "short", "privacy": "public", "category": "EDUCATION", "madeForKids": false, "isAiGeneratedContent": false, "tags": [...]}`.
+- Post text: `post.caption`, a blank line, then the 5 hashtags.
