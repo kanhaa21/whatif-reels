@@ -1,0 +1,246 @@
+{
+ "title": "What If Your Car Rolled Into a Lake?",
+ "title_chip": "WHAT IF YOUR CAR SANK?",
+ "voice": "am_michael",
+ "timing": {
+  "lead": 0.2,
+  "gap": 0.16,
+  "tail": 1.2,
+  "precut": 0.1
+ },
+ "lines": [
+  [
+   [
+    "Splash!",
+    "dramatic",
+    0.2,
+    0.9,
+    null
+   ],
+   [
+    "Your car just rolled into a lake.",
+    "dramatic",
+    0.2,
+    0.9,
+    null
+   ],
+   [
+    "And you're still inside.",
+    "low",
+    0,
+    0.85,
+    null
+   ]
+  ],
+  [
+   [
+    "It floats for about a minute.",
+    "normal",
+    0.2,
+    0.9,
+    null
+   ],
+   [
+    "That minute is your window.",
+    "dramatic",
+    0.3,
+    0.9,
+    null
+   ],
+   [
+    "Literally.",
+    "deadpan",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "First instinct?",
+    "question",
+    0.12,
+    0.9,
+    null
+   ],
+   [
+    "Grab the phone.",
+    "normal",
+    0.2,
+    0.9,
+    null
+   ],
+   [
+    "Don't. Not even to call Mummy.",
+    "funny",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Or wait for the car to fill up,",
+    "question",
+    0.05,
+    0.9,
+    null
+   ],
+   [
+    "then open the door?",
+    "question",
+    0.2,
+    0.9,
+    null
+   ],
+   [
+    "Myth!",
+    "dramatic",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "Water pressure jams the door.",
+    "normal",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Instead, remember four letters.",
+    "build",
+    0.1,
+    0.9,
+    null
+   ],
+   [
+    "S, W, C, O.",
+    "excited",
+    0,
+    0.85,
+    "S. W. C. O."
+   ]
+  ],
+  [
+   [
+    "S. Seatbelt off.",
+    "excited",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "Faster than you dodge aunties asking,",
+    "normal",
+    0.03,
+    0.9,
+    null
+   ],
+   [
+    "shaadi kab?",
+    "funny",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "W. Window open, right away.",
+    "excited",
+    0.12,
+    0.9,
+    null
+   ],
+   [
+    "Power windows usually still work at first.",
+    "normal",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "Stuck? Smash a side window, near the corner.",
+    "dramatic",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "C. Children out first.",
+    "excited",
+    0.1,
+    0.9,
+    null
+   ],
+   [
+    "Oldest first.",
+    "normal",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "O. Out! Swim up.",
+    "excited",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "Then call one one two.",
+    "normal",
+    0,
+    0.9,
+    "Then call 112."
+   ]
+  ],
+  [
+   [
+    "Keep a window breaker within reach.",
+    "normal",
+    0.12,
+    0.9,
+    null
+   ],
+   [
+    "Not in the dikki, under Mummy's pickle jars.",
+    "funny",
+    0.3,
+    0.9,
+    null
+   ],
+   [
+    "Who needs to see this? Tag them!",
+    "question",
+    0,
+    0.92,
+    null
+   ]
+  ]
+ ],
+ "post": {
+  "instagram": "Your car rolls into a lake. You have about one minute to get out 🚗\n\nWaiting for it to fill up so you can open the door? Myth. Remember SWCO: Seatbelt off, Window open, Children out (oldest first), Out. And keep a window breaker within reach, not in the dikki under Mummy's pickle jars.\n\nDid you know these 4 letters before today? Comment YES or NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #RoadSafety #DrivingTips #CarSafety #SafetyTips",
+  "facebook": "Your car rolls into a lake. You have about one minute to get out 🚗\n\nDid you know the 4 letters that get you out? Comment YES or NO.\n\nShare this with someone who drives every day.\n\n#WhatIf #RoadSafety #CarSafety",
+  "facebook_title": "Car in a lake: 1 minute",
+  "youtube_title": "Car Sinking in a Lake? Do This in the First Minute 🚗 #shorts",
+  "youtube_description": "A car that rolls into water floats for about a minute, and that is your time to get out. Waiting for it to fill up so you can open the door is a myth: water pressure jams the door. Remember SWCO: Seatbelt off, Window open (power windows usually still work at first, or smash a side window near the corner), Children out oldest first, then Out, and call 112 once you're safe.\n\nDid you know these 4 letters? Comment YES or NO.\nSubscribe for a new what-if every day.\n\n#shorts #RoadSafety #CarSafety",
+  "youtube_tags": [
+   "car sinking in water",
+   "escape sinking car",
+   "car in lake",
+   "SWCO",
+   "road safety",
+   "window breaker",
+   "what if",
+   "kaamkagyann"
+  ]
+ }
+}
