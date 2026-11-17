@@ -1,0 +1,247 @@
+{
+ "title": "What If Everyone Shrank?",
+ "title_chip": "WHAT IF EVERYONE SHRANK?",
+ "voice": "am_michael",
+ "timing": {
+  "lead": 0.2,
+  "gap": 0.16,
+  "tail": 1.2,
+  "precut": 0.1
+ },
+ "lines": [
+  [
+   [
+    "Tonight...",
+    "dramatic",
+    0.25,
+    0.9,
+    null
+   ],
+   [
+    "a strange blue light hits the Earth.",
+    "dramatic",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "And every human on the planet",
+    "build",
+    0.05,
+    0.9,
+    null
+   ],
+   [
+    "shrinks...",
+    "low",
+    0.25,
+    0.85,
+    null
+   ],
+   [
+    "to the size of a pencil!",
+    "excited",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Wait.",
+    "chipmunk",
+    0.12,
+    0.95,
+    null
+   ],
+   [
+    "Why do I sound like this?!",
+    "chipmunk",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Ahem.",
+    "deadpan",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "Science time.",
+    "excited",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "All eight billion of us",
+    "build",
+    0.05,
+    0.9,
+    "All 8 billion of us"
+   ],
+   [
+    "could stand shoulder to shoulder",
+    "normal",
+    0.05,
+    0.9,
+    null
+   ],
+   [
+    "inside Delhi Airport!",
+    "excited",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "You'd weigh about as much as an egg.",
+    "normal",
+    0.25,
+    0.9,
+    null
+   ],
+   [
+    "Fall off your bed?",
+    "question",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "Tiny bodies fall slower, and land softer.",
+    "normal",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "But your cat?",
+    "question",
+    0.25,
+    0.9,
+    null
+   ],
+   [
+    "It's now the size of an elephant.",
+    "dramatic",
+    0.25,
+    0.9,
+    null
+   ],
+   [
+    "And it has been waiting for this.",
+    "low",
+    0,
+    0.85,
+    null
+   ]
+  ],
+  [
+   [
+    "You'd lose heat super fast,",
+    "normal",
+    0.05,
+    0.9,
+    null
+   ],
+   [
+    "so you'd be hungry all the time.",
+    "normal",
+    0.12,
+    0.9,
+    null
+   ],
+   [
+    "Like a hamster.",
+    "funny",
+    0.25,
+    0.9,
+    null
+   ],
+   [
+    "But one pizza could feed you for months!",
+    "excited",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Your phone is now as big as a TV.",
+    "normal",
+    0.2,
+    0.9,
+    null
+   ],
+   [
+    "Texting?",
+    "question",
+    0.12,
+    0.9,
+    null
+   ],
+   [
+    "That's cardio.",
+    "deadpan",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "And the best part?",
+    "question",
+    0.2,
+    0.9,
+    null
+   ],
+   [
+    "A shoebox is now a one B H K in Mumbai.",
+    "excited",
+    0.3,
+    0.9,
+    "A shoebox is now a 1BHK in Mumbai."
+   ],
+   [
+    "Still overpriced.",
+    "deadpan",
+    0.35,
+    0.9,
+    null
+   ],
+   [
+    "Follow for more what ifs!",
+    "excited",
+    0,
+    0.92,
+    "Follow for more what-ifs!"
+   ]
+  ]
+ ],
+ "post": {
+  "caption": "At midnight, every human shrinks to 17 cm. Your cat just noticed. Would you survive?",
+  "hashtags": [
+   "#WhatIf",
+   "#ScienceReels",
+   "#ScienceFacts",
+   "#Hypothetical",
+   "#LearnOnInstagram"
+  ],
+  "youtube_title": "What If Everyone Shrank to 17 cm? #shorts"
+ }
+}

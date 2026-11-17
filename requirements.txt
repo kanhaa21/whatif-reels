@@ -1,0 +1,7 @@
+kokoro-onnx
+soundfile
+praat-parselmouth
+pycairo
+numpy
+scipy
+pillow
