@@ -1,0 +1,126 @@
+{
+ "title": "What If Your Shadow Moved 10 Seconds Before You? Part 1",
+ "title_chip": "WHAT IF YOUR SHADOW MOVED?",
+ "voice": "af_heart",
+ "timing": {
+  "lead": 0.15,
+  "gap": 0.12,
+  "tail": 2.0667,
+  "precut": 0.1
+ },
+ "lines": [
+  [
+   [
+    "Your shadow just moved before you did.",
+    "low",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "It's not an illusion.",
+    "normal",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "Ten seconds early.",
+    "low",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "Every single time.",
+    "deadpan",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Then it warned me",
+    "normal",
+    0.9,
+    0.9,
+    null
+   ],
+   [
+    "about something I couldn't see.",
+    "low",
+    0.75,
+    0.86,
+    null
+   ]
+  ],
+  [
+   [
+    "That night, my shadow stopped copying me.",
+    "normal",
+    0.7,
+    0.9,
+    null
+   ],
+   [
+    "It turned toward the hallway.",
+    "low",
+    0.35,
+    0.88,
+    null
+   ]
+  ],
+  [
+   [
+    "It pointed into the dark behind me...",
+    "low",
+    1.0,
+    0.88,
+    null
+   ],
+   [
+    "and wrote three words on the wall.",
+    "normal",
+    0.75,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "I turned around.",
+    "normal",
+    0.2,
+    0.9,
+    null
+   ],
+   [
+    "Nothing there.",
+    "low",
+    0.25,
+    0.88,
+    null
+   ],
+   [
+    "But my shadow had left my feet.",
+    "low",
+    0.7,
+    0.88,
+    null
+   ]
+  ],
+  [
+   [
+    "Then my shadow pointed at you.",
+    "deadpan",
+    0,
+    0.82,
+    null
+   ]
+  ]
+ ],
+ "post": {}
+}
