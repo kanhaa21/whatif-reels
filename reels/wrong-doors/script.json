@@ -1,0 +1,174 @@
+{
+ "title": "What If Every Door Opened to the Wrong Place? Part 1",
+ "title_chip": "WHAT IF DOORS WENT WRONG?",
+ "voice": "am_michael",
+ "timing": {
+  "lead": 0.15,
+  "gap": 0.1,
+  "tail": 0.9,
+  "precut": 0.1
+ },
+ "hook": {
+  "text": [
+   "BEDROOM DOOR.",
+   "OCEAN BEHIND IT."
+  ],
+  "until": 2.3
+ },
+ "end_cta": "SEND THIS TO YOUR ROOMMATE",
+ "lines": [
+  [
+   [
+    "You open your bedroom door...",
+    "dramatic",
+    0.08,
+    0.9,
+    null
+   ],
+   [
+    "and see the ocean.",
+    "dramatic",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Slam it. Open again.",
+    "build",
+    0.06,
+    0.9,
+    null
+   ],
+   [
+    "Now: a stranger's kitchen.",
+    "question",
+    0.06,
+    0.9,
+    null
+   ],
+   [
+    "He's eating your cereal.",
+    "deadpan",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Every door on Earth broke.",
+    "dramatic",
+    0.12,
+    0.9,
+    null
+   ],
+   [
+    "Rooftops. Hospitals. Forests.",
+    "excited",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Day three:",
+    "build",
+    0.05,
+    0.9,
+    null
+   ],
+   [
+    "nobody trusts doors.",
+    "low",
+    0,
+    0.88,
+    null
+   ]
+  ],
+  [
+   [
+    "Cities brick up every door.",
+    "dramatic",
+    0.1,
+    0.9,
+    null
+   ],
+   [
+    "We use windows now.",
+    "deadpan",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "But one door still leads home.",
+    "build",
+    0.08,
+    0.9,
+    null
+   ],
+   [
+    "Everyone's too scared to open it.",
+    "low",
+    0,
+    0.88,
+    null
+   ]
+  ],
+  [
+   [
+    "Tonight, it's in your house.",
+    "dramatic",
+    0.4,
+    0.9,
+    null
+   ],
+   [
+    "And it just knocked.",
+    "low",
+    0,
+    0.85,
+    null
+   ]
+  ],
+  [
+   [
+    "Door one, two, or three?",
+    "question",
+    0.12,
+    0.9,
+    null
+   ],
+   [
+    "Follow for part two.",
+    "excited",
+    0,
+    0.95,
+    null
+   ]
+  ]
+ ],
+ "post": {
+  "instagram": "You open your bedroom door and see the ocean 🚪\n\nSlam it, open it again: a stranger's kitchen. He's eating your cereal. Soon every door on Earth leads somewhere wrong, except one. And nobody dares to open it.\n\nDoor 1, 2 or 3? Comment the number.\n\nFollow @kaamkagyann for Part 2.\n\n#WhatIf #ThrillerStory #Suspense #ShortStory #Mystery",
+  "first_comment": "Door 1, 2 or 3? Comment the number 👇",
+  "facebook": "You open your bedroom door and see the ocean 🚪\n\nDoor 1, 2 or 3? Comment the number.\n\nShare this with your roommate before they open a door.\n\n#WhatIf #Suspense #Mystery",
+  "facebook_title": "Every door opens to the wrong place",
+  "youtube_title": "Every Door Opens to the Wrong Place 🚪 Part 1 #shorts",
+  "youtube_description": "What if every door on Earth opened to the wrong place? Your bedroom door leads to the ocean, the next one to a stranger's kitchen, then rooftops, hospitals and forests. Cities brick up every entrance, but one door still leads home, and nobody dares to open it. Part 1 of a what-if thriller.\n\nDoor 1, 2 or 3? Comment the number.\nSubscribe for a new what-if every day.\n\n#shorts #WhatIf #Suspense",
+  "youtube_tags": [
+   "what if every door opened to the wrong place",
+   "wrong door",
+   "what if",
+   "thriller story",
+   "suspense",
+   "animated story",
+   "part 1",
+   "kaamkagyann"
+  ]
+ }
+}
