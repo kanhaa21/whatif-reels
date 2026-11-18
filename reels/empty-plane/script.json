@@ -11,21 +11,51 @@
  "lines": [
   [
    [
-    "You wake up at thirty-five thousand feet.",
+    "You wake up at 35,000 feet.",
     "dramatic",
-    0.2,
+    0.12,
     0.9,
     "You wake up at 35,000 feet."
    ],
    [
     "Every seat is empty.",
     "dramatic",
-    0.25,
+    0.12,
     0.9,
     null
    ],
    [
     "Even the cockpit.",
+    "low",
+    0.15,
+    0.85,
+    null
+   ],
+   [
+    "Nobody is flying.",
+    "dramatic",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Outside?",
+    "question",
+    0.1,
+    0.9,
+    null
+   ],
+   [
+    "Black ocean for miles.",
+    "dramatic",
+    0.12,
+    0.9,
+    null
+   ],
+   [
+    "And a storm is rolling in.",
     "low",
     0,
     0.85,
@@ -34,31 +64,31 @@
   ],
   [
    [
-    "Good news?",
-    "question",
-    0.1,
-    0.9,
-    null
-   ],
-   [
-    "Free upgrade to business class!",
-    "excited",
+    "Alarms scream.",
+    "dramatic",
     0.15,
     0.9,
     null
    ],
    [
-    "Bad news?",
+    "Who's flying this plane?",
     "question",
-    0.1,
+    0.12,
     0.9,
     null
    ],
    [
-    "You're also the pilot now.",
+    "You.",
     "deadpan",
-    0,
+    0.15,
     0.9,
+    null
+   ],
+   [
+    "First rule: breathe.",
+    "low",
+    0,
+    0.85,
     null
    ]
   ],
@@ -80,32 +110,16 @@
   ],
   [
    [
-    "Your lifeline?",
-    "question",
-    0.1,
-    0.9,
-    null
-   ],
-   [
-    "The radio.",
-    "dramatic",
+    "Grab the radio.",
+    "build",
     0.15,
     0.9,
     null
    ],
    [
-    "Headset on. Press the talk button.",
-    "normal",
-    0,
-    0.9,
-    null
-   ]
-  ],
-  [
-   [
-    "Say Mayday, three times.",
+    "Press talk. Say Mayday, three times.",
     "excited",
-    0.2,
+    0.12,
     0.9,
     null
    ],
@@ -126,9 +140,9 @@
   ],
   [
    [
-    "No answer?",
-    "question",
-    0.1,
+    "Only static.",
+    "dramatic",
+    0.12,
     0.9,
     null
    ],
@@ -149,14 +163,14 @@
   ],
   [
    [
-    "Air traffic control takes over.",
-    "build",
-    0.1,
+    "Then, a voice.",
+    "dramatic",
+    0.15,
     0.9,
     null
    ],
    [
-    "They talk you through it, step by step.",
+    "Air traffic control talks you through it, step by step.",
     "warm",
     0,
     0.9,
@@ -190,7 +204,7 @@
    [
     "But someone has to set it up.",
     "normal",
-    0.2,
+    0.12,
     0.9,
     null
    ],
@@ -211,9 +225,9 @@
     null
    ],
    [
-    "And for once, nobody stands up before the plane stops.",
-    "funny",
-    0.15,
+    "You made it.",
+    "warm",
+    0.12,
     0.9,
     null
    ],
@@ -227,8 +241,8 @@
   ]
  ],
  "post": {
-  "instagram": "You wake up at 35,000 feet. Every seat is empty, even the cockpit ✈️\n\nGood news: free upgrade to business class. Bad news: you're the pilot now. Say Mayday three times (not \"Bhaiya, side mein roko!\"), switch to 121.5, the emergency channel, and air traffic control can talk you through it, step by step.\n\nCould you land it? Comment YES or NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #Aviation #AviationFacts #Pilot #FlightSafety",
-  "facebook": "You wake up at 35,000 feet. Every seat is empty, even the cockpit ✈️\n\nCould you land it? Comment YES or NO.\n\nShare this with the friend who always grabs the window seat.\n\n#WhatIf #Aviation #AviationFacts",
+  "instagram": "You wake up at 35,000 feet. Every seat is empty and nobody is flying ✈️\n\nBelow you: black ocean. Ahead: a storm. Breathe, grab the radio and say Mayday three times (not \"Bhaiya, side mein roko!\"). No answer? Switch to 121.5, the emergency channel, and air traffic control can talk you through it, step by step.\n\nCould you land it? Comment YES or NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #Aviation #AviationFacts #Pilot #FlightSafety",
+  "facebook": "You wake up at 35,000 feet. Every seat is empty and nobody is flying ✈️\n\nCould you land it? Comment YES or NO.\n\nShare this with the friend who always grabs the window seat.\n\n#WhatIf #Aviation #AviationFacts",
   "facebook_title": "Empty plane at 35,000 ft",
   "youtube_title": "Alone on a Plane at 35,000 ft With No Pilot? ✈️ #shorts",
   "youtube_description": "Airliners often cruise around 35,000 feet, and if the autopilot is on it holds height and direction by itself. Say Mayday three times on the radio, or switch to 121.5 MHz, the international aeronautical emergency frequency that air traffic control listens to. In 2022 a passenger with no flying experience landed a small plane after controllers talked him through it, and many airliners can land themselves with autoland, but only once someone sets it up.\n\nCould you land it? Comment YES or NO.\nSubscribe for a new what-if every day.\n\n#shorts #Aviation #AviationFacts",

@@ -12,7 +12,9 @@ Checked 2026-11-18. The empty plane is a made-up scenario. Each real-world claim
 | A passenger with zero flying experience once landed a small plane this way (safe landing). | AOPA (as above): Cessna 208 Caravan, Bahamas to Florida, landed at Palm Beach International, May 2022. No names used in the reel. |
 | Many airliners can land themselves, but someone has to set it up. | Flight Deck Friend, "Can a passenger jet land automatically by itself?" (a passenger plane can land itself "through a system that is often referred to as 'autoland'"; "The pilots can program the autopilot to carry out the landing automatically" and supervise it; "The airport must have the radio navigation aid infrastructure installed to support an autoland"). |
 
-Jokes, not claims: the business-class upgrade, "Bhaiya, side mein roko!", and nobody standing up before the plane stops.
+Scenario, not claims: the black ocean, the storm, the alarms and the controller's "I can hear you." are dramatised parts of the made-up situation. The one joke is "Bhaiya, side mein roko!".
+
+Revised 2026-11-18 for more suspense; no new factual claims were added.
 
 Not stated on purpose: the 7700 emergency transponder code (source page could not be checked this run), and any claim that a passenger could set up autoland alone (not verified).
 

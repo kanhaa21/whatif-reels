@@ -6,8 +6,20 @@ import math
 import cairo
 from reelkit.lib import *  # noqa: F401,F403
 
-BG = lambda ctx, tg, i: bg_glow(ctx, tg, i, dark_scenes=(0,))
-MUSIC = {"beat_from_scene": 2, "bpm": 112}   # tense drone for the hook and the reveal, beat once help is on the way
+BG = lambda ctx, tg, i: bg_glow(ctx, tg, i, dark_scenes=(0, 1, 2))
+MUSIC = {"beat_from_scene": 4, "bpm": 112}   # tense drone through the hook, storm and alarms; beat once you grab the radio
+
+# lightning strikes (global seconds): the storm flashes through the first half, then the sky clears for the landing
+EV = [0.3, 1.75, 2.9, 4.3, 5.9, 6.75, 8.4, 9.5, 10.7, 11.4, 12.5, 14.6, 16.4, 19.2, 21.5, 25.0, 28.8, 30.9, 33.2]
+
+
+def flash(tg):
+    f = 0.0
+    for e in EV:
+        d = tg - e
+        if 0 <= d < 0.7:
+            f = max(f, math.exp(-d * 8) * (0.55 + 0.45 * math.sin(d * 48) ** 2))
+    return f
 
 BLUE = (0.3, 0.6, 1.0)
 SEATB = (0.22, 0.32, 0.75)
@@ -87,6 +99,10 @@ def plane_window(ctx, x, y, s, t, night_=True):
         ctx.arc(cx, 30 + hrand("cy", k) * 50, 30 + 20 * hrand("cr", k), 0, 6.3)
         ctx.set_source_rgba(0.75, 0.75, 0.95, 0.5); ctx.fill()
     ctx.arc(25, -45, 10, 0, 6.3); ctx.set_source_rgb(1, 0.95, 0.75); ctx.fill()
+    f = flash(t)
+    if f > 0.02:
+        ctx.set_source_rgba(0.9, 0.9, 1, 0.8 * f); ctx.paint()
+        if f > 0.3: bolt(ctx, -10, -85, 85, int(t * 2), a=f, w=4)
     ctx.restore()
     ctx.restore()
 
@@ -149,6 +165,52 @@ def sky_view(ctx, tg, y0=440, y1=1000, dawn=0.0):
         ctx.save(); ctx.translate(cx, cy); ctx.scale(2.2, 0.6)
         ctx.arc(0, 0, 60 + 40 * hrand("ckr", k), 0, 6.3); ctx.restore()
         ctx.set_source_rgba(0.8, 0.75, 1, 0.25); ctx.fill()
+    f = flash(tg) * (1 - dawn)
+    if f > 0.02:
+        ctx.set_source_rgba(0.85, 0.85, 1, 0.45 * f); ctx.rectangle(0, y0, W, y1 - y0); ctx.fill()
+        if f > 0.3: bolt(ctx, 200 + 700 * hrand("bxp", int(tg * 2)), y0, y0 + (y1 - y0) * 0.55, int(tg * 2), a=f)
+
+
+def bolt(ctx, x, y0, y1, seed, a=1.0, w=8):
+    pts = [(x, y0)]
+    n = 9
+    for k in range(1, n + 1):
+        pts.append((x + (hrand("bz", seed, k) - 0.5) * 6 * w * 2.5, y0 + (y1 - y0) * k / n))
+    ctx.set_line_join(cairo.LINE_JOIN_ROUND); ctx.set_line_cap(cairo.LINE_CAP_ROUND)
+    for lw, col, al in ((w * 3.5, (0.6, 0.6, 1.0), 0.3), (w, (1, 1, 1), 1.0)):
+        ctx.set_line_width(lw); ctx.set_source_rgba(*col, al * a)
+        ctx.move_to(*pts[0])
+        for q in pts[1:]: ctx.line_to(*q)
+        ctx.stroke()
+
+
+def storm_cloud(ctx, x, y, s, tg, glow=0.0):
+    ctx.save(); ctx.translate(x, y); ctx.scale(s, s)
+    for k in range(9):
+        cx = (k - 4) * 70 + math.sin(tg * 0.6 + k) * 8
+        cy = (hrand("sc", k) - 0.5) * 80
+        r = 90 + 60 * hrand("sr", k)
+        ctx.arc(cx, cy, r, 0, 6.3)
+        ctx.set_source_rgba(0.2 + 0.55 * glow, 0.14 + 0.5 * glow, 0.34 + 0.5 * glow, 0.98); ctx.fill()
+        ctx.arc(cx - r * 0.15, cy - r * 0.2, r * 0.75, 0, 6.3)
+        ctx.set_source_rgba(0.32 + 0.5 * glow, 0.26 + 0.5 * glow, 0.5 + 0.4 * glow, 0.6); ctx.fill()
+    ctx.restore()
+
+
+def ocean(ctx, tg, y0=900, y1=1300, f=0.0):
+    g = cairo.LinearGradient(0, y0, 0, y1)
+    g.add_color_stop_rgb(0, 0.03 + 0.3 * f, 0.06 + 0.3 * f, 0.18 + 0.3 * f); g.add_color_stop_rgb(1, 0.01, 0.02, 0.08)
+    ctx.set_source(g); ctx.rectangle(0, y0, W, y1 - y0); ctx.fill()
+    for k in range(18):
+        y = y0 + 8 + k * (y1 - y0) / 18
+        x = (hrand("wv", k) * W + tg * (25 + k * 6)) % (W + 200) - 100
+        ctx.rectangle(x, y, 50 + k * 9, 3 + k * 0.3); ctx.set_source_rgba(0.6, 0.75, 1, 0.3 + 0.5 * f); ctx.fill()
+
+
+def alarm_overlay(ctx, tl, a=0.4):
+    if a <= 0.01: return
+    p = 0.5 + 0.5 * math.sin(tl * 22)
+    ctx.set_source_rgba(0.95, 0.05, 0.12, a * p); ctx.rectangle(0, 440, W, 940); ctx.fill()
 
 
 def screen(ctx, x, y, w, h, kind, t, label=None):
@@ -334,17 +396,21 @@ def red_pulse(ctx, tl, a=0.45):
 
 # ---------------------------------------------------------------- scenes
 def s0(ctx, tg, tl, T):
-    twk = wt(0, "wake"); t35 = wt(0, "35"); tev = wt(0, "Every"); tem = wt(0, "empty"); tc = wt(0, "Even")
+    """hook: alarm-lit cabin, you jolt awake, empty rows rush past, empty cockpit, nobody flying"""
+    twk = wt(0, "wake"); t35 = wt(0, "35"); tev = wt(0, "Every"); tem = wt(0, "empty")
+    tco = wt(0, "cockpit"); tno = wt(0, "Nobody"); tfl = wt(0, "flying")
+    shake = 8 * math.sin(tl * 47) * (1.0 if tl < twk + 0.6 else 0.35)
+    ctx.translate(shake, 0.5 * shake)
     if tl < tev - 0.1:
-        cabin_bg(ctx, tg, dark=0.35)
+        cabin_bg(ctx, tg, dark=0.45)
         plane_window(ctx, 880, 700, 1.3, tg)
         awake = tl > twk - 0.05
-        jolt = 18 * math.exp(-(tl - twk) * 8) * math.sin(tl * 50) if awake else 0
+        jolt = 22 * math.exp(-(tl - twk) * 7) * math.sin(tl * 50) if awake else 0
         seated(ctx, 470 + jolt, 1410, 820, HEROC, "shock" if awake else "smile", "up" if awake else "down", tl,
                look=0.8 if tl > t35 else 0, seat=SEATB)
         if not awake:
             for k in range(3):
-                ph = (tl * 1.4 + k / 3) % 1
+                ph = (tl * 1.6 + k / 3) % 1
                 text(ctx, "z", 640 + 50 * ph + k * 10, 560 - 120 * ph, 50 + 20 * k, WHT, alpha=1 - ph)
         if tl > t35 - 0.05:
             ps = pop(tl - t35 + 0.05, 0.22)
@@ -352,68 +418,95 @@ def s0(ctx, tg, tl, T):
             rrect(ctx, -170, -60, 340, 120, 30); ctx.set_source_rgb(0.05, 0.05, 0.1); ctx.fill()
             text(ctx, "35,000 FT", 0, -2, 70, YEL, shadow=False)
             ctx.restore()
-        red_pulse(ctx, tl, 0.35 * clamp((tl - twk) / 0.3))
-    elif tl < tc - 0.1:
+        alarm_overlay(ctx, tl, 0.3)
+    elif tl < tco - 0.1:
         tt = tl - tev + 0.1
-        aisle(ctx, tl, tt * 1.3)
+        aisle(ctx, tl, tt * 1.8)
+        # failing cabin lights
+        if math.sin(tl * 37) + math.sin(tl * 23) > 1.2:
+            ctx.set_source_rgba(0, 0, 0.03, 0.6); ctx.rectangle(0, 440, W, 900); ctx.fill()
         if tl > tem - 0.05:
-            popchip(ctx, "NOBODY.", 540, 520, tl - tem + 0.05, WHT, (0, 0, 0), 70)
-        red_pulse(ctx, tl, 0.4)
+            popchip(ctx, "0 PASSENGERS", 540, 520, tl - tem + 0.05, WHT, (0, 0, 0), 66)
+        red_pulse(ctx, tl, 0.45)
     else:
-        tt = tl - tc + 0.1
+        tt = tl - tco + 0.1
         cockpit_back(ctx, tg, tl)
-        # open cockpit door frame swinging in
-        dw = 260 * (1 - ease_out(tt / 0.35))
+        dw = 300 * (1 - ease_out(tt / 0.4))
         ctx.set_source_rgb(0.1, 0.1, 0.16); ctx.rectangle(0, 440, 60 + dw, 900); ctx.fill(); ctx.rectangle(W - 60 - dw, 440, 60 + dw, 900); ctx.fill()
-        stamp(ctx, "NO PILOTS!", 540, 640, tt - 0.25, RED, 110, -0.1)
-        red_pulse(ctx, tl, 0.55)
+        if tl > tno - 0.1:
+            # slow push toward the empty seats
+            for x in (230, 850):
+                a = 0.5 + 0.5 * math.sin(tl * 9)
+                ctx.set_source_rgba(*RED, 0.7 * a); ctx.set_line_width(10)
+                rrect(ctx, x - 160, 1030, 320, 360, 50); ctx.stroke()
+        stamp(ctx, "NOBODY IS FLYING", 540, 640, tl - tfl + 0.05, RED, 90, -0.08)
+        red_pulse(ctx, tl, 0.6)
 
 
 def s1(ctx, tg, tl, T):
-    tf = wt(1, "Free"); tbu = wt(1, "business"); tbad = wt(1, "Bad"); tyo = wt(1, "You're"); tpi = wt(1, "pilot")
-    if tl < tbad - 0.1:
-        cabin_bg(ctx, tg)
-        plane_window(ctx, 900, 680, 1.1, tg)
-        up = tl > tf - 0.05
-        s = pop(tl - tf + 0.05, 0.25) if up else 1
-        ctx.save(); ctx.translate(500, 1410); ctx.scale(s, s)
-        if up:
-            glow_circle(ctx, 0, -450, 560, YEL, 0.3)
-            seated(ctx, 0, 0, 820, HEROC, "cheeks", "cheeks" if tl < tbu else "up", tl, seat=SEATP, wide=1.35)
-        else:
-            seated(ctx, 0, 0, 820, HEROC, "worry", "down", tl, look=-0.5, seat=SEATB)
-        ctx.restore()
-        if up:
-            sparkles(ctx, 500, 800, 420, tl, 16, YEL, "up")
-            popchip(ctx, "FREE UPGRADE!", 540, 520, tl - tf + 0.05, YEL, (0, 0, 0), 66)
-        else:
-            bubble(ctx, 780, 560, 70, "GOOD NEWS?", tl - 0.05, BLUE)
-        if tl > tbu:
-            popchip(ctx, "BUSINESS CLASS", 820, 1180, tl - tbu, PNK, WHT, 46)
+    """wilderness: tiny plane over a black ocean, a lightning storm wall ahead"""
+    toc = wt(1, "ocean"); tst = wt(1, "storm")
+    f = flash(tg)
+    g = cairo.LinearGradient(0, 440, 0, 920)
+    g.add_color_stop_rgb(0, 0.02 + 0.3 * f, 0.03 + 0.3 * f, 0.12 + 0.35 * f); g.add_color_stop_rgb(1, 0.12, 0.06, 0.25)
+    ctx.set_source(g); ctx.rectangle(0, 440, W, 480); ctx.fill()
+    for k in range(30):
+        ctx.arc(hrand("os", k) * W, 460 + hrand("oy", k) * 300, 1.5 + 2 * hrand("or", k), 0, 6.3)
+        ctx.set_source_rgba(1, 1, 1, 0.5 * (1 - f)); ctx.fill()
+    z = ease_io(tl / T)
+    ocean(ctx, tg, 900, 1300, f)
+    # storm wall ahead, growing as it rolls in
+    grow = ease_out((tl - tst + 0.4) / 1.2) if tl > tst - 0.4 else 0
+    storm_cloud(ctx, 1000 - 90 * grow, 640, 0.75 + 0.35 * grow, tg, glow=f)
+    storm_cloud(ctx, 860 - 70 * grow, 740, 0.55 + 0.3 * grow, tg, glow=0.8 * f)
+    if f > 0.25:
+        bolt(ctx, 900 - 80 * grow, 720, 1040, int(tg * 2), a=min(1, f * 1.4), w=9)
+    ax = 300 + 120 * z
+    airliner(ctx, ax, 720 + 10 * math.sin(tl * 2.2), 0.62, tl, tilt=0.03 * math.sin(tl * 3))
+    # its tiny lit windows: one passenger
+    if tl < toc - 0.1:
+        popchip(ctx, "YOU ARE HERE", ax, 600, tl - 0.15, YEL, (0, 0, 0), 46)
     else:
-        tt = tl - tbad + 0.1
-        sky_view(ctx, tg, 440, 1300)
-        ctx.set_source_rgb(0.18, 0.18, 0.26)
-        ctx.rectangle(0, 440, 70, 900); ctx.fill(); ctx.rectangle(W - 70, 440, 70, 900); ctx.fill()
-        hat = tl > tyo - 0.05
-        s = pop(tt, 0.22)
-        ctx.save(); ctx.translate(540, 1420); ctx.scale(s, s)
-        seated(ctx, 0, 0, 840, HEROC, "worry" if not hat else "shock", "down" if tl < tpi else "cheeks", tl, seat=(0.3, 0.3, 0.38), hat=hat)
-        ctx.restore()
-        # panel in the foreground
-        rrect(ctx, -20, 1170, W + 40, 300, 40); ctx.set_source_rgb(*PANEL); ctx.fill()
-        for k, kind in enumerate(("pfd", "nd", "nd", "pfd")):
-            screen(ctx, 160 + k * 253, 1250, 170, 110, kind, tl)
-        if tl < tyo - 0.05:
-            bubble(ctx, 780, 560, 70, "BAD NEWS?", tl - tbad + 0.05, RED)
-        else:
-            stamp(ctx, "CAPTAIN: YOU", 540, 540, tl - tpi + 0.05, RED, 92, -0.08)
+        popchip(ctx, "BLACK OCEAN. NO LAND.", 540, 1215, tl - toc + 0.05, CYN, (0, 0, 0), 50)
+    stamp(ctx, "STORM AHEAD", 540, 560, tl - tst, RED, 96, -0.08)
 
 
 def s2(ctx, tg, tl, T):
-    ton = wt(2, "on?"); th = wt(2, "height"); td = wt(2, "direction"); tit = wt(2, "itself")
+    """alarms, the reveal that you're the pilot, then the breathing reset"""
+    tal = wt(2, "Alarms"); twho = wt(2, "Who"); tyou = wt(2, "You."); tbr = wt(2, "breathe")
+    calm = ease_io((tl - tbr + 0.2) / 0.9) if tl > tbr - 0.2 else 0
+    sky_view(ctx, tg, 440, 1300)
+    sh = 9 * (1 - calm) * math.sin(tl * 52)
+    ctx.translate(sh, 0)
+    # breathing ring behind you
+    if calm > 0:
+        r = 300 + 50 * math.sin((tl - tbr) * 3.2)
+        ctx.set_line_width(18); ctx.set_source_rgba(*CYN, 0.8 * calm)
+        ctx.arc(540, 760, r, 0, 6.3); ctx.stroke()
+        glow_circle(ctx, 540, 760, r + 60, CYN, 0.25 * calm)
+    hat = tl > tyou - 0.05
+    s = pop(tl, 0.22)
+    ctx.save(); ctx.translate(540, 1420); ctx.scale(s, s)
+    seated(ctx, 0, 0, 840, HEROC, "shock" if calm < 0.5 else "worry", "cheeks" if calm < 0.5 else "down", tl,
+           look=0.0, seat=(0.3, 0.3, 0.38), hat=hat, headset=False)
+    ctx.restore()
+    rrect(ctx, -20, 1170, W + 40, 300, 40); ctx.set_source_rgb(*PANEL); ctx.fill()
+    for k, kind in enumerate(("pfd", "nd", "nd", "pfd")):
+        screen(ctx, 160 + k * 253, 1250, 170, 110, kind, tl)
+    alarm_overlay(ctx, tl, 0.45 * (1 - calm))
+    if calm < 0.5 and math.sin(tl * 22) > -0.2:
+        chip(ctx, "WARNING", 220, 520, 58, RED, WHT)
+    if tl > twho - 0.05 and tl < tyou - 0.05:
+        bubble(ctx, 760, 600, 66, "WHO'S FLYING?", tl - twho + 0.05, BLUE)
+    if tl > tyou - 0.05 and tl < tbr - 0.2:
+        stamp(ctx, "YOU.", 820, 600, tl - tyou + 0.05, RED, 130, -0.1)
+    if calm > 0:
+        popchip(ctx, "BREATHE IN... AND OUT", 540, 520, tl - tbr + 0.2, CYN, (0, 0, 0), 54)
+
+
+def s3(ctx, tg, tl, T):
+    ton = wt(3, "on?"); th = wt(3, "height"); td = wt(3, "direction"); tit = wt(3, "itself")
     ctx.rectangle(0, 440, W, 900); ctx.set_source_rgb(*PANEL); ctx.fill()
-    # AP button
     lit = tl > ton - 0.05
     s = 1 + 0.2 * (1 - ease_out((tl - ton) / 0.3)) if lit else 1
     ctx.save(); ctx.translate(540, 590); ctx.scale(s, s)
@@ -422,7 +515,11 @@ def s2(ctx, tg, tl, T):
     rrect(ctx, -140, -70, 280, 140, 30); ctx.set_source_rgb(*(GRN if lit else (0.35, 0.35, 0.42))); ctx.fill()
     text(ctx, "AUTOPILOT", 0, 0, 58, (0.05, 0.1, 0.05) if lit else WHT, shadow=False)
     ctx.restore()
-    # two readouts
+    if not lit:
+        # finger hovering, hesitating
+        hx = 760 + 20 * math.sin(tl * 9)
+        ctx.set_source_rgb(*SKIN); ctx.set_line_cap(cairo.LINE_CAP_ROUND); ctx.set_line_width(70)
+        ctx.move_to(hx + 200, 900); ctx.line_to(hx, 700); ctx.stroke()
     for k, (lab, val, t0) in enumerate((("HEIGHT", "35,000 FT", th), ("DIRECTION", "HDG 090", td))):
         if tl < t0 - 0.05: continue
         ps = pop(tl - t0 + 0.05, 0.22)
@@ -431,76 +528,45 @@ def s2(ctx, tg, tl, T):
         rrect(ctx, -220, -80, 440, 160, 26); ctx.set_source_rgb(0.02, 0.08, 0.06); ctx.fill()
         text(ctx, val, 0, -12, 64, GRN, shadow=False)
         text(ctx, lab, 0, 50, 30, CYN, SANS, shadow=False)
-        chk = tl > t0 + 0.4
-        if chk: check(ctx, 190, -70, 50, YEL)
+        if tl > t0 + 0.4: check(ctx, 190, -70, 50, YEL)
         ctx.restore()
-    # plane flying dead level on a line
     ctx.set_source_rgba(*CYN, 0.6); ctx.set_line_width(5); ctx.set_dash([20, 16], -tl * 80)
     ctx.move_to(60, 1080); ctx.line_to(1020, 1080); ctx.stroke(); ctx.set_dash([])
     px = 200 + 680 * ease_io(tl / T)
     airliner(ctx, px, 1060, 0.42, tl)
     if tl > tit - 0.1:
-        popchip(ctx, "HANDS OFF. IT FLIES ITSELF", 540, 1200, tl - tit + 0.1, YEL, (0, 0, 0), 46)
-
-
-def s3(ctx, tg, tl, T):
-    tli = wt(3, "lifeline"); tra = wt(3, "radio"); ths = wt(3, "Headset"); tpr = wt(3, "Press")
-    if tl < ths - 0.1:
-        if tl < tra - 0.1:
-            s = pop(tl - tli + 0.1, 0.25)
-            ctx.save(); ctx.translate(540, 820); ctx.scale(s, s)
-            glow_circle(ctx, 0, 0, 380, PNK, 0.4)
-            text(ctx, "?", 0, 0, 480, YEL, stroke=10)
-            ctx.restore()
-        else:
-            tt = tl - tra + 0.1
-            radio_box(ctx, 540, 820, pop(tt, 0.25) * 1.25, "118.7", tl, glow=1)
-            waves(ctx, 540, 640, tl, CYN, 3, 60, 50, -math.pi / 2, 0.6)
-            popchip(ctx, "THE RADIO", 540, 1140, tt - 0.1, CYN, (0, 0, 0), 60)
-    else:
-        tt = tl - ths + 0.1
-        sky_view(ctx, tg, 440, 1300)
-        s = pop(tt, 0.22)
-        ctx.save(); ctx.translate(400, 1420); ctx.scale(s, s)
-        seated(ctx, 0, 0, 840, HEROC, "worry", "down", tl, look=0.8, seat=(0.3, 0.3, 0.38), hat=True, headset=True)
-        ctx.restore()
-        # talk button
-        pr = tl > tpr + 0.15
-        bx, by = 860, 1000
-        ctx.save(); ctx.translate(bx, by)
-        if pr: glow_circle(ctx, 0, 0, 220, RED, 0.5)
-        ctx.arc(0, 0, 120, 0, 6.3); ctx.set_source_rgb(0.2, 0.2, 0.26); ctx.fill()
-        ctx.arc(0, 8 if pr else 0, 92, 0, 6.3); ctx.set_source_rgb(*(RED if pr else (0.7, 0.15, 0.2))); ctx.fill()
-        text(ctx, "TALK", 0, 8 if pr else 0, 54, WHT, shadow=False)
-        ctx.restore()
-        if tl > tpr - 0.2:
-            # finger coming down on the button
-            f = ease_out((tl - tpr + 0.2) / 0.35)
-            fy = by - 330 + 230 * f
-            ctx.set_source_rgb(*SKIN); ctx.set_line_cap(cairo.LINE_CAP_ROUND); ctx.set_line_width(70)
-            ctx.move_to(bx + 40, fy - 300); ctx.line_to(bx + 10, fy); ctx.stroke()
-        if pr:
-            waves(ctx, 540, 600, tl, CYN, 3, 40, 40, -math.pi / 2, 0.7)
+        popchip(ctx, "HANDS OFF. IT'S HOLDING.", 540, 1200, tl - tit + 0.1, YEL, (0, 0, 0), 48)
 
 
 def s4(ctx, tg, tl, T):
-    tm = wt(4, "Mayday"); tth = wt(4, "three"); tti = wt(4, "times"); tn = wt(4, "Not"); tbh = wt(4, "Bhaiya"); tro = wt(4, "roko")
+    tra = wt(4, "radio"); tpr = wt(4, "Press"); tm = wt(4, "Mayday"); tth = wt(4, "three"); tti = wt(4, "times")
+    tn = wt(4, "Not"); tbh = wt(4, "Bhaiya"); tro = wt(4, "roko")
     sky_view(ctx, tg, 440, 1300)
-    if tl < tn - 0.1:
-        seated(ctx, 290, 1420, 800, HEROC, "shock", "up", tl, look=0.8, seat=(0.3, 0.3, 0.38), hat=True, headset=True)
+    if tl < tpr - 0.1:
+        s = pop(tl - tra + 0.3, 0.25) if tl > tra - 0.3 else pop(tl, 0.25) * 0.6
+        radio_box(ctx, 540, 820, s * 1.25, "118.7", tl, glow=1)
+        waves(ctx, 540, 640, tl, CYN, 3, 60, 50, -math.pi / 2, 0.6)
+        popchip(ctx, "YOUR LIFELINE", 540, 1140, tl - tra, CYN, (0, 0, 0), 60)
+    elif tl < tn - 0.1:
+        seated(ctx, 290, 1420, 800, HEROC, "shock", "up" if tl > tm - 0.1 else "down", tl, look=0.8, seat=(0.3, 0.3, 0.38), hat=True, headset=True)
+        pr = tl > tpr + 0.1
+        bx, by = 880, 1150
+        ctx.save(); ctx.translate(bx, by)
+        if pr: glow_circle(ctx, 0, 0, 200, RED, 0.5)
+        ctx.arc(0, 0, 100, 0, 6.3); ctx.set_source_rgb(0.2, 0.2, 0.26); ctx.fill()
+        ctx.arc(0, 8 if pr else 0, 76, 0, 6.3); ctx.set_source_rgb(*(RED if pr else (0.7, 0.15, 0.2))); ctx.fill()
+        text(ctx, "TALK", 0, 8 if pr else 0, 46, WHT, shadow=False)
+        ctx.restore()
         for k, t0 in enumerate((tm, tth, tti)):
             if tl < t0 - 0.05: continue
-            y = 560 + k * 190
-            bubble(ctx, 820, y, 72, "MAYDAY!", tl - t0 + 0.05, RED)
-            ctx.arc(590, y, 34, 0, 6.3); ctx.set_source_rgba(*YEL, clamp((tl - t0) / 0.15)); ctx.fill()
-            text(ctx, str(k + 1), 590, y, 44, (0, 0, 0), shadow=False, alpha=clamp((tl - t0) / 0.15))
+            y = 560 + k * 170
+            bubble(ctx, 800, y, 66, "MAYDAY!", tl - t0 + 0.05, RED)
+            ctx.arc(590, y, 32, 0, 6.3); ctx.set_source_rgba(*YEL, clamp((tl - t0) / 0.15)); ctx.fill()
+            text(ctx, str(k + 1), 590, y, 42, (0, 0, 0), shadow=False, alpha=clamp((tl - t0) / 0.15))
     else:
-        tt = tl - tn + 0.1
-        # hero leans out like hailing an auto, arm waving
         seated(ctx, 290, 1420, 800, HEROC, "smile", "wave", tl, look=0.8, seat=(0.3, 0.3, 0.38), hat=True, headset=True)
         if tl > tbh - 0.1:
             bubble(ctx, 690, 510, 56, "BHAIYA, SIDE MEIN ROKO!", tl - tbh + 0.1, PNK)
-        # little auto-rickshaw zipping past in the clouds
         ax = 1250 - 420 * ease_out((tl - tbh) / 1.2) if tl > tbh else 1300
         ctx.save(); ctx.translate(ax, 980); ctx.scale(1.1, 1.1)
         ctx.move_to(-90, 40); ctx.line_to(-90, -40); ctx.curve_to(-90, -80, -40, -90, 0, -90); ctx.line_to(60, -90)
@@ -513,21 +579,35 @@ def s4(ctx, tg, tl, T):
         stamp(ctx, "WRONG CALL!", 540, 1180, tl - tro, RED, 84, -0.08)
 
 
+def static_box(ctx, x, y, w, h, tl, a=1.0):
+    rrect(ctx, x - w / 2, y - h / 2, w, h, 24); ctx.set_source_rgba(0.05, 0.05, 0.1, 0.9 * a); ctx.fill()
+    ctx.save(); rrect(ctx, x - w / 2, y - h / 2, w, h, 24); ctx.clip()
+    seed = int(tl * 30)
+    for k in range(40):
+        yy = y - h / 2 + hrand("st", seed, k) * h
+        xx = x - w / 2 + hrand("sx", seed, k) * w
+        ctx.rectangle(xx, yy, 30 + 120 * hrand("sw", seed, k), 4); ctx.set_source_rgba(1, 1, 1, 0.6 * a); ctx.fill()
+    ctx.restore()
+
+
 def s5(ctx, tg, tl, T):
-    tsw = wt(5, "Switch"); t121 = wt(5, "121"); tem = wt(5, "emergency")
+    tst = wt(5, "static"); tsw = wt(5, "Switch"); t121 = wt(5, "121"); tem = wt(5, "emergency")
     if tl < tsw - 0.1:
         sky_view(ctx, tg, 440, 1300)
-        seated(ctx, 540, 1420, 840, HEROC, "worry", "down", tl, look=math.sin(tl * 5), seat=(0.3, 0.3, 0.38), hat=True, headset=True)
-        bubble(ctx, 800, 560, 80, ". . .", tl - 0.05, (0.3, 0.3, 0.4))
+        seated(ctx, 360, 1420, 800, HEROC, "worry", "down", tl, look=0.6 + 0.4 * math.sin(tl * 5), seat=(0.3, 0.3, 0.38), hat=True, headset=True)
+        static_box(ctx, 800, 640, 430, 140, tl)
+        text(ctx, "KSSHHH...", 800, 640, 60, WHT, stroke=5)
+        if tl > tst - 0.05:
+            popchip(ctx, "NO ANSWER", 540, 1200, tl - tst + 0.05, RED, WHT, 56)
     elif tl < tem - 0.1:
-        tt = tl - tsw + 0.1
         f = clamp((tl - tsw) / max(0.2, t121 - tsw))
         val = 118.7 + (121.5 - 118.7) * ease_io(f)
         radio_box(ctx, 540, 800, 1.3, f"{val:.1f}", tl, glow=1 if f >= 1 else 0.3)
-        if f >= 1:
-            stamp(ctx, "121.5", 540, 1110, tl - t121, RED, 96, -0.06)
+        if f < 1: static_box(ctx, 540, 1080, 600, 110, tl, a=1 - f)
+        else: stamp(ctx, "121.5", 540, 1110, tl - t121, RED, 96, -0.06)
     else:
         tt = tl - tem + 0.1
+        sky_view(ctx, tg, 440, 1300)
         radio_box(ctx, 290, 1050, 0.6, "121.5", tl, glow=1)
         tower(ctx, 860, 1250, 1.1, tl)
         airliner(ctx, 800, 640, 0.38, tl, tilt=-0.08)
@@ -539,27 +619,30 @@ def s5(ctx, tg, tl, T):
 
 
 def s6(ctx, tg, tl, T):
-    tthey = wt(6, "They"); tst = wt(6, "step")
-    sky_view(ctx, tg, 440, 1300, dawn=0.3)
-    s = pop(tl, 0.22)
-    # controller in the tower cab on the right
+    tvo = wt(6, "voice"); tair = wt(6, "Air"); tst = wt(6, "step")
+    sky_view(ctx, tg, 440, 1300, dawn=0.3 * ease_io((tl - tair) / 1.0) if tl > tair else 0)
+    if tl < tair - 0.1:
+        seated(ctx, 300, 1420, 800, HEROC, "worry" if tl < tvo else "shock", "down", tl, look=0.8, seat=(0.3, 0.3, 0.38), hat=True, headset=True)
+        waves(ctx, 300, 640, tl, YEL, 3, 70, 60, -0.3, 0.6)
+        bubble(ctx, 760, 620, 62, "I CAN HEAR YOU.", tl - tvo + 0.05, BLUE, tail=-1)
+        return
+    tt = tl - tair + 0.1
+    s = pop(tt, 0.22)
     ctx.save(); ctx.translate(800, 1280); ctx.scale(s, s)
     rrect(ctx, -250, -760, 500, 760, 40); ctx.set_source_rgba(*CYN, 0.25); ctx.fill()
-    person(ctx, 0, 0, 720, PNK, "smile", "wave" if tl > tthey else "down", tl, look=-0.8)
+    person(ctx, 0, 0, 720, PNK, "smile", "wave", tl, look=-0.8)
     headset_on(ctx, 0, -86 * 7.2, 7.2, -0.8)
     radar(ctx, 140, -110, 95, tl)
     ctx.restore()
-    popchip(ctx, "AIR TRAFFIC CONTROL", 800, 500, tl - 0.2, CYN, (0, 0, 0), 42)
-    # hero on the left
-    seated(ctx, 250, 1420, 760, HEROC, "worry" if tl < tthey else "smile", "down", tl, look=0.8, seat=(0.3, 0.3, 0.38), hat=True, headset=True)
-    if tl > tthey - 0.1:
-        for k in range(3):
-            ph = (tl * 1.2 + k / 3) % 1
-            x = 680 - 300 * ph; y = 760 - 60 * math.sin(ph * math.pi)
-            ctx.arc(x, y, 14, 0, 6.3); ctx.set_source_rgba(*YEL, 1 - ph); ctx.fill()
-    if tl > tst - 0.4:
+    popchip(ctx, "AIR TRAFFIC CONTROL", 800, 500, tt - 0.1, CYN, (0, 0, 0), 42)
+    seated(ctx, 250, 1420, 760, HEROC, "smile", "down", tl, look=0.8, seat=(0.3, 0.3, 0.38), hat=True, headset=True)
+    for k in range(3):
+        ph = (tl * 1.2 + k / 3) % 1
+        x = 680 - 300 * ph; y = 760 - 60 * math.sin(ph * math.pi)
+        ctx.arc(x, y, 14, 0, 6.3); ctx.set_source_rgba(*YEL, 1 - ph); ctx.fill()
+    if tl > tst - 0.6:
         for k, lab in enumerate(("WINGS LEVEL", "SLOW DESCENT")):
-            t0 = tst - 0.4 + k * 0.35
+            t0 = tst - 0.6 + k * 0.35
             if tl < t0: continue
             ps = pop(tl - t0, 0.2)
             ctx.save(); ctx.translate(300, 560 + k * 110); ctx.scale(ps, ps)
@@ -577,18 +660,16 @@ def s7(ctx, tg, tl, T):
     runway(ctx, ry, tl, 380 * (1 - 0.6 * f) if f > 0 else 0, x0=-50 + 900 * (1 - min(1, f * 1.5)))
     px = 470 + 30 * math.sin(tl * 1.2)
     py = 760 + (ry - 70 - 760) * f + 12 * math.sin(tl * 2.3) * (1 - f)
-    small_plane(ctx, px, py, 1.6, tl, who=("shock" if tl < tla + 1.2 else "cheeks", "down"), tilt=0.05 * math.sin(tl * 1.7) * (1 - f) + 0.08 * (1 - f) * (f > 0))
-    if f >= 1 or (tl > tla + 1.0):
+    small_plane(ctx, px, py, 1.6, tl, who=("shock" if tl < tla + 1.2 else "cheeks", "down"), tilt=0.05 * math.sin(tl * 1.7) * (1 - f))
+    if tl > tla + 1.0:
         for k in range(6):
             ph = ((tl - tla) * 1.5 + k / 6) % 1
             ctx.arc(px - 120 - 200 * ph, ry - 10 - 30 * ph, 20 + 30 * ph, 0, 6.3); ctx.set_source_rgba(1, 1, 1, 0.5 * (1 - ph)); ctx.fill()
-    # zoom inset on the passenger's face
     zs = pop(tl - tz + 0.05, 0.25) if tl > tz - 0.05 else 0
     if zs > 0.01:
-        ix, iy, ir = 840, 1000, 150
-        ctx.save(); ctx.translate(ix, iy); ctx.scale(zs, zs)
-        ctx.arc(0, 0, ir + 10, 0, 6.3); ctx.set_source_rgb(*WHT); ctx.fill()
-        ctx.arc(0, 0, ir, 0, 6.3); ctx.save(); ctx.clip()
+        ctx.save(); ctx.translate(840, 1000); ctx.scale(zs, zs)
+        ctx.arc(0, 0, 160, 0, 6.3); ctx.set_source_rgb(*WHT); ctx.fill()
+        ctx.arc(0, 0, 150, 0, 6.3); ctx.save(); ctx.clip()
         ctx.set_source_rgb(0.55, 0.8, 1.0); ctx.paint()
         person(ctx, 0, 600, 640, HEROC, "shock" if tl < tla + 1.2 else "cheeks", "down", tl, look=0.6)
         headset_on(ctx, 0, 600 - 86 * 6.4, 6.4, 0.6)
@@ -606,7 +687,6 @@ def s8(ctx, tg, tl, T):
         sky_view(ctx, tg, 440, 1300, dawn=0.5)
         f = ease_io(tl / (tbu + 0.4))
         runway(ctx, 1150, tl, 0, x0=500 - 300 * f)
-        # guidance beams
         ctx.set_source_rgba(*CYN, 0.35)
         ctx.move_to(560, 1150); ctx.line_to(-100, 560); ctx.line_to(-100, 760); ctx.close_path(); ctx.fill()
         ax = 300 + 260 * f; ay = 700 + 340 * f
@@ -626,7 +706,6 @@ def s8(ctx, tg, tl, T):
             rrect(ctx, -80, -60, 160, 120, 22); ctx.set_source_rgb(*[BLUE, PNK, YEL, CYN][(k * 7) % 4]); ctx.fill()
             text(ctx, ["APP", "LOC", "ILS", "A/T", "CMD", "FLAPS", "GEAR", "BARO", "NAV", "SPD", "ALT", "VS"][k], 0, 0, 44, (0.05, 0.05, 0.15), shadow=False)
             ctx.restore()
-        ctx.set_line_width(14); ctx.set_source_rgb(*RED)
         q = ease_out((tt - 0.6) / 0.3)
         if q > 0:
             ctx.save(); ctx.translate(540, 840); ctx.scale(q, q)
@@ -639,7 +718,6 @@ def s8(ctx, tg, tl, T):
         ctx.save(); ctx.translate(460, 1420); ctx.scale(s, s)
         seated(ctx, 0, 0, 840, HEROC, "shock", "cheeks", tl, look=0.6, seat=(0.3, 0.3, 0.38), hat=True)
         ctx.restore()
-        # arrow pointing at the hero
         a = ease_out((tt - 0.2) / 0.25)
         if a > 0:
             ctx.save(); ctx.translate(880, 720 + 10 * math.sin(tl * 8))
@@ -651,13 +729,13 @@ def s8(ctx, tg, tl, T):
 
 
 def s9(ctx, tg, tl, T):
-    tand = wt(9, "And"); tno = wt(9, "nobody"); tst = wt(9, "stops"); tco = wt(9, "Could")
-    if tl < tand - 0.1:
+    tma = wt(9, "made"); tco = wt(9, "Could")
+    if tl < tma - 0.25:
         sky_view(ctx, tg, 440, 1300, dawn=1.0)
         hit = 0.25
         f = ease_out(tl / hit)
         runway(ctx, 1100, tl, 900)
-        shake = 10 * math.exp(-(tl - hit) * 6) * math.sin(tl * 60) if tl > hit else 0
+        shake = 12 * math.exp(-(tl - hit) * 6) * math.sin(tl * 60) if tl > hit else 0
         airliner(ctx, 540 + shake, 960 + 80 * f, 1.25, tl, tilt=0.06 * (1 - f), gear=1)
         if tl > hit:
             for k in range(8):
@@ -665,16 +743,15 @@ def s9(ctx, tg, tl, T):
                 ctx.arc(420 - 350 * ph, 1090 - 40 * ph, 20 + 50 * ph, 0, 6.3); ctx.set_source_rgba(1, 1, 1, 0.55 * (1 - ph)); ctx.fill()
         stamp(ctx, "TOUCHDOWN!", 540, 600, tl - hit, GRN, 110, -0.08, fg=(0, 0, 0))
     elif tl < tco - 0.1:
-        tt = tl - tand + 0.1
-        aisle(ctx, tl, 0.3)
-        seatbelt_sign(ctx, 880, 560, 1.0, on=True)
-        # the hero still buckled in, calm, front row
-        ctx.save(); ctx.translate(540, 1410); ctx.scale(pop(tt, 0.22), pop(tt, 0.22))
-        seated(ctx, 0, 0, 780, HEROC, "smile" if tl < tst else "cheeks", "down", tl, seat=SEATP, hat=True)
+        tt = tl - tma + 0.25
+        sky_view(ctx, tg, 440, 1300, dawn=1.0)
+        glow_circle(ctx, 540, 760, 520, YEL, 0.35)
+        sparkles(ctx, 540, 800, 420, tl, 16, YEL, "win")
+        s = pop(tt, 0.22)
+        ctx.save(); ctx.translate(540, 1420); ctx.scale(s, s)
+        seated(ctx, 0, 0, 840, HEROC, "cheeks", "up", tl, seat=(0.3, 0.3, 0.38), hat=True, headset=True)
         ctx.restore()
-        if tl > tno - 0.05:
-            popchip(ctx, "0 PEOPLE STANDING", 540, 1225, tl - tno + 0.05, YEL, (0, 0, 0), 52)
-        stamp(ctx, "HISTORIC!", 220, 600, tl - tst - 0.1, PNK, 80, -0.12)
+        stamp(ctx, "YOU MADE IT!", 540, 560, tt - 0.1, GRN, 96, -0.08, fg=(0, 0, 0))
     else:
         tt = tl - tco + 0.1
         sky_view(ctx, tg, 440, 1300, dawn=1.0)
@@ -682,7 +759,7 @@ def s9(ctx, tg, tl, T):
         person(ctx, 0, 0, 780, HEROC, "smile", "wave", tl)
         captain_hat(ctx, 0, -86 * 7.8, 7.8)
         ctx.restore()
-        sc = pop(tt - 0.6, 0.25) * (1 + 0.04 * math.sin(tt * 8))
+        sc = pop(tt - 0.4, 0.25) * (1 + 0.04 * math.sin(tt * 8))
         ctx.save(); ctx.translate(540, 560); ctx.scale(sc, sc)
         g = cairo.LinearGradient(-400, 0, 400, 0)
         g.add_color_stop_rgb(0, 0.15, 0.55, 1.0); g.add_color_stop_rgb(1, 0.95, 0.25, 0.6)
@@ -708,45 +785,66 @@ def _static(A, t, d=0.35, g=0.12):
     A.add(A.sfx_buf, x, t, g)
 
 
+def _thunder(A, t, g=0.3, d=1.6):
+    import numpy as np
+    n = int(d * 44100); tt = np.arange(n) / 44100
+    x = A.lp(A.noise(d), 150) * 4 * np.exp(-tt * 2.0) * (0.6 + 0.4 * np.sin(tt * 9) ** 2)
+    crack = A.hp(A.noise(0.12), 2500) * np.exp(-np.arange(int(0.12 * 44100)) / 44100 * 30)
+    A.add(A.sfx_buf, crack, t, g * 0.6)
+    A.add(A.sfx_buf, x, t + 0.05, g)
+
+
+def _alarm(A, t0, t1, g=0.06):
+    t = t0
+    while t < t1:
+        A.ding(t, g, 1760, 0.12); A.ding(t + 0.18, g, 1320, 0.12); t += 0.5
+
+
 def sfx(A):
-    _engine(A, 0.0, A.S(2) + 0.3, 0.14)
-    for k in range(int(A.S(2) / 0.8)):
-        A.thump(0.6 + k * 0.8, 0.4, 50)                       # heartbeat under the hook
-    # cabin chime as you wake
-    A.ding(A.W(0, "wake"), 0.12, 1318.5, 1.2); A.ding(A.W(0, "wake") + 0.35, 0.12, 1046.5, 1.4)
+    _engine(A, 0.0, A.S(4) + 0.3, 0.14)
+    # heartbeat that speeds up until you breathe
+    t, gap = 0.4, 0.8
+    while t < A.W(2, "breathe"):
+        A.thump(t, 0.42, 50); A.thump(t + 0.2, 0.28, 45)
+        t += gap; gap = max(0.48, gap - 0.025)
+    for e in EV:
+        if e < A.S(7): _thunder(A, e, 0.28 if e < A.S(2) else 0.18)
+    _alarm(A, 0.05, A.W(0, "Every"), 0.05)
+    _alarm(A, A.S(2), A.W(2, "breathe"), 0.07)
     A.whoosh(A.W(0, "35"), 0.15)
     A.thump(A.W(0, "Every"), 0.5, 55)
-    A.thump(A.W(0, "Even"), 0.6, 45)
-    A.scratch(A.W(0, "cockpit") + 0.25, 0.25)
-    A.pop(A.W(1, "Free"), 0.35)
-    for k, m in enumerate((79, 84, 88)):
-        A.ding(A.W(1, "Free") + 0.05 + k * 0.08, 0.06, A.note(m))
-    A.boing(A.W(1, "pilot"), 0.15, 260, 0.45)
-    A.ding(A.W(2, "on?"), 0.1, 1568); A.pop(A.W(2, "height"), 0.25); A.pop(A.W(2, "direction"), 0.25)
-    _static(A, A.W(3, "radio"), 0.4, 0.15)
-    A.pop(A.W(3, "Headset"), 0.3)
-    A.thump(A.W(3, "Press") + 0.2, 0.4, 120); _static(A, A.W(3, "Press") + 0.25, 0.3, 0.12)
+    A.thump(A.W(0, "cockpit"), 0.6, 45)
+    A.scratch(A.W(0, "flying") - 0.05, 0.3)
+    A.thump(A.W(0, "flying") + 0.05, 0.7, 40)
+    A.whoosh(A.W(1, "ocean"), 0.15, 0.6)
+    _thunder(A, A.W(1, "storm") - 0.1, 0.45, 2.2)
+    A.pop(A.W(2, "Who"), 0.3)
+    A.thump(A.W(2, "You."), 0.7, 50); A.scratch(A.W(2, "You.") - 0.05, 0.25)
+    A.ding(A.W(3, "on?"), 0.1, 1568); A.pop(A.W(3, "height"), 0.25); A.pop(A.W(3, "direction"), 0.25)
+    _static(A, A.W(4, "radio"), 0.4, 0.15)
+    A.thump(A.W(4, "Press") + 0.1, 0.4, 120)
     for w in ("Mayday", "three", "times"):
         A.pop(A.W(4, w), 0.3)
     A.horn(A.W(4, "Bhaiya") + 0.3, 0.05)
     A.scratch(A.W(4, "roko") - 0.05, 0.3)
-    _static(A, A.S(5) + 0.1, 0.8, 0.1)
+    _static(A, A.S(5), 1.6, 0.16)
     for k in range(8):
-        A.ding(A.W(5, "Switch") + 0.05 + k * 0.17, 0.03, 2200, 0.08)    # dial clicks
+        A.ding(A.W(5, "Switch") + 0.05 + k * 0.17, 0.03, 2200, 0.08)
     A.ding(A.W(5, "121"), 0.1, 1318.5)
     A.whoosh(A.W(5, "emergency"), 0.2)
-    _static(A, A.W(6, "They"), 0.3, 0.1)
-    A.pop(A.W(6, "step") - 0.4, 0.3); A.pop(A.W(6, "step") - 0.05, 0.3)
+    _static(A, A.W(6, "voice") - 0.3, 0.3, 0.12)
+    A.ding(A.W(6, "voice"), 0.08, 1046.5, 0.8)
+    A.pop(A.W(6, "step") - 0.6, 0.3); A.pop(A.W(6, "step") - 0.25, 0.3)
     A.pop(A.S(7) + 0.1, 0.3)
     A.whoosh(A.W(7, "landed"), 0.2, 0.6)
     A.ding(A.W(7, "small"), 0.08, 1568); A.ding(A.W(7, "small") + 0.12, 0.08, 2093)
     A.ding(A.W(8, "land"), 0.1, 1318.5)
     for k in range(6):
-        A.pop(A.W(8, "But") + 0.08 * k * 2, 0.15)
+        A.pop(A.W(8, "But") + 0.16 * k, 0.15)
     A.boing(A.W(8, "Guess"), 0.18, 300)
     A.thump(A.S(9) + 0.25, 0.7, 60); A.scratch(A.S(9) + 0.3, 0.3, 0.5)
-    A.ding(A.W(9, "And") - 0.1, 0.1, 1318.5, 1.0); A.ding(A.W(9, "And") + 0.25, 0.1, 1046.5, 1.2)
-    A.boing(A.W(9, "stops"), 0.15, 400, 0.4)
+    for k, m in enumerate((72, 76, 79, 84)):
+        A.ding(A.W(9, "made") - 0.2 + k * 0.08, 0.07, A.note(m))
     A.pop(A.W(9, "Could"), 0.35)
     for k, m in enumerate((79, 84, 88)):
         A.ding(A.W(9, "Could") + 0.1 + k * 0.1, 0.07, A.note(m))
