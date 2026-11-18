@@ -5,14 +5,14 @@ Read this file fully before starting a run.
 
 ## Hard rules
 
-- **Never publish without the owner's approval.** Each run makes the reel, sends it to the owner, and queues it in Metricool as a draft or a post waiting for approval. A reel goes public only after the owner says yes in the conversation or approves it in Metricool.
+- **Standing approval to publish (owner, 18 Nov 2026).** The owner asked each daily run to make the reel and schedule it to publish by itself, without waiting for approval. Each run schedules the three posts (not drafts), then sends the owner the video, the times and the Metricool links so they can still change or cancel a post before it goes out. Only publish a reel that built cleanly and passed every check below; if anything fails, stop and tell the owner instead of posting.
 - **No unsupported claims.** Check every number and fact with a web search before it goes in the script. Use "about" for estimates, and drop any claim you cannot back up. Note the sources in `reels/<slug>/sources.md`.
 - **Mainstream-safe.** No gore, no real people or celebrities, no current news, no copyrighted characters or brands. Danger stays suspenseful, never graphic.
 - **Correct scale.** When the topic changes sizes, draw every shot to true scale against real-size props (`with World(ctx, k)` in centimetres). Never show a shrunken person at full size.
 
 ## Style the owner likes
 
-The owner preferred the first "everyone shrank" reel (`reels/everyone-shrank`) over a stricter, faster rework. Match it:
+The owner's favourite is the brake-failure reel (`reels/brake-failure`, "brakes fail at 100 km/h"): engaging, clear and explanatory, with thriller and suspense, one step at a time. They also liked the first "everyone shrank" reel (`reels/everyone-shrank`). Make every reel like those. One-off experiments (`reels/shadow-part1`, `reels/wrong-doors`) are not the house style; the owner asked to drop them.
 
 - **Length:** 30 to 40 seconds (changed from 45 to 55 on 18 Nov 2026 for watch time; see Engagement rules).
 - **Hook:** the first 10 seconds must be the most dramatic part, with no slow intro. Open on the event itself.
@@ -46,8 +46,8 @@ The first four reels each got only a few views. Instagram's head says the top ra
 5. **Preview.** Run `python3 -m reelkit.make reels/<slug> --stills ...` with about 10 times spread over the reel. Look at `build/contact_sheet.png` and fix overlaps, off-screen elements, unreadable text and wrong scale. Repeat until clean.
 6. **Build.** Run `python3 -m reelkit.make reels/<slug>`. Check that the length is 30 to 40 seconds. If it is longer, cut whole lines with `python3 -m reelkit.drop_lines reels/<slug> <line numbers>` (then fix the references it reports and rebuild with `--revoice`) instead of speeding up the voice.
 7. **Commit.** Commit `reels/<slug>/` (script, scenes, sources and the final `out/<slug>.mp4`) to `main`.
-8. **Queue for approval.** Send the video to the owner. Put it into Metricool as three drafts (Instagram Reel, Facebook Reel, YouTube Short) at the next day's best times, with network-specific captions (see Metricool details). Set the Sheet Status to "Awaiting approval".
-9. **After approval.** Schedule or publish it in Metricool and set the Sheet Status to "Posted" with the date. If the owner asks for changes, make them, rebuild and send the video again.
+8. **Schedule it.** Put it into Metricool as three scheduled posts (Instagram Reel, Facebook Reel, YouTube Short) with `"draft": false`, at the next day's best times, with network-specific captions (see Metricool details). Set the Sheet Status to "Posted" and "Posted on" to the publish date.
+9. **Tell the owner.** Send the video with SendUserFile and one short message with the topic, the three times and the three `plannerUrl`s, so they can change or cancel before it goes out. If the owner asks for changes, make them, rebuild, push and update the posts' media.
 
 ## Library notes
 
@@ -60,7 +60,7 @@ The first four reels each got only a few views. Instagram's head says the top ra
 
 - Brand "kaamkagyann", blogId `8189079`, timezone Asia/Calcutta. Instagram, Facebook Page and YouTube are connected.
 - Media must be a public URL. After pushing, use `https://raw.githubusercontent.com/kanhaa21/whatif-reels/main/reels/<slug>/out/<slug>.mp4`. Metricool copies the file to its own storage.
-- Queue each reel as **three separate drafts**, one per network, with `createScheduledPost` and `"draft": true`, for the **next day**. Each draft goes at that network's best hour from `getBestTimeToPostByNetwork` (brand 8189079, Asia/Calcutta) and must not clash with a post already scheduled that day; check `getScheduledPosts`. Typical peaks: Instagram about 10:00 (second peak 18:00), Facebook about 12:00, YouTube about 16:00. A draft never publishes by itself. The owner approves by opening the `plannerUrl` and scheduling it. If the owner approves in the conversation instead, call `updateScheduledPost` to set `draft` to false.
+- Schedule each reel as **three separate posts**, one per network, with `createScheduledPost` and `"draft": false`, for the **next day**. Each post goes at that network's best hour from `getBestTimeToPostByNetwork` (brand 8189079, Asia/Calcutta) and must not clash with a post already scheduled that day; check `getScheduledPosts`. Typical peaks: Instagram about 10:00 (second peak 18:00), Facebook about 12:00, YouTube about 16:00. Keep the Spacing rule (one reel per platform in any 5-hour window): if the best hour is taken, use the next-best free hour. Scheduled posts publish automatically; the owner can still edit or cancel them from the `plannerUrl`.
 - Providers: instagram `{"type": "REEL", "showReelOnFeed": true, "isAiGenerated": true}`; facebook `{"type": "REEL", "title": <short title>}`; youtube `{"title": <youtube_title>, "type": "short", "privacy": "public", "category": "EDUCATION", "madeForKids": false, "isAiGeneratedContent": false, "tags": [...]}`.
 - Write the text separately for each network:
   - **Instagram:** line 1 is the hook, the scariest or funniest fact in under 15 words, with one emoji. Then 1 or 2 lines of payoff that use the reel's best joke. Then an engagement question that is easy to answer ("Comment YES or NO", "How many did you know? Comment the number"). Then "Follow @kaamkagyann for a new what-if every day." Then **exactly 5 hashtags**, the maximum Instagram allows: #WhatIf plus 4 specific to the topic (for example #RoadSafety #DrivingTips, #ScienceFacts #Physics). Never use generic tags like #viral or #reels.
