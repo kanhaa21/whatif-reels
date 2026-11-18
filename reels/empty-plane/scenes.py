@@ -6,8 +6,8 @@ import math
 import cairo
 from reelkit.lib import *  # noqa: F401,F403
 
-BG = lambda ctx, tg, i: bg_glow(ctx, tg, i, dark_scenes=(0, 1, 2))
-MUSIC = {"beat_from_scene": 4, "bpm": 112}   # tense drone through the hook, storm and alarms; beat once you grab the radio
+BG = lambda ctx, tg, i: bg_glow(ctx, tg, i, dark_scenes=(0, 1))
+MUSIC = {"beat_from_scene": 2, "bpm": 112}   # tense drone through the hook, storm and alarms; beat once you grab the radio
 
 # lightning strikes (global seconds): the storm flashes through the first half, then the sky clears for the landing
 EV = [0.3, 1.75, 2.9, 4.3, 5.9, 6.75, 8.4, 9.5, 10.7, 11.4, 12.5, 14.6, 16.4, 19.2, 21.5, 25.0, 28.8, 30.9, 33.2]
@@ -473,7 +473,7 @@ def s1(ctx, tg, tl, T):
 
 def s2(ctx, tg, tl, T):
     """alarms, the reveal that you're the pilot, then the breathing reset"""
-    tal = wt(2, "Alarms"); twho = wt(2, "Who"); tyou = wt(2, "You."); tbr = wt(2, "breathe")
+    tal = wt(1, "Alarms"); twho = wt(1, "Who"); tyou = wt(1, "You."); tbr = wt(1, "breathe")
     calm = ease_io((tl - tbr + 0.2) / 0.9) if tl > tbr - 0.2 else 0
     sky_view(ctx, tg, 440, 1300)
     sh = 9 * (1 - calm) * math.sin(tl * 52)
@@ -539,8 +539,8 @@ def s3(ctx, tg, tl, T):
 
 
 def s4(ctx, tg, tl, T):
-    tra = wt(4, "radio"); tpr = wt(4, "Press"); tm = wt(4, "Mayday"); tth = wt(4, "three"); tti = wt(4, "times")
-    tn = wt(4, "Not"); tbh = wt(4, "Bhaiya"); tro = wt(4, "roko")
+    tra = wt(2, "radio"); tpr = wt(2, "Press"); tm = wt(2, "Mayday"); tth = wt(2, "three"); tti = wt(2, "times")
+    tn = wt(2, "Not"); tbh = wt(2, "Bhaiya"); tro = wt(2, "roko")
     sky_view(ctx, tg, 440, 1300)
     if tl < tpr - 0.1:
         s = pop(tl - tra + 0.3, 0.25) if tl > tra - 0.3 else pop(tl, 0.25) * 0.6
@@ -591,7 +591,7 @@ def static_box(ctx, x, y, w, h, tl, a=1.0):
 
 
 def s5(ctx, tg, tl, T):
-    tst = wt(5, "static"); tsw = wt(5, "Switch"); t121 = wt(5, "121"); tem = wt(5, "emergency")
+    tst = wt(3, "static"); tsw = wt(3, "Switch"); t121 = wt(3, "121"); tem = wt(3, "emergency")
     if tl < tsw - 0.1:
         sky_view(ctx, tg, 440, 1300)
         seated(ctx, 360, 1420, 800, HEROC, "worry", "down", tl, look=0.6 + 0.4 * math.sin(tl * 5), seat=(0.3, 0.3, 0.38), hat=True, headset=True)
@@ -619,7 +619,7 @@ def s5(ctx, tg, tl, T):
 
 
 def s6(ctx, tg, tl, T):
-    tvo = wt(6, "voice"); tair = wt(6, "Air"); tst = wt(6, "step")
+    tvo = wt(4, "voice"); tair = wt(4, "Air"); tst = wt(4, "step")
     sky_view(ctx, tg, 440, 1300, dawn=0.3 * ease_io((tl - tair) / 1.0) if tl > tair else 0)
     if tl < tair - 0.1:
         seated(ctx, 300, 1420, 800, HEROC, "worry" if tl < tvo else "shock", "down", tl, look=0.8, seat=(0.3, 0.3, 0.38), hat=True, headset=True)
@@ -653,7 +653,7 @@ def s6(ctx, tg, tl, T):
 
 
 def s7(ctx, tg, tl, T):
-    tz = wt(7, "zero"); tla = wt(7, "landed"); tsm = wt(7, "small")
+    tz = wt(5, "zero"); tla = wt(5, "landed"); tsm = wt(5, "small")
     sky_view(ctx, tg, 440, 1300, dawn=0.8)
     f = ease_io((tl - tla + 0.2) / 1.6) if tl > tla - 0.2 else 0
     ry = 1150
@@ -682,7 +682,7 @@ def s7(ctx, tg, tl, T):
 
 
 def s8(ctx, tg, tl, T):
-    tla = wt(8, "land"); tbu = wt(8, "But"); tgu = wt(8, "Guess")
+    tla = wt(6, "land"); tbu = wt(6, "But"); tgu = wt(6, "Guess")
     if tl < tbu - 0.1:
         sky_view(ctx, tg, 440, 1300, dawn=0.5)
         f = ease_io(tl / (tbu + 0.4))
@@ -729,7 +729,7 @@ def s8(ctx, tg, tl, T):
 
 
 def s9(ctx, tg, tl, T):
-    tma = wt(9, "made"); tco = wt(9, "Could")
+    tma = wt(7, "made"); tco = wt(7, "Could")
     if tl < tma - 0.25:
         sky_view(ctx, tg, 440, 1300, dawn=1.0)
         hit = 0.25
@@ -768,7 +768,7 @@ def s9(ctx, tg, tl, T):
         ctx.restore()
 
 
-SCENES = [s0, s1, s2, s3, s4, s5, s6, s7, s8, s9]
+SCENES = [s0, s2, s4, s5, s6, s7, s8, s9]
 
 
 def _engine(A, t0, t1, g=0.12):
@@ -801,50 +801,47 @@ def _alarm(A, t0, t1, g=0.06):
 
 
 def sfx(A):
-    _engine(A, 0.0, A.S(4) + 0.3, 0.14)
+    _engine(A, 0.0, A.S(2) + 0.3, 0.14)
     # heartbeat that speeds up until you breathe
     t, gap = 0.4, 0.8
-    while t < A.W(2, "breathe"):
+    while t < A.W(1, "breathe"):
         A.thump(t, 0.42, 50); A.thump(t + 0.2, 0.28, 45)
         t += gap; gap = max(0.48, gap - 0.025)
     for e in EV:
-        if e < A.S(7): _thunder(A, e, 0.28 if e < A.S(2) else 0.18)
+        if e < A.S(5): _thunder(A, e, 0.28 if e < A.S(1) else 0.18)
     _alarm(A, 0.05, A.W(0, "Every"), 0.05)
-    _alarm(A, A.S(2), A.W(2, "breathe"), 0.07)
+    _alarm(A, A.S(1), A.W(1, "breathe"), 0.07)
     A.whoosh(A.W(0, "35"), 0.15)
     A.thump(A.W(0, "Every"), 0.5, 55)
     A.thump(A.W(0, "cockpit"), 0.6, 45)
     A.scratch(A.W(0, "flying") - 0.05, 0.3)
     A.thump(A.W(0, "flying") + 0.05, 0.7, 40)
-    A.whoosh(A.W(1, "ocean"), 0.15, 0.6)
-    _thunder(A, A.W(1, "storm") - 0.1, 0.45, 2.2)
-    A.pop(A.W(2, "Who"), 0.3)
-    A.thump(A.W(2, "You."), 0.7, 50); A.scratch(A.W(2, "You.") - 0.05, 0.25)
-    A.ding(A.W(3, "on?"), 0.1, 1568); A.pop(A.W(3, "height"), 0.25); A.pop(A.W(3, "direction"), 0.25)
-    _static(A, A.W(4, "radio"), 0.4, 0.15)
-    A.thump(A.W(4, "Press") + 0.1, 0.4, 120)
+    A.pop(A.W(1, "Who"), 0.3)
+    A.thump(A.W(1, "You."), 0.7, 50); A.scratch(A.W(1, "You.") - 0.05, 0.25)
+    _static(A, A.W(2, "radio"), 0.4, 0.15)
+    A.thump(A.W(2, "Press") + 0.1, 0.4, 120)
     for w in ("Mayday", "three", "times"):
-        A.pop(A.W(4, w), 0.3)
-    A.horn(A.W(4, "Bhaiya") + 0.3, 0.05)
-    A.scratch(A.W(4, "roko") - 0.05, 0.3)
-    _static(A, A.S(5), 1.6, 0.16)
+        A.pop(A.W(2, w), 0.3)
+    A.horn(A.W(2, "Bhaiya") + 0.3, 0.05)
+    A.scratch(A.W(2, "roko") - 0.05, 0.3)
+    _static(A, A.S(3), 1.6, 0.16)
     for k in range(8):
-        A.ding(A.W(5, "Switch") + 0.05 + k * 0.17, 0.03, 2200, 0.08)
-    A.ding(A.W(5, "121"), 0.1, 1318.5)
-    A.whoosh(A.W(5, "emergency"), 0.2)
-    _static(A, A.W(6, "voice") - 0.3, 0.3, 0.12)
-    A.ding(A.W(6, "voice"), 0.08, 1046.5, 0.8)
-    A.pop(A.W(6, "step") - 0.6, 0.3); A.pop(A.W(6, "step") - 0.25, 0.3)
-    A.pop(A.S(7) + 0.1, 0.3)
-    A.whoosh(A.W(7, "landed"), 0.2, 0.6)
-    A.ding(A.W(7, "small"), 0.08, 1568); A.ding(A.W(7, "small") + 0.12, 0.08, 2093)
-    A.ding(A.W(8, "land"), 0.1, 1318.5)
+        A.ding(A.W(3, "Switch") + 0.05 + k * 0.17, 0.03, 2200, 0.08)
+    A.ding(A.W(3, "121"), 0.1, 1318.5)
+    A.whoosh(A.W(3, "emergency"), 0.2)
+    _static(A, A.W(4, "voice") - 0.3, 0.3, 0.12)
+    A.ding(A.W(4, "voice"), 0.08, 1046.5, 0.8)
+    A.pop(A.W(4, "step") - 0.6, 0.3); A.pop(A.W(4, "step") - 0.25, 0.3)
+    A.pop(A.S(5) + 0.1, 0.3)
+    A.whoosh(A.W(5, "landed"), 0.2, 0.6)
+    A.ding(A.W(5, "small"), 0.08, 1568); A.ding(A.W(5, "small") + 0.12, 0.08, 2093)
+    A.ding(A.W(6, "land"), 0.1, 1318.5)
     for k in range(6):
-        A.pop(A.W(8, "But") + 0.16 * k, 0.15)
-    A.boing(A.W(8, "Guess"), 0.18, 300)
-    A.thump(A.S(9) + 0.25, 0.7, 60); A.scratch(A.S(9) + 0.3, 0.3, 0.5)
+        A.pop(A.W(6, "But") + 0.16 * k, 0.15)
+    A.boing(A.W(6, "Guess"), 0.18, 300)
+    A.thump(A.S(7) + 0.25, 0.7, 60); A.scratch(A.S(7) + 0.3, 0.3, 0.5)
     for k, m in enumerate((72, 76, 79, 84)):
-        A.ding(A.W(9, "made") - 0.2 + k * 0.08, 0.07, A.note(m))
-    A.pop(A.W(9, "Could"), 0.35)
+        A.ding(A.W(7, "made") - 0.2 + k * 0.08, 0.07, A.note(m))
+    A.pop(A.W(7, "Could"), 0.35)
     for k, m in enumerate((79, 84, 88)):
-        A.ding(A.W(9, "Could") + 0.1 + k * 0.1, 0.07, A.note(m))
+        A.ding(A.W(7, "Could") + 0.1 + k * 0.1, 0.07, A.note(m))

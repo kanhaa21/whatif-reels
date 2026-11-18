@@ -14,7 +14,7 @@ Read this file fully before starting a run.
 
 The owner preferred the first "everyone shrank" reel (`reels/everyone-shrank`) over a stricter, faster rework. Match it:
 
-- **Length:** 45 to 55 seconds.
+- **Length:** 30 to 40 seconds (changed from 45 to 55 on 18 Nov 2026 for watch time; see Engagement rules).
 - **Hook:** the first 10 seconds must be the most dramatic part, with no slow intro. Open on the event itself.
 - **Jokes:** at least 3 light jokes, some with an Indian flavour. Examples that landed: "honk like you're stuck in Delhi traffic", "spin like a Bollywood hero, minus the slow-mo", "a shoebox is a 1BHK in Mumbai. Still overpriced."
 - **Characters:** big, expressive characters on screen (faces readable), not tiny figures lost in the frame.
@@ -24,14 +24,27 @@ The owner preferred the first "everyone shrank" reel (`reels/everyone-shrank`) o
 - **Look:** bright blue, pink, yellow and white on a dark blue-purple background. Big word-by-word captions (built in). Title chip at the top: "WHAT IF ...?" in capitals.
 - **Ending:** a question that invites comments, or "Follow for more what-ifs!".
 
+## Engagement rules (added 18 Nov 2026)
+
+The first four reels each got only a few views. Instagram's head says the top ranking signals are **watch time, likes per reach and sends per reach**, and sends count most for reaching people who don't follow you. Every reel must be built for those:
+
+- **Watch time.** 30 to 40 seconds and at most 8 voice lines. No scene longer than about 5 seconds. Cut any line that only sets the mood.
+- **First frame.** Set `"hook": {"text": ["LINE 1", "LINE 2"], "until": 2.3}` in script.json. It is two short, alarming lines of 4 words or fewer each, shown huge from frame 0, because muted viewers decide in about a second. The first spoken word starts within 0.3 seconds. Never open on a slow scene-setter ("Tonight...").
+- **Open a loop.** In the first 5 seconds, promise the payoff ("the last step is the one that saves you"). Deliver it at the end.
+- **Sends.** Set `"end_cta": "SEND THIS TO <a specific person>"` (for example "SOMEONE WHO DRIVES", "YOUR TRAVEL BUDDY"). The last voice line also asks viewers to send it or tag someone specific.
+- **Comments.** End on a question with a one-word answer (YES/NO, a number). Put the same question in Instagram's `firstCommentText`.
+- **Spacing.** At most one reel per platform in any 5-hour window, ideally one a day per platform.
+- **Learn from the numbers.** Each run starts by pulling the previous reels' stats with `getAnalyticsDataByMetrics`: Instagram reels IGRE23 views, IGRE24 average watch time, IGRE27 retention, IGRE30 skip rate, IGRE21 shares, IGRE12 saves; YouTube YTVP06 views and YTVP08 average view duration; Facebook FBRE10 views. Add 2 or 3 bullet points of what worked to `insights.md`, and apply them to the new reel. Metricool's stats can lag by about a day.
+
 ## Daily run procedure
 
+0. **Review stats.** Follow "Learn from the numbers" in Engagement rules.
 1. **Pick the topic.** Open the ideas Sheet, https://claude.ai/artifact/VJmEgxpFpMsakpwdZubwN7, with the Claude Docs tools (Sheets topics). Take the highest-ranked idea in the "Top 15" tab whose Status in "All 50 Ideas" is blank. When the Top 15 are used up, take the highest viral score left. Set its Status to "In progress".
 2. **Research.** Verify every fact the reel will state, and write the sources to `reels/<slug>/sources.md`.
 3. **Write `reels/<slug>/script.json`.** Copy the shape of `reels/everyone-shrank/script.json`: lines (one per scene, phrases with style, pause, speed 0.9, caption), `title_chip`, `post.instagram`, `post.facebook`, `post.youtube_title`, `post.youtube_description` and `post.youtube_tags`, following the caption rules in Metricool details.
 4. **Write `reels/<slug>/scenes.py`.** Use `reelkit.lib`, and reuse props and characters before drawing new ones. Sync visual beats to word times with `wt(scene, "word")`. Add `sfx(A)` for sound effects.
 5. **Preview.** Run `python3 -m reelkit.make reels/<slug> --stills ...` with about 10 times spread over the reel. Look at `build/contact_sheet.png` and fix overlaps, off-screen elements, unreadable text and wrong scale. Repeat until clean.
-6. **Build.** Run `python3 -m reelkit.make reels/<slug>`. Check that the length is 45 to 55 seconds. If it is longer, cut a line instead of speeding up the voice.
+6. **Build.** Run `python3 -m reelkit.make reels/<slug>`. Check that the length is 30 to 40 seconds. If it is longer, cut whole lines with `python3 -m reelkit.drop_lines reels/<slug> <line numbers>` (then fix the references it reports and rebuild with `--revoice`) instead of speeding up the voice.
 7. **Commit.** Commit `reels/<slug>/` (script, scenes, sources and the final `out/<slug>.mp4`) to `main`.
 8. **Queue for approval.** Send the video to the owner. Put it into Metricool as three drafts (Instagram Reel, Facebook Reel, YouTube Short) at the next day's best times, with network-specific captions (see Metricool details). Set the Sheet Status to "Awaiting approval".
 9. **After approval.** Schedule or publish it in Metricool and set the Sheet Status to "Posted" with the date. If the owner asks for changes, make them, rebuild and send the video again.

@@ -41,29 +41,6 @@
   ],
   [
    [
-    "Outside?",
-    "question",
-    0.1,
-    0.9,
-    null
-   ],
-   [
-    "Black ocean for miles.",
-    "dramatic",
-    0.12,
-    0.9,
-    null
-   ],
-   [
-    "And a storm is rolling in.",
-    "low",
-    0,
-    0.85,
-    null
-   ]
-  ],
-  [
-   [
     "Alarms scream.",
     "dramatic",
     0.15,
@@ -89,22 +66,6 @@
     "low",
     0,
     0.85,
-    null
-   ]
-  ],
-  [
-   [
-    "Autopilot on?",
-    "question",
-    0.1,
-    0.9,
-    null
-   ],
-   [
-    "It holds your height and direction by itself.",
-    "normal",
-    0,
-    0.9,
     null
    ]
   ],
@@ -256,5 +217,13 @@
    "what if",
    "kaamkagyann"
   ]
- }
+ },
+ "hook": {
+  "text": [
+   "35,000 FEET.",
+   "NOBODY IS FLYING."
+  ],
+  "until": 2.3
+ },
+ "end_cta": "SEND THIS TO YOUR TRAVEL BUDDY"
 }

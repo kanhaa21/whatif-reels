@@ -57,29 +57,6 @@
   ],
   [
    [
-    "First instinct?",
-    "question",
-    0.12,
-    0.9,
-    null
-   ],
-   [
-    "Grab the phone.",
-    "normal",
-    0.2,
-    0.9,
-    null
-   ],
-   [
-    "Don't. Not even to call Mummy.",
-    "funny",
-    0,
-    0.9,
-    null
-   ]
-  ],
-  [
-   [
     "Or wait for the car to fill up,",
     "question",
     0.05,
@@ -242,5 +219,13 @@
    "what if",
    "kaamkagyann"
   ]
- }
+ },
+ "hook": {
+  "text": [
+   "YOUR CAR IS SINKING.",
+   "YOU HAVE 1 MINUTE."
+  ],
+  "until": 2.3
+ },
+ "end_cta": "SEND THIS TO SOMEONE WHO DRIVES"
 }

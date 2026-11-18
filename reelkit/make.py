@@ -77,6 +77,42 @@ class Frame:
         f = getattr(self.mod, "cut_times", None)
         return f(i) if f else [0]
 
+    def draw_hook(self, ctx, tg):
+        """script.json "hook": {"text": ["LINE 1", "LINE 2"], "until": 2.2}: huge text on the very first frame."""
+        h = self.script.get("hook")
+        if not h or tg >= h.get("until", 2.2): return
+        until = h.get("until", 2.2)
+        a = 1.0 if tg < until - 0.3 else (until - tg) / 0.3
+        lines = h["text"] if isinstance(h["text"], list) else [h["text"]]
+        size = h.get("size", 118)
+        pulse = 1 + 0.03 * math.sin(tg * 9)
+        y0 = h.get("y", 1120) - (len(lines) - 1) * size * 0.55
+        for k, ln in enumerate(lines):
+            w = L.text_w(ctx, ln, L.DISPLAY, size)
+            sc = min(1.0, 980 / (w + 60)) * pulse
+            ctx.save(); ctx.translate(540, y0 + k * size * 1.1); ctx.scale(sc, sc)
+            L.rrect(ctx, -w / 2 - 28, -size * 0.58, w + 56, size * 1.16, 18)
+            ctx.set_source_rgba(*(L.RED if k == 0 else (0.05, 0.05, 0.12)), 0.92 * a); ctx.fill()
+            L.text(ctx, ln, 0, 0, size, L.YEL if k else L.WHT, alpha=a, shadow=False)
+            ctx.restore()
+
+    def draw_end_cta(self, ctx, tg):
+        """script.json "end_cta": "SEND THIS TO ...": a share prompt over the last 3 seconds of voice."""
+        txt = self.script.get("end_cta")
+        if not txt: return
+        t0 = self.tl["lines"][-1]["end"] - 2.6
+        if tg < t0: return
+        s = L.pop(tg - t0, 0.25) * (1 + 0.04 * math.sin((tg - t0) * 8))
+        ctx.save(); ctx.translate(540, 1235); ctx.scale(s, s)
+        w = L.text_w(ctx, txt, L.DISPLAY, 50)
+        L.rrect(ctx, -w / 2 - 70, -40, w + 110, 80, 40); ctx.set_source_rgb(*L.GRN); ctx.fill()
+        # paper-plane icon
+        ctx.save(); ctx.translate(-w / 2 - 30, 0); ctx.scale(0.22, 0.22)
+        ctx.move_to(-120, 10); ctx.line_to(130, -90); ctx.line_to(40, 110); ctx.line_to(10, 40); ctx.close_path()
+        ctx.set_source_rgb(0, 0, 0); ctx.fill(); ctx.restore()
+        L.text(ctx, txt, 20, 0, 50, (0, 0, 0), shadow=False)
+        ctx.restore()
+
     def draw(self, ctx, tg):
         tl = self.tl; i = scene_of(tl, tg); s = tl["scenes"][i]
         loc = tg - s["t0"]; T = s["t1"] - s["t0"]
@@ -87,6 +123,8 @@ class Frame:
         ctx.save(); ctx.translate(540, 880); ctx.scale(pz, pz); ctx.translate(-540, -880)
         self.mod.SCENES[i](ctx, tg, loc, T)
         ctx.restore()
+        self.draw_hook(ctx, tg)
+        self.draw_end_cta(ctx, tg)
         draw_title(ctx, self.script.get("title_chip", "WHAT IF?"))
         draw_captions(ctx, tg, tl["chunks"])
         if i > 0 and bt < 0.08 and i not in getattr(self.mod, "NO_FLASH", ()):

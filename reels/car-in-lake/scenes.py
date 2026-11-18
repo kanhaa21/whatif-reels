@@ -6,7 +6,7 @@ import cairo
 from reelkit.lib import *  # noqa: F401,F403
 
 BG = bg_glow
-MUSIC = {"beat_from_scene": 4, "bpm": 112}   # tense drone for the hook and the myths, beat from "four letters"
+MUSIC = {"beat_from_scene": 3, "bpm": 112}   # tense drone for the hook and the myths, beat from "four letters"
 
 WATER = (0.06, 0.32, 0.62)
 DEEP = (0.03, 0.12, 0.32)
@@ -309,7 +309,7 @@ def s2(ctx, tg, tl, T):
 
 
 def s3(ctx, tg, tl, T):
-    tth = wt(3, "then"); tmy = wt(3, "Myth"); tpr = wt(3, "pressure")
+    tth = wt(2, "then"); tmy = wt(2, "Myth"); tpr = wt(2, "pressure")
     night(ctx, tg, moon=False)
     push = tl > tth - 0.1
     fill = ease_io(tl / (tth + 0.3))
@@ -342,7 +342,7 @@ def s3(ctx, tg, tl, T):
 
 
 def s4(ctx, tg, tl, T):
-    tf = wt(4, "four")
+    tf = wt(3, "four")
     ts = [wi(4, k) for k in range(4, 8)]
     if tl < ts[0] - 0.1:
         s = pop(tl - tf + 0.1, 0.25)
@@ -366,7 +366,7 @@ def s4(ctx, tg, tl, T):
 
 
 def s5(ctx, tg, tl, T):
-    toff = wt(5, "off"); tfa = wt(5, "Faster"); tsh = wt(5, "shaadi")
+    toff = wt(4, "off"); tfa = wt(4, "Faster"); tsh = wt(4, "shaadi")
     tiles(ctx, 0, tl)
     if tl < tfa - 0.1:
         rrect(ctx, 230, 660, 620, 800, 110); ctx.set_source_rgb(0.22, 0.14, 0.38); ctx.fill()
@@ -398,7 +398,7 @@ def s5(ctx, tg, tl, T):
 
 
 def s6(ctx, tg, tl, T):
-    tpw = wt(6, "Power"); tst = wt(6, "Stuck"); tco = wt(6, "corner")
+    tpw = wt(5, "Power"); tst = wt(5, "Stuck"); tco = wt(5, "corner")
     tiles(ctx, 1, tl)
     if tl < tst - 0.1:
         win = ease_io((tl - 0.4) / 1.2)
@@ -452,7 +452,7 @@ def s6(ctx, tg, tl, T):
 
 
 def s7(ctx, tg, tl, T):
-    tch = wt(7, "Children"); tol = wt(7, "Oldest")
+    tch = wt(6, "Children"); tol = wt(6, "Oldest")
     night(ctx, tg, moon=False)
     tiles(ctx, 2, tl)
     out = [(135, SHIRTS[3], 20, tch + 0.1), (110, SHIRTS[4], -70, tol + 0.1)]   # oldest first
@@ -478,7 +478,7 @@ def s7(ctx, tg, tl, T):
 
 
 def s8(ctx, tg, tl, T):
-    tsw = wt(8, "Swim"); tth = wt(8, "Then"); t112 = wt(8, "112")
+    tsw = wt(7, "Swim"); tth = wt(7, "Then"); t112 = wt(7, "112")
     night(ctx, tg, moon=True)
     tiles(ctx, 3, tl)
     wl = 760
@@ -503,7 +503,7 @@ def s8(ctx, tg, tl, T):
 
 
 def s9(ctx, tg, tl, T):
-    tn = wt(9, "Not"); tp = wt(9, "pickle"); twh = wt(9, "Who")
+    tn = wt(8, "Not"); tp = wt(8, "pickle"); twh = wt(8, "Who")
     end = tl > twh - 0.05
     if tl < tn - 0.1:
         # tool on a keychain / visor
@@ -548,7 +548,7 @@ def s9(ctx, tg, tl, T):
         tool(ctx, 540, 1150, 0.7, 0)
 
 
-SCENES = [s0, s1, s2, s3, s4, s5, s6, s7, s8, s9]
+SCENES = [s0, s1, s3, s4, s5, s6, s7, s8, s9]
 
 
 def _splash(A, t, g=0.5, d=0.9):
@@ -559,7 +559,7 @@ def _splash(A, t, g=0.5, d=0.9):
 
 
 def sfx(A):
-    for k in range(int(A.S(4) / 0.8)):
+    for k in range(int(A.S(3) / 0.8)):
         A.thump(0.6 + k * 0.8, 0.45, 50)                   # heartbeat under the hook and the myths
     A.whoosh(0.5, 0.25, 0.45)
     _splash(A, 0.5, 0.6)
@@ -569,26 +569,24 @@ def sfx(A):
         A.ding(A.S(1) + 0.2 + k * 1.0, 0.04, 2000, 0.15)   # clock tick
     A.ding(A.W(1, "window"), 0.1, 1318.5)
     A.boing(A.W(1, "Literally"), 0.12, 500, 0.35)
-    A.pop(A.W(2, "Grab"), 0.3)
-    A.scratch(A.W(2, "Don't") - 0.05, 0.3)
-    A.thump(A.W(3, "then") + 0.1, 0.4, 90); A.thump(A.W(3, "then") + 0.4, 0.4, 90)
-    A.thump(A.W(3, "Myth") - 0.02, 0.6, 60)
+    A.thump(A.W(2, "then") + 0.1, 0.4, 90); A.thump(A.W(2, "then") + 0.4, 0.4, 90)
+    A.thump(A.W(2, "Myth") - 0.02, 0.6, 60)
     for k in range(4):
         t = A.tl["lines"][4]["words"][4 + k]["s"]
         A.pop(t, 0.3); A.ding(t + 0.02, 0.07, A.note(72 + [0, 4, 7, 12][k]))
-    A.pop(A.W(5, "off"), 0.4)
-    A.boing(A.W(5, "shaadi"), 0.18, 350)
-    A.whoosh(A.W(6, "Window") + 0.5, 0.15, 0.6)
-    t_hit = A.W(6, "corner")
+    A.pop(A.W(4, "off"), 0.4)
+    A.boing(A.W(4, "shaadi"), 0.18, 350)
+    A.whoosh(A.W(5, "Window") + 0.5, 0.15, 0.6)
+    t_hit = A.W(5, "corner")
     import numpy as np
     A.add(A.sfx_buf, A.hp(A.noise(0.5), 2500) * np.exp(-np.arange(int(0.5 * 44100)) / 44100 * 9), t_hit, 0.5)
     for k in range(6):
         A.ding(t_hit + 0.03 + k * 0.05, 0.03, 2500 + 400 * k, 0.4)
-    A.pop(A.W(7, "Oldest") - 0.4, 0.25); A.pop(A.W(7, "Oldest") + 0.35, 0.25)
-    _splash(A, A.W(8, "Swim") + 0.6, 0.35, 0.6)
-    A.ding(A.W(8, "112"), 0.08, 1568); A.ding(A.W(8, "112") + 0.12, 0.08, 2093)
-    A.scratch(A.W(9, "Not") - 0.1, 0.3)
-    A.thump(A.W(9, "Not") + 0.1, 0.5, 70)
-    A.pop(A.W(9, "Who"), 0.35)
+    A.pop(A.W(6, "Oldest") - 0.4, 0.25); A.pop(A.W(6, "Oldest") + 0.35, 0.25)
+    _splash(A, A.W(7, "Swim") + 0.6, 0.35, 0.6)
+    A.ding(A.W(7, "112"), 0.08, 1568); A.ding(A.W(7, "112") + 0.12, 0.08, 2093)
+    A.scratch(A.W(8, "Not") - 0.1, 0.3)
+    A.thump(A.W(8, "Not") + 0.1, 0.5, 70)
+    A.pop(A.W(8, "Who"), 0.35)
     for k, m in enumerate((79, 84, 88)):
-        A.ding(A.W(9, "Who") + 0.1 + k * 0.1, 0.07, A.note(m))
+        A.ding(A.W(8, "Who") + 0.1 + k * 0.1, 0.07, A.note(m))
