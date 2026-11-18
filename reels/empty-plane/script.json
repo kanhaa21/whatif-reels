@@ -1,0 +1,246 @@
+{
+ "title": "What If Your Plane Was Empty?",
+ "title_chip": "WHAT IF THE PLANE WAS EMPTY?",
+ "voice": "am_michael",
+ "timing": {
+  "lead": 0.2,
+  "gap": 0.16,
+  "tail": 1.2,
+  "precut": 0.1
+ },
+ "lines": [
+  [
+   [
+    "You wake up at thirty-five thousand feet.",
+    "dramatic",
+    0.2,
+    0.9,
+    "You wake up at 35,000 feet."
+   ],
+   [
+    "Every seat is empty.",
+    "dramatic",
+    0.25,
+    0.9,
+    null
+   ],
+   [
+    "Even the cockpit.",
+    "low",
+    0,
+    0.85,
+    null
+   ]
+  ],
+  [
+   [
+    "Good news?",
+    "question",
+    0.1,
+    0.9,
+    null
+   ],
+   [
+    "Free upgrade to business class!",
+    "excited",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "Bad news?",
+    "question",
+    0.1,
+    0.9,
+    null
+   ],
+   [
+    "You're also the pilot now.",
+    "deadpan",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Autopilot on?",
+    "question",
+    0.1,
+    0.9,
+    null
+   ],
+   [
+    "It holds your height and direction by itself.",
+    "normal",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Your lifeline?",
+    "question",
+    0.1,
+    0.9,
+    null
+   ],
+   [
+    "The radio.",
+    "dramatic",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "Headset on. Press the talk button.",
+    "normal",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Say Mayday, three times.",
+    "excited",
+    0.2,
+    0.9,
+    null
+   ],
+   [
+    "Not,",
+    "deadpan",
+    0.05,
+    0.9,
+    null
+   ],
+   [
+    "Bhaiya, side mein roko!",
+    "funny",
+    0,
+    0.9,
+    "\"Bhaiya, side mein roko!\""
+   ]
+  ],
+  [
+   [
+    "No answer?",
+    "question",
+    0.1,
+    0.9,
+    null
+   ],
+   [
+    "Switch to one two one point five.",
+    "normal",
+    0.1,
+    0.9,
+    "Switch to 121.5."
+   ],
+   [
+    "The emergency channel.",
+    "dramatic",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Air traffic control takes over.",
+    "build",
+    0.1,
+    0.9,
+    null
+   ],
+   [
+    "They talk you through it, step by step.",
+    "warm",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "A passenger with zero flying experience",
+    "build",
+    0.03,
+    0.9,
+    null
+   ],
+   [
+    "once landed a small plane this way.",
+    "dramatic",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "And many airliners can land themselves.",
+    "excited",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "But someone has to set it up.",
+    "normal",
+    0.2,
+    0.9,
+    null
+   ],
+   [
+    "Guess who.",
+    "deadpan",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Touchdown!",
+    "excited",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "And for once, nobody stands up before the plane stops.",
+    "funny",
+    0.15,
+    0.9,
+    null
+   ],
+   [
+    "Could you do it? Comment yes or no!",
+    "question",
+    0,
+    0.92,
+    "Could you do it? Comment YES or NO!"
+   ]
+  ]
+ ],
+ "post": {
+  "instagram": "You wake up at 35,000 feet. Every seat is empty, even the cockpit ✈️\n\nGood news: free upgrade to business class. Bad news: you're the pilot now. Say Mayday three times (not \"Bhaiya, side mein roko!\"), switch to 121.5, the emergency channel, and air traffic control can talk you through it, step by step.\n\nCould you land it? Comment YES or NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #Aviation #AviationFacts #Pilot #FlightSafety",
+  "facebook": "You wake up at 35,000 feet. Every seat is empty, even the cockpit ✈️\n\nCould you land it? Comment YES or NO.\n\nShare this with the friend who always grabs the window seat.\n\n#WhatIf #Aviation #AviationFacts",
+  "facebook_title": "Empty plane at 35,000 ft",
+  "youtube_title": "Alone on a Plane at 35,000 ft With No Pilot? ✈️ #shorts",
+  "youtube_description": "Airliners often cruise around 35,000 feet, and if the autopilot is on it holds height and direction by itself. Say Mayday three times on the radio, or switch to 121.5 MHz, the international aeronautical emergency frequency that air traffic control listens to. In 2022 a passenger with no flying experience landed a small plane after controllers talked him through it, and many airliners can land themselves with autoland, but only once someone sets it up.\n\nCould you land it? Comment YES or NO.\nSubscribe for a new what-if every day.\n\n#shorts #Aviation #AviationFacts",
+  "youtube_tags": [
+   "empty plane",
+   "no pilot on plane",
+   "passenger lands plane",
+   "mayday call",
+   "121.5 emergency frequency",
+   "autoland",
+   "what if",
+   "kaamkagyann"
+  ]
+ }
+}
