@@ -1,0 +1,54 @@
+{
+ "title": "What If You Became Invisible for a Day?",
+ "title_chip": "WHAT IF YOU WERE INVISIBLE?",
+ "voice": "am_michael",
+ "timing": {"lead": 0.2, "gap": 0.16, "tail": 1.2, "precut": 0.1},
+ "hook": {"text": ["YOU'RE INVISIBLE.", "3 THINGS GO WRONG."], "until": 2.3},
+ "end_cta": "SEND THIS TO YOUR SNEAKIEST FRIEND",
+ "lines": [
+  [
+   ["You wake up invisible.", "dramatic", 0, 0.9, null]
+  ],
+  [
+   ["Sounds fun?", "question", 0.1, 0.9, null],
+   ["Three things go wrong.", "build", 0.1, 0.9, null],
+   ["The last one ruins everything.", "low", 0, 0.9, null]
+  ],
+  [
+   ["One. Mosquitoes find you by your breath and smell.", "excited", 0.15, 0.9, null],
+   ["Invisible to your boss.", "normal", 0.03, 0.9, null],
+   ["Not to Delhi mosquitoes.", "funny", 0, 0.9, null]
+  ],
+  [
+   ["Two. Dogs smell at least ten thousand times better than you.", "excited", 0.12, 0.9, "Two. Dogs smell at least 10,000 times better than you."],
+   ["Every gali dog finds you.", "deadpan", 0, 0.9, null]
+  ],
+  [
+   ["Three.", "dramatic", 0.25, 0.85, null],
+   ["You open your eyes...", "low", 0.2, 0.9, null],
+   ["and see nothing.", "dramatic", 0, 0.85, null]
+  ],
+  [
+   ["Eyes see by catching light.", "normal", 0.1, 0.9, null],
+   ["Invisible eyes let it pass straight through.", "build", 0.12, 0.9, null],
+   ["You're blind.", "dramatic", 0, 0.85, null]
+  ],
+  [
+   ["Free entry to every movie.", "excited", 0.05, 0.9, null],
+   ["Can't watch a single one.", "deadpan", 0, 0.9, null]
+  ],
+  [
+   ["Still want it? Yes or no?", "question", 0.15, 0.9, null],
+   ["Send this to your sneakiest friend!", "funny", 0, 0.92, null]
+  ]
+ ],
+ "post": {
+  "instagram": "You wake up invisible. 3 things go wrong, and the last one ruins everything 👻\n\nMosquitoes and every gali dog still find you. Worse, you'd be blind: eyes see by catching light, and invisible eyes let it pass straight through. Free entry to every movie, can't watch a single one.\n\nWould you still try it for a day? Comment YES or NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #Invisible #ScienceFacts #Physics #Vision",
+  "instagram_first_comment": "Would you still be invisible for a day? Comment YES or NO 👻👇",
+  "facebook": "You wake up invisible. 3 things go wrong, and the last one ruins everything 👻\n\nWould you still try it for a day? Comment YES or NO.\n\nShare this with your sneakiest friend.\n\n#WhatIf #ScienceFacts #Physics",
+  "facebook_title": "Invisible for a day?",
+  "youtube_title": "Invisible for a Day? The Last Problem Ruins Everything 👻 #shorts",
+  "youtube_description": "If you turned invisible, mosquitoes would still find you by your breath and smell, and dogs, whose sense of smell is about 10,000 to 100,000 times sharper than ours, would sniff you out too. The biggest problem: you'd be blind, because eyes see by absorbing light in the retina, and a truly invisible eye lets light pass straight through.\n\nWould you still try it for a day? Comment YES or NO.\nSubscribe for a new what-if every day.\n\n#shorts #ScienceFacts #Physics",
+  "youtube_tags": ["invisible for a day", "what if you were invisible", "would an invisible person be blind", "invisibility science", "how eyes see", "what if", "science facts", "kaamkagyann"]
+ }
+}
