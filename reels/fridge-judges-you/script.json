@@ -1,0 +1,208 @@
+{
+ "title": "What If Your Fridge Judged Everything You Ate?",
+ "title_chip": "WHAT IF YOUR FRIDGE JUDGED YOU?",
+ "voice": "af_heart",
+ "style_note": "One-off Gen Z brainrot reel (owner request 19 Nov 2026): two female voices, narrator af_heart, fridge af_nicole in the soft style.",
+ "timing": {
+  "lead": 0.2,
+  "gap": 0.1,
+  "tail": 1.2,
+  "precut": 0.08
+ },
+ "hook": {
+  "text": [
+   "2 A.M. FRIDGE RUN.",
+   "IT SAID: \"AGAIN?\""
+  ],
+  "until": 2.3
+ },
+ "end_cta": "SEND THIS TO YOUR 2 A.M. SNACK BUDDY",
+ "lines": [
+  [
+   [
+    "I opened the fridge at two A.M.",
+    "dramatic",
+    0.25,
+    1.0,
+    "I opened the fridge at 2 a.m.",
+    "af_heart"
+   ],
+   [
+    "Again?",
+    "soft",
+    0,
+    0.88,
+    null,
+    "af_nicole"
+   ]
+  ],
+  [
+   [
+    "Bro. My fridge is judging me.",
+    "excited",
+    0.12,
+    1.0,
+    null,
+    "af_heart"
+   ],
+   [
+    "Third time tonight, bestie.",
+    "soft",
+    0,
+    0.88,
+    null,
+    "af_nicole"
+   ]
+  ],
+  [
+   [
+    "Cold pizza?",
+    "question",
+    0.12,
+    1.0,
+    null,
+    "af_heart"
+   ],
+   [
+    "It's giving... emotional damage.",
+    "soft",
+    0.15,
+    0.88,
+    null,
+    "af_nicole"
+   ],
+   [
+    "Ma'am, you're a fridge.",
+    "deadpan",
+    0,
+    1.0,
+    null,
+    "af_heart"
+   ]
+  ],
+  [
+   [
+    "Fine. Chocolate.",
+    "funny",
+    0.12,
+    1.0,
+    null,
+    "af_heart"
+   ],
+   [
+    "Wasn't this your healthy era?",
+    "soft",
+    0.12,
+    0.88,
+    null,
+    "af_nicole"
+   ],
+   [
+    "The audacity.",
+    "deadpan",
+    0,
+    1.0,
+    null,
+    "af_heart"
+   ]
+  ],
+  [
+   [
+    "Mom's leftover dal?",
+    "question",
+    0.1,
+    1.0,
+    null,
+    "af_heart"
+   ],
+   [
+    "Finally. Green flag.",
+    "soft",
+    0.1,
+    0.88,
+    null,
+    "af_nicole"
+   ],
+   [
+    "Closed the door so fast.",
+    "funny",
+    0,
+    1.0,
+    null,
+    "af_heart"
+   ]
+  ],
+  [
+   [
+    "I saw that.",
+    "soft",
+    0.15,
+    0.88,
+    null,
+    "af_nicole"
+   ],
+   [
+    "It has a light. It has receipts.",
+    "dramatic",
+    0,
+    1.0,
+    null,
+    "af_heart"
+   ]
+  ],
+  [
+   [
+    "Now I eat cereal in the dark, like a gremlin.",
+    "deadpan",
+    0.15,
+    1.0,
+    null,
+    "af_heart"
+   ],
+   [
+    "I can still hear you.",
+    "soft",
+    0,
+    0.88,
+    null,
+    "af_nicole"
+   ]
+  ],
+  [
+   [
+    "Would your fridge roast you? Yes or no?",
+    "question",
+    0.12,
+    1.0,
+    null,
+    "af_heart"
+   ],
+   [
+    "Send this to your two A.M. snack buddy!",
+    "excited",
+    0,
+    1.0,
+    "Send this to your 2 a.m. snack buddy!",
+    "af_heart"
+   ]
+  ]
+ ],
+ "post": {
+  "instagram": "I opened the fridge at 2 a.m. It said: \"Again?\" 💀\n\nCold pizza = emotional damage. Chocolate = \"wasn't this your healthy era?\" Mom's dal = green flag... so I closed the door so fast.\n\nWould your fridge roast you? Comment YES or NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #GenZ #MidnightSnack #RelatableMemes #FoodHumor",
+  "instagram_first_comment": "Would your fridge roast you? Comment YES or NO 💀👇",
+  "facebook": "I opened the fridge at 2 a.m. It said: \"Again?\" 💀\n\nWould your fridge roast you? Comment YES or NO.\n\nShare this with your 2 a.m. snack buddy.\n\n#WhatIf #MidnightSnack #Relatable",
+  "facebook_title": "My fridge judged me",
+  "youtube_title": "What If Your Fridge Judged Your 2 A.M. Snacks? 💀 #shorts",
+  "youtube_description": "A what-if comedy short: you open the fridge at 2 a.m. and it starts judging every snack. Cold pizza, chocolate, mom's leftover dal... the fridge has opinions, and it has receipts.\n\nWould your fridge roast you? Comment YES or NO.\nSubscribe for a new what-if every day.\n\n#shorts #MidnightSnack #Relatable",
+  "youtube_tags": [
+   "fridge judging me",
+   "2am snack",
+   "midnight snack",
+   "talking fridge",
+   "gen z humor",
+   "what if",
+   "relatable comedy",
+   "kaamkagyann"
+  ]
+ }
+}

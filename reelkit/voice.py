@@ -1,7 +1,7 @@
 """Kokoro TTS + Praat (PSOLA) intonation shaping.
 
 script.json "lines": list of lines; each line is a list of phrases
-[spoken_text, style, pause_after_s, speed, caption_text_or_null].
+[spoken_text, style, pause_after_s, speed, caption_text_or_null, voice_or_omitted].
 One line = one scene. Styles below change pitch, pitch range, end-rise and loudness."""
 import json, os
 import numpy as np, soundfile as sf
@@ -21,6 +21,7 @@ STYLES = {
     "funny":    (2.2, 1.9, 0.0, 1.0),
     "deadpan":  (-1.5, 0.55, -1.0, 0.0),
     "warm":     (0.5, 1.5, 0.0, 0.0),
+    "soft":     (1.0, 1.1, 0.8, -3.0),   # light, gentle, quieter (e.g. a calm second character)
     "chipmunk": None,
 }
 
@@ -56,8 +57,10 @@ def generate(lines, outdir, voice=VOICE):
     meta = []
     for i, segs in enumerate(lines):
         parts, smeta, off = [], [], 0.0
-        for text, style, pause, sp, cap in segs:
-            s, sr = k.create(text, voice=voice, speed=sp, lang="en-us")
+        for seg in segs:
+            text, style, pause, sp, cap = seg[:5]
+            v = seg[5] if len(seg) > 5 and seg[5] else voice     # optional 6th field: per-phrase voice
+            s, sr = k.create(text, voice=v, speed=sp, lang="en-us")
             s = shape(_trim(s, sr), sr, style)
             d = len(s) / sr
             smeta.append({"text": cap or text, "off": off, "dur": d, "style": style})
