@@ -1,43 +1,166 @@
 {
  "title": "What If Your Phone Caught Fire While Charging?",
- "title_chip": "WHAT IF YOUR PHONE CAUGHT FIRE?",
- "voice": "af_heart",
- "timing": {"lead": 0.15, "gap": 0.12, "tail": 1.0, "precut": 0.1},
- "hook": {"text": ["2 A.M.", "YOUR PHONE IS SMOKING"], "until": 2.0},
- "end_cta": "SEND THIS TO SOMEONE WHO CHARGES IN BED",
+ "style": "card",
+ "lang": "hi",
+ "voice": "hf_alpha",
+ "timing": {
+  "lead": 0.15,
+  "gap": 0.22,
+  "tail": 1.0,
+  "precut": 0.1
+ },
+ "end_cta": "BHEJO USSE JO BED PE CHARGE KARTA HAI",
  "lines": [
   [
-   ["2 a.m. Your phone starts smoking beside your pillow.", "dramatic", 0, 0.95, null]
+   [
+    "रात के दो बजे.",
+    "dramatic",
+    0.2,
+    0.95,
+    "Raat ke 2 baje."
+   ],
+   [
+    "तकिये के पास, फ़ोन से धुआँ!",
+    "low",
+    0,
+    0.95,
+    "Takiye ke paas, phone se dhuaan!"
+   ]
   ],
   [
-   ["Hiss.", "low", 0.1, 0.95, null],
-   ["Pop.", "low", 0.1, 0.95, null],
-   ["The battery is swelling.", "build", 0.05, 0.95, null],
-   ["Under a pillow, its heat has nowhere to go.", "normal", 0, 0.95, null]
+   [
+    "हिस्स... पॉप!",
+    "dramatic",
+    0.2,
+    0.95,
+    "Hisss... POP!"
+   ],
+   [
+    "बैटरी फूल रही है.",
+    "build",
+    0.2,
+    0.95,
+    "Battery phool rahi hai."
+   ],
+   [
+    "तकिया गर्मी रोक लेता है.",
+    "normal",
+    0,
+    0.95,
+    "Takiya garmi rok leta hai."
+   ]
   ],
   [
-   ["Now it makes heat faster than it can lose it.", "build", 0.05, 0.95, null],
-   ["Thermal runaway.", "dramatic", 0.1, 0.9, null],
-   ["It can burst into flames without warning.", "low", 0, 0.95, null]
+   [
+    "गर्मी बढ़ती जाती है: थर्मल रनअवे.",
+    "build",
+    0.2,
+    0.95,
+    "Garmi badhti jaati hai: thermal runaway."
+   ],
+   [
+    "बिना वॉर्निंग, आग लग सकती है.",
+    "dramatic",
+    0,
+    0.95,
+    "Bina warning, aag lag sakti hai."
+   ]
   ],
   [
-   ["Your first instinct? Grab it.", "question", 0.1, 0.95, null],
-   ["Don't.", "dramatic", 0.1, 0.9, null],
-   ["That smoke is toxic. Your selfies are not worth it.", "deadpan", 0, 0.95, null]
+   [
+    "फ़ोन उठाओगे?",
+    "question",
+    0.2,
+    0.95,
+    "Phone uthaoge?"
+   ],
+   [
+    "नहीं!",
+    "dramatic",
+    0.2,
+    0.95,
+    "NAHI!"
+   ],
+   [
+    "धुआँ ज़हरीला है. सेल्फ़ीज़ बाद में.",
+    "deadpan",
+    0,
+    0.95,
+    "Dhuaan zehreela hai. Selfies baad mein."
+   ]
   ],
   [
-   ["Get out. Close the door behind you.", "excited", 0.08, 0.95, null],
-   ["Call one one two from outside.", "build", 0, 0.95, "Call 112 from outside."]
+   [
+    "सही काम: बाहर निकलो.",
+    "excited",
+    0.18,
+    0.95,
+    "Sahi kaam: bahar niklo."
+   ],
+   [
+    "दरवाज़ा बंद करो.",
+    "build",
+    0.18,
+    0.95,
+    "Darwaza band karo."
+   ],
+   [
+    "बाहर से, वन वन टू पे कॉल करो.",
+    "warm",
+    0,
+    0.95,
+    "Bahar se, 112 pe call karo."
+   ]
   ],
   [
-   ["Tomorrow: charge on a hard table, not your bed.", "warm", 0.06, 0.95, null],
-   ["Original charger. And never while you sleep.", "normal", 0.06, 0.95, null],
-   ["Mummy was right. Again.", "funny", 0, 0.95, null]
+   [
+    "कल से: बेड नहीं, टेबल पे चार्ज करो.",
+    "warm",
+    0.2,
+    0.95,
+    "Kal se: bed nahi, table pe charge karo."
+   ],
+   [
+    "ओरिजिनल चार्जर. सोते वक़्त नहीं.",
+    "normal",
+    0,
+    0.95,
+    "Original charger. Sote waqt nahi."
+   ]
   ],
   [
-   ["Where's your phone charging right now? Bed or table?", "question", 0.1, 0.95, null],
-   ["Send this to someone who charges in bed!", "funny", 0, 0.97, null]
+   [
+    "आपका फ़ोन अभी कहाँ चार्ज हो रहा है?",
+    "question",
+    0.2,
+    0.95,
+    "Aapka phone abhi kahan charge ho raha hai?"
+   ],
+   [
+    "बेड या टेबल?",
+    "excited",
+    0,
+    0.95,
+    "BED ya TABLE?"
+   ]
   ]
  ],
- "post": {}
+ "post": {
+  "instagram": "Raat ke 2 baje, takiye ke paas phone se dhuaan 😱\n\nTakiya garmi rok leta hai, battery phoolti hai, aur bina warning aag lag sakti hai. Phone mat uthao, dhuaan zehreela hai (selfies baad mein). Bahar niklo, darwaza band karo, bahar se 112 call karo.\n\nAapka phone abhi kahan charge ho raha hai? Comment karo BED ya TABLE.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #PhoneSafety #BatterySafety #FireSafety #SafetyTips",
+  "instagram_first_comment": "Aapka phone abhi kahan charge ho raha hai? BED ya TABLE? 🔥👇",
+  "facebook": "Raat ke 2 baje, takiye ke paas phone se dhuaan 😱\n\nAapka phone abhi kahan charge ho raha hai? Comment karo BED ya TABLE.\n\nShare karo us dost ke saath jo bed pe charge karta hai.\n\n#WhatIf #FireSafety #PhoneSafety",
+  "facebook_title": "Phone se dhuaan, raat ke 2 baje?",
+  "youtube_title": "Phone Se Dhuaan, Takiye Ke Paas? Ye Galti Mat Karna 😱 #shorts",
+  "youtube_description": "A phone charging under a pillow can't get rid of its heat, and a damaged lithium battery can go into thermal runaway and catch fire without warning. If a device is smoking, don't touch it: get out, close the door and call 112 from outside. Charge on a hard surface with the original charger, and not while you sleep.\n\nAapka phone abhi kahan charge ho raha hai? Comment karo BED ya TABLE.\nSubscribe for a new what-if every day.\n\n#shorts #FireSafety #PhoneSafety",
+  "youtube_tags": [
+   "phone caught fire while charging",
+   "phone smoking while charging",
+   "charging phone under pillow",
+   "lithium battery fire",
+   "thermal runaway",
+   "phone battery swelling",
+   "fire safety",
+   "kaamkagyann"
+  ]
+ }
 }

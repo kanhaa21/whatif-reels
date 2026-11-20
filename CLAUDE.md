@@ -10,7 +10,15 @@ Read this file fully before starting a run.
 - **Mainstream-safe.** No gore, no real people or celebrities, no current news, no copyrighted characters or brands. Danger stays suspenseful, never graphic.
 - **Correct scale.** When the topic changes sizes, draw every shot to true scale against real-size props (`with World(ctx, k)` in centimetres). Never show a shrunken person at full size.
 
-## Style the owner likes
+## Card style (owner, 21 Nov 2026): the current house style
+
+The owner did not like the cartoon look of the 21 Nov lift reel and asked for the style of two reference reels they sent (Hinglish tech explainers). `reels/lift-cable-snaps` (v2) is the template; copy it. This overrides the Look, Voice, Characters and Jokes points in the next section:
+
+- Set `"style": "card"` in script.json and draw with `reelkit/cards.py`. Near-black screen with a soft colour glow, no title chip. Each beat has a small grey kicker line over a bold white headline with one accent word (`headline`). Centre content is clean neon-bordered UI cards (`card`, `numcard` "01 02 03" step cards, `pill` tags, slammed `stamp`), simple icons and diagrams, not cartoon people. Small word-by-word captions at y=1330 are built in.
+- Hinglish. Voice: Kokoro `hf_alpha` (female) with `"lang": "hi"`. Write the spoken text in Devanagari (English words transliterated) and put the Roman Hinglish caption in each phrase's 5th field. Speed about 0.95, pauses of about 0.2 to 0.3 s between phrases and `"gap"` about 0.22, so every word is clear. Mix high styles (question, excited, build) with low ones (low, dramatic, deadpan) for clear rise and fall.
+- Keep it simple: one idea per beat, about 35 seconds, a new card or tag every 1 to 2 seconds. One light joke is enough.
+
+## Style the owner likes (before 21 Nov 2026)
 
 The owner's favourite is the brake-failure reel (`reels/brake-failure`, "brakes fail at 100 km/h"): engaging, clear and explanatory, with thriller and suspense, one step at a time. They also liked the first "everyone shrank" reel (`reels/everyone-shrank`). Make every reel like those. One-off experiments (`reels/shadow-part1`, `reels/wrong-doors`) are not the house style; the owner asked to drop them.
 
@@ -42,7 +50,7 @@ The first four reels each got only a few views. Instagram's head says the top ra
 1. **Pick the topic.** Open the ideas Sheet, https://claude.ai/artifact/VJmEgxpFpMsakpwdZubwN7, with the Claude Docs tools (Sheets topics). Take the highest-ranked idea in the "Top 15" tab whose Status in "All 50 Ideas" is blank. When the Top 15 are used up, take the highest viral score left. Set its Status to "In progress".
    **Owner's queue (set 18 Nov 2026), used before the rule above:** one reel a day. The reel for Fri 20 Nov is "What if you became invisible for a day?"; the reel for Sat 21 Nov is "What if your lift cable snapped on the 40th floor?". Skip any of these whose Status is already filled in. After both are done, go to the next queue.
    **Owner's everyday-emergencies queue (set 20 Nov 2026), used next, one topic a day in this order.** Each comes with the owner's hook line; use it (or a close variant) as the first spoken line and show the situation in the first second:
-   1. Phone catches fire while charging: "Your phone starts smoking beside your pillow." (made on 20 Nov 2026 as `reels/phone-fire-charging`)
+   1. Phone catches fire while charging: "Your phone starts smoking beside your pillow." (made on 21 Nov 2026 as `reels/phone-fire-charging` in card style; sent to the owner for approval, not scheduled)
    2. Trapped in a lift: "The lift stopped, and your phone has no signal."
    3. Car breaks down in the middle of nowhere: "No network. No lights. 20 kilometres from help."
    4. Lost in a parking garage: "The same car has passed you three times."
