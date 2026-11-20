@@ -1,0 +1,43 @@
+{
+ "title": "What If Your Phone Caught Fire While Charging?",
+ "title_chip": "WHAT IF YOUR PHONE CAUGHT FIRE?",
+ "voice": "af_heart",
+ "timing": {"lead": 0.15, "gap": 0.12, "tail": 1.0, "precut": 0.1},
+ "hook": {"text": ["2 A.M.", "YOUR PHONE IS SMOKING"], "until": 2.0},
+ "end_cta": "SEND THIS TO SOMEONE WHO CHARGES IN BED",
+ "lines": [
+  [
+   ["2 a.m. Your phone starts smoking beside your pillow.", "dramatic", 0, 0.95, null]
+  ],
+  [
+   ["Hiss.", "low", 0.1, 0.95, null],
+   ["Pop.", "low", 0.1, 0.95, null],
+   ["The battery is swelling.", "build", 0.05, 0.95, null],
+   ["Under a pillow, its heat has nowhere to go.", "normal", 0, 0.95, null]
+  ],
+  [
+   ["Now it makes heat faster than it can lose it.", "build", 0.05, 0.95, null],
+   ["Thermal runaway.", "dramatic", 0.1, 0.9, null],
+   ["It can burst into flames without warning.", "low", 0, 0.95, null]
+  ],
+  [
+   ["Your first instinct? Grab it.", "question", 0.1, 0.95, null],
+   ["Don't.", "dramatic", 0.1, 0.9, null],
+   ["That smoke is toxic. Your selfies are not worth it.", "deadpan", 0, 0.95, null]
+  ],
+  [
+   ["Get out. Close the door behind you.", "excited", 0.08, 0.95, null],
+   ["Call one one two from outside.", "build", 0, 0.95, "Call 112 from outside."]
+  ],
+  [
+   ["Tomorrow: charge on a hard table, not your bed.", "warm", 0.06, 0.95, null],
+   ["Original charger. And never while you sleep.", "normal", 0.06, 0.95, null],
+   ["Mummy was right. Again.", "funny", 0, 0.95, null]
+  ],
+  [
+   ["Where's your phone charging right now? Bed or table?", "question", 0.1, 0.95, null],
+   ["Send this to someone who charges in bed!", "funny", 0, 0.97, null]
+  ]
+ ],
+ "post": {}
+}

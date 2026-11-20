@@ -40,7 +40,15 @@ The first four reels each got only a few views. Instagram's head says the top ra
 
 0. **Review stats.** Follow "Learn from the numbers" in Engagement rules.
 1. **Pick the topic.** Open the ideas Sheet, https://claude.ai/artifact/VJmEgxpFpMsakpwdZubwN7, with the Claude Docs tools (Sheets topics). Take the highest-ranked idea in the "Top 15" tab whose Status in "All 50 Ideas" is blank. When the Top 15 are used up, take the highest viral score left. Set its Status to "In progress".
-   **Owner's queue (set 18 Nov 2026), used before the rule above:** one reel a day. The reel for Fri 20 Nov is "What if you became invisible for a day?"; the reel for Sat 21 Nov is "What if your lift cable snapped on the 40th floor?". Skip any of these whose Status is already filled in. After both are done, go back to the rule above.
+   **Owner's queue (set 18 Nov 2026), used before the rule above:** one reel a day. The reel for Fri 20 Nov is "What if you became invisible for a day?"; the reel for Sat 21 Nov is "What if your lift cable snapped on the 40th floor?". Skip any of these whose Status is already filled in. After both are done, go to the next queue.
+   **Owner's everyday-emergencies queue (set 20 Nov 2026), used next, one topic a day in this order.** Each comes with the owner's hook line; use it (or a close variant) as the first spoken line and show the situation in the first second:
+   1. Phone catches fire while charging: "Your phone starts smoking beside your pillow." (made on 20 Nov 2026 as `reels/phone-fire-charging`)
+   2. Trapped in a lift: "The lift stopped, and your phone has no signal."
+   3. Car breaks down in the middle of nowhere: "No network. No lights. 20 kilometres from help."
+   4. Lost in a parking garage: "The same car has passed you three times."
+   5. Gas leak at night: "You smell gas, but the kitchen light is already on."
+   6. Tyre bursts at high speed: "The steering wheel suddenly starts shaking."
+   These topics are not in the ideas Sheet, so skip the Sheet steps for them and track them here instead (mark each as made, with its slug). For these six, the owner asked (20 Nov 2026) for: about 35 seconds; a female voice; the essential safe action inside the same video (never held back for a Part 2); a visual change every 1 to 2 seconds; escalation, one surprising detail and a satisfying payoff; easy to follow with the sound off. **Review first:** for these six, do not schedule. Send the owner the video and wait for their approval before scheduling (this overrides the standing approval for these topics only).
 2. **Research.** Verify every fact the reel will state, and write the sources to `reels/<slug>/sources.md`.
 3. **Write `reels/<slug>/script.json`.** Copy the shape of `reels/everyone-shrank/script.json`: lines (one per scene, phrases with style, pause, speed 0.9, caption), `title_chip`, `post.instagram`, `post.facebook`, `post.youtube_title`, `post.youtube_description` and `post.youtube_tags`, following the caption rules in Metricool details.
 4. **Write `reels/<slug>/scenes.py`.** Use `reelkit.lib`, and reuse props and characters before drawing new ones. Sync visual beats to word times with `wt(scene, "word")`. Add `sfx(A)` for sound effects.
