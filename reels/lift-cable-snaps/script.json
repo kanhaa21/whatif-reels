@@ -1,0 +1,172 @@
+{
+ "title": "What If Your Lift Cable Snapped on the 40th Floor?",
+ "title_chip": "WHAT IF YOUR LIFT CABLE SNAPPED?",
+ "voice": "am_michael",
+ "timing": {
+  "lead": 0.2,
+  "gap": 0.12,
+  "tail": 1.0,
+  "precut": 0.1
+ },
+ "hook": {
+  "text": [
+   "40TH FLOOR.",
+   "LIFT CABLE SNAPS."
+  ],
+  "until": 2.3
+ },
+ "end_cta": "SEND THIS TO A HIGH-RISE FRIEND",
+ "lines": [
+  [
+   [
+    "Fortieth floor.",
+    "dramatic",
+    0.1,
+    0.9,
+    "40th floor."
+   ],
+   [
+    "Snap!",
+    "dramatic",
+    0.12,
+    0.85,
+    null
+   ],
+   [
+    "The lift drops.",
+    "low",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "About a hundred and seventy kilometres an hour, in five seconds.",
+    "build",
+    0.08,
+    0.9,
+    "About 170 km/h, in 5 seconds."
+   ],
+   [
+    "Three things save you.",
+    "normal",
+    0.02,
+    0.9,
+    null
+   ],
+   [
+    "The third is you.",
+    "low",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "One. Lifts hang on four to eight cables. Each holds the lift alone.",
+    "excited",
+    0.04,
+    0.9,
+    "One. Lifts hang on 4 to 8 cables. Each holds the lift alone."
+   ],
+   [
+    "More backups than an Indian mummy.",
+    "funny",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Two. Too fast? Brakes grab the rails.",
+    "excited",
+    0.04,
+    0.9,
+    null
+   ],
+   [
+    "Screech! Like an auto spotting a passenger.",
+    "funny",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Three: you. Jump at the last second?",
+    "question",
+    0.06,
+    0.9,
+    null
+   ],
+   [
+    "Myth.",
+    "dramatic",
+    0.04,
+    0.85,
+    null
+   ],
+   [
+    "It cancels only a few kilometres an hour.",
+    "deadpan",
+    0,
+    0.9,
+    "It cancels only a few km/h."
+   ]
+  ],
+  [
+   [
+    "You'd need Bollywood hero legs.",
+    "funny",
+    0.12,
+    0.9,
+    null
+   ],
+   [
+    "Press the alarm, stay inside, wait.",
+    "build",
+    0,
+    0.9,
+    null
+   ]
+  ],
+  [
+   [
+    "Eight cables! Knew that? Yes or no?",
+    "question",
+    0.08,
+    0.9,
+    "8 cables! Knew that? Yes or no?"
+   ],
+   [
+    "Send this to a high-rise friend!",
+    "funny",
+    0,
+    0.92,
+    null
+   ]
+  ]
+ ],
+ "post": {
+  "instagram": "Your lift cable snaps on the 40th floor. 3 things save you, and the third one is you 😱\n\nLifts hang on 4 to 8 cables, and each one can hold the lift alone: more backup plans than an Indian mummy. Falling too fast? Safety brakes grab the rails. And jumping at the last second? Myth: your best jump cancels only a few km/h. The real move: press the alarm, stay inside, wait.\n\nDid you know lifts have up to 8 cables? Comment YES or NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #LiftSafety #ElevatorFacts #SafetyTips #PhysicsFacts",
+  "instagram_first_comment": "Did you know lifts have up to 8 cables? Comment YES or NO 🛗👇",
+  "facebook": "Your lift cable snaps on the 40th floor. 3 things save you, and the third one is you 😱\n\nDid you know lifts have up to 8 cables? Comment YES or NO.\n\nShare this with a friend who lives in a high-rise.\n\n#WhatIf #LiftSafety #SafetyTips",
+  "facebook_title": "Lift cable snaps on the 40th floor?",
+  "youtube_title": "Lift Cable Snaps on the 40th Floor? 3 Things Save You 😱 #shorts",
+  "youtube_description": "A lift hangs on 4 to 8 steel cables, and each one alone can hold the car. If it still falls too fast, a speed governor trips safety brakes that grab the guide rails. Jumping at the last second is a myth: your best jump cancels only a few km/h, so if a lift stops, press the alarm, stay inside and wait for help.\n\nDid you know lifts have up to 8 cables? Comment YES or NO.\nSubscribe for a new what-if every day.\n\n#shorts #LiftSafety #PhysicsFacts",
+  "youtube_tags": [
+   "lift cable snapped",
+   "elevator cable snaps",
+   "falling elevator",
+   "jump in a falling elevator",
+   "elevator safety brakes",
+   "what if",
+   "lift safety",
+   "kaamkagyann"
+  ]
+ }
+}
