@@ -1,0 +1,135 @@
+[
+ [
+  [
+   "Planning to buy a black car?",
+   "question",
+   0.05,
+   0.95,
+   null
+  ],
+  [
+   "Watch this first.",
+   "dramatic",
+   0,
+   0.95,
+   null
+  ]
+ ],
+ [
+  [
+   "It looks insanely cool...",
+   "excited",
+   0.05,
+   0.95,
+   null
+  ],
+  [
+   "for about one day.",
+   "deadpan",
+   0,
+   0.95,
+   null
+  ]
+ ],
+ [
+  [
+   "Problem one: heat.",
+   "build",
+   0.05,
+   0.95,
+   null
+  ],
+  [
+   "A black roof can get up to twenty-five degrees hotter than silver.",
+   "normal",
+   0.05,
+   0.95,
+   "A black roof can get up to 25\u00b0C hotter than silver."
+  ],
+  [
+   "In May, that's a tandoor on wheels.",
+   "funny",
+   0,
+   0.95,
+   null
+  ]
+ ],
+ [
+  [
+   "Problem two: every wash leaves tiny swirl marks.",
+   "build",
+   0.05,
+   0.95,
+   null
+  ],
+  [
+   "Silver hides them.",
+   "normal",
+   0.05,
+   0.95,
+   null
+  ],
+  [
+   "Black shows off every single one.",
+   "deadpan",
+   0,
+   0.95,
+   null
+  ]
+ ],
+ [
+  [
+   "Problem three: black is harder to spot.",
+   "dramatic",
+   0.05,
+   0.95,
+   null
+  ],
+  [
+   "One study found up to ten percent higher crash risk than white.",
+   "low",
+   0,
+   0.95,
+   "One study found up to 10% higher crash risk than white."
+  ]
+ ],
+ [
+  [
+   "Black looks cool.",
+   "warm",
+   0.05,
+   0.95,
+   null
+  ],
+  [
+   "Owning it?",
+   "question",
+   0.05,
+   0.95,
+   null
+  ],
+  [
+   "That's the hot part.",
+   "funny",
+   0,
+   0.95,
+   null
+  ]
+ ],
+ [
+  [
+   "Black or white? Comment.",
+   "question",
+   0.05,
+   0.95,
+   null
+  ],
+  [
+   "And send this to a friend buying black!",
+   "excited",
+   0,
+   0.97,
+   null
+  ]
+ ]
+]
