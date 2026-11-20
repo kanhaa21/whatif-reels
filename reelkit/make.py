@@ -180,9 +180,10 @@ def main():
     b = os.path.join(d, "build"); os.makedirs(b, exist_ok=True)
     vdir = os.path.join(b, "voice")
     if a.revoice or not os.path.exists(os.path.join(vdir, "lines.json")):
-        V.generate(script["lines"], vdir, script.get("voice", V.VOICE), script.get("lang", "en-us"))
+        V.generate(script["lines"], vdir, script.get("voice", V.VOICE), script.get("lang", "en-us"),
+                   script.get("timing", {}).get("grid"))
     t = script.get("timing", {})
-    tl = TLmod.build(os.path.join(vdir, "lines.json"), t.get("lead"), t.get("gap"), t.get("tail"), t.get("precut"))
+    tl = TLmod.build(os.path.join(vdir, "lines.json"), t.get("lead"), t.get("gap"), t.get("tail"), t.get("precut"), t.get("grid"))
     json.dump(tl, open(os.path.join(b, "timeline.json"), "w"), indent=1)
     print(f"timeline: {tl['total']:.2f}s, {len(tl['scenes'])} scenes", flush=True)
     if a.stills is not None:

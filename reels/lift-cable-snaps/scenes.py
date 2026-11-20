@@ -13,8 +13,8 @@ NO_FLASH = tuple(range(10))
 
 def cut_times(i):
     try:
-        return {1: [0, wt(1, "Par") - 0.1], 2: [0, wt(2, "Ek") - 0.1],
-                4: [0, wt(4, "MYTH") - 0.05]}.get(i, [0])
+        return {1: [0, wt(1, "three") - 0.1], 2: [0, wt(2, "Just") - 0.1],
+                4: [0, wt(4, "Myth") - 0.05]}.get(i, [0])
     except KeyError:
         return [0]
 
@@ -75,7 +75,7 @@ def bar(ctx, y, label, frac, col, tt, val):
 
 # ---------------------------------------------------------------- scenes
 def s0(ctx, tg, tl, T):
-    tsn = wt(0, "SNAP"); tca = wt(0, "Cable")
+    tsn = wt(0, "Snap"); tca = wt(0, "cable")
     snapped = tl >= tsn - 0.05
     ts = tl - tsn + 0.05
     bg(ctx, tg, RED if snapped else BLU, 0.22 if snapped else 0.14)
@@ -85,16 +85,16 @@ def s0(ctx, tg, tl, T):
         speedlines(ctx, tl, clamp((tl - tca) / 0.3))
     floor = 40 - (int((tl - tca + 0.1) * 6) if tl > tca - 0.1 else 0)
     lift_card(ctx, 540, 820, 1.0, floor, ts if snapped else -1, drop, 4 * math.exp(-max(0, ts) * 4) if snapped else 0, tl)
-    headline(ctx, "40th floor pe...", [("Lift ki cable", WHT), ("TOOTI", RED)], 1.0)
+    headline(ctx, "40th floor...", [("The lift cable", WHT), ("SNAPS", RED)], 1.0)
     if snapped:
         stamp(ctx, "SNAP!", 800, 640, ts, RED, 80, 0.12)
 
 
 def s1(ctx, tg, tl, T):
-    tp = wt(1, "Par"); t170 = wt(1, "170"); tte = wt(1, "Teesri")
+    tp = wt(1, "three"); t170 = wt(1, "170"); tte = wt(1, "third")
     if tl < tp - 0.1:
         bg(ctx, tg, RED, 0.18)
-        headline(ctx, "free fall mein", [("5 sec", BLU), ("mein", WHT), ("170 km/h", RED)], tl)
+        headline(ctx, "in free fall", [("170 km/h", RED), ("in", WHT), ("5 sec", BLU)], tl)
         f = clamp(tl / max(0.6, t170 + 0.4))
         card(ctx, 330, 800, 380, 330, BLU, tl - 0.1)
         say(ctx, f"{4.9 * ease_io(f):.1f}s", 330, 770, 110, BLU)
@@ -103,13 +103,13 @@ def s1(ctx, tg, tl, T):
         if tl > 0.35:
             say(ctx, f"{int(172 * ease_io(f))}", 750, 770, 110, RED)
             say(ctx, "km/h", 750, 880, 34, GREY, bold=False)
-        pill(ctx, "agar kuch na roke", 540, 1100, tl - t170 - 0.4, YEL, 40)
+        pill(ctx, "if nothing stops it", 540, 1100, tl - t170 - 0.4, YEL, 40)
     else:
         tt = tl - tp + 0.1
         bg(ctx, tg, GRN, 0.12)
-        headline(ctx, "par", [("3 cheezein", GRN), ("bachaati hain", WHT)], tt)
+        headline(ctx, "but", [("3 things", GRN), ("save you", WHT)], tt)
         on3 = tl > tte - 0.1
-        items = [("Cables", cable_icon, BLU), ("Brakes", brake_icon, ORG), ("Aap?", person_icon, YEL)]
+        items = [("Cables", cable_icon, BLU), ("Brakes", brake_icon, ORG), ("You?", person_icon, YEL)]
         for k, (lab, ic, col) in enumerate(items):
             numcard(ctx, 540, 560 + k * 215, 620, 185, k + 1, lab, tt - 0.25 - k * 0.3, on=(k == 2 and on3) or (k < 2 and not on3), col=col, icon=ic)
         if on3:
@@ -117,10 +117,10 @@ def s1(ctx, tg, tl, T):
 
 
 def s2(ctx, tg, tl, T):
-    te = wt(2, "Ek"); tc = wt(2, "cables")
+    te = wt(2, "Just"); tc = wt(2, "cables")
     bg(ctx, tg, BLU, 0.15)
     one = tl > te - 0.1
-    headline(ctx, "pehli", [("4 se 8", BLU), ("cables", WHT)] if not one else [("Ek cable", GRN), ("bhi kaafi", WHT)], tl if not one else tl - te + 0.1)
+    headline(ctx, "one", [("Up to 8", BLU), ("cables", WHT)] if not one else [("One cable", GRN), ("is enough", WHT)], tl if not one else tl - te + 0.1)
     card(ctx, 540, 840, 640, 680, GRN if one else BLU, tl, glow=0.6)
     # lift hanging from 6 cables
     ly = 980
@@ -141,17 +141,17 @@ def s2(ctx, tg, tl, T):
     rrect(ctx, 540 - 170, ly - 120, 340, 260, 24); ctx.set_source_rgb(0.18, 0.2, 0.3); ctx.fill()
     say(ctx, "LIFT", 540, ly + 10, 60, WHT)
     if not one:
-        pill(ctx, "1 toot gayi", 330, 1240, tl - tc - 0.3, RED, 38)
-        pill(ctx, "5 pakad ke", 750, 1240, tl - tc - 0.55, GRN, 38)
+        pill(ctx, "1 snapped", 330, 1240, tl - tc - 0.3, RED, 38)
+        pill(ctx, "5 holding", 750, 1240, tl - tc - 0.55, GRN, 38)
     else:
-        pill(ctx, "poori lift sambhaal le", 540, 1240, tl - te + 0.3, GRN, 40, icon=bolt)
+        pill(ctx, "holds the whole lift", 540, 1240, tl - te + 0.3, GRN, 40, icon=bolt)
 
 
 def s3(ctx, tg, tl, T):
-    tsp = wt(3, "speed"); tj = wt(3, "jakad")
+    tsp = wt(3, "fast"); tj = wt(3, "grab")
     stopped = tl > tj
     bg(ctx, tg, ORG if stopped else RED, 0.15)
-    headline(ctx, "doosri", [("Safety", ORG), ("brakes", WHT)], tl)
+    headline(ctx, "two", [("Safety", ORG), ("brakes", WHT)], tl)
     card(ctx, 540, 860, 640, 720, ORG if stopped else (0.25, 0.27, 0.35), tl, glow=0.6 if stopped else 0)
     # rails
     for rx in (330, 750):
@@ -172,17 +172,17 @@ def s3(ctx, tg, tl, T):
         if stopped and tl - tj < 1.2:
             sparks(ctx, rx, y, tl, seed=str(sx), dirx=-sx)
     if tl > tsp - 0.1 and not stopped:
-        pill(ctx, "speed zyada!", 540, 1250, tl - tsp + 0.1, RED, 40)
+        pill(ctx, "too fast!", 540, 1250, tl - tsp + 0.1, RED, 40)
     if stopped:
-        pill(ctx, "rail ko jakad liya", 540, 1250, tl - tj, GRN, 40, icon=tick)
+        pill(ctx, "grabs the rails", 540, 1250, tl - tj, GRN, 40, icon=tick)
         stamp(ctx, "STOP", 820, 620, tl - tj, ORG, 64, 0.1)
 
 
 def s4(ctx, tg, tl, T):
-    tm = wt(4, "MYTH"); tj = wt(4, "jump"); tf = wt(4, "filmon")
+    tm = wt(4, "Myth"); tj = wt(4, "jump"); tf = wt(4, "movies")
     if tl < tm - 0.05:
         bg(ctx, tg, YEL, 0.12)
-        headline(ctx, "teesri: aap", [("Last second pe", WHT), ("jump?", YEL)], tl)
+        headline(ctx, "three: you", [("Jump at the", WHT), ("last second?", YEL)], tl)
         card(ctx, 540, 860, 520, 700, YEL if tl > tj else (0.25, 0.27, 0.35), tl, glow=0.6)
         jump = 0
         if tl > tj - 0.1:
@@ -193,27 +193,27 @@ def s4(ctx, tg, tl, T):
     else:
         tt = tl - tm + 0.05
         bg(ctx, tg, RED, 0.16)
-        headline(ctx, "teesri: aap", [("Last second pe", WHT), ("jump?", YEL)], 1.0)
-        bar(ctx, 840, "Lift gir rahi", 1.0, RED, tt - 0.15, "~170 km/h")
-        bar(ctx, 1000, "Aapka jump", 0.05, GRN, tt - 0.45, "bas thoda sa")
+        headline(ctx, "three: you", [("Jump at the", WHT), ("last second?", YEL)], 1.0)
+        bar(ctx, 840, "Falling lift", 1.0, RED, tt - 0.15, "~170 km/h")
+        bar(ctx, 1000, "Your jump", 0.05, GRN, tt - 0.45, "a few km/h")
         stamp(ctx, "MYTH", 540, 600, tt, RED, 120, -0.12)
-        pill(ctx, "sirf filmon mein chalta hai", 540, 1170, tl - tf + 0.1, PUR, 40)
+        pill(ctx, "only works in movies", 540, 1170, tl - tf + 0.1, PUR, 40)
 
 
 def s5(ctx, tg, tl, T):
-    ta = wt(5, "alarm"); tan = wt(5, "andar"); tw_ = wt(5, "wait")
+    ta = wt(5, "alarm"); tan = wt(5, "inside"); tw_ = wt(5, "wait")
     bg(ctx, tg, GRN, 0.14)
-    headline(ctx, "sahi kaam", [("3", GRN), ("steps", WHT)], tl)
-    steps = [("Alarm dabao", bell, ta), ("Andar raho", door, tan), ("Wait karo", clock, tw_)]
+    headline(ctx, "the real move", [("3", GRN), ("steps", WHT)], tl)
+    steps = [("Press the alarm", bell, ta), ("Stay inside", door, tan), ("Wait for help", clock, tw_)]
     for k, (lab, ic, t0) in enumerate(steps):
         on = t0 - 0.1 <= tl < (steps[k + 1][2] - 0.1 if k < 2 else 99)
-        numcard(ctx, 540, 560 + k * 215, 620, 185, k + 1, lab, tl - t0 + 0.4, on=on, col=GRN, icon=ic, done=tl > t0 + 0.5)
+        numcard(ctx, 540, 560 + k * 215, 620, 185, k + 1, lab, tl - k * 0.2 if k == 0 else tl - t0 + 0.4, on=on, col=GRN, icon=ic, done=tl > t0 + 0.5)
 
 
 def s6(ctx, tg, tl, T):
-    tc = wt(6, "Comment"); ty = wt(6, "YES"); tn = wt(6, "NO")
+    tc = wt(6, "Comment"); ty = wt(6, "yes"); tn = wt(6, "no", 1)
     bg(ctx, tg, BLU, 0.14)
-    headline(ctx, "comment karo", [("8 cables", BLU), ("pata tha?", WHT)], tl)
+    headline(ctx, "comment below", [("Knew about", WHT), ("8 cables?", BLU)], tl)
     for k in range(8):
         x = 540 - 140 + k * 40
         a = clamp((tl - k * 0.05) / 0.2)
@@ -225,7 +225,7 @@ def s6(ctx, tg, tl, T):
         if tl > t0 - 0.15:
             say(ctx, lab, x, 900, 100, col)
     if tl < ty - 0.15:
-        pill(ctx, "comment mein batao", 540, 900, tl - tc + 0.1, YEL, 44)
+        pill(ctx, "tell us below", 540, 900, tl - tc + 0.1, YEL, 44)
 
 
 SCENES = [s0, s1, s2, s3, s4, s5, s6]
@@ -258,34 +258,32 @@ def _click(A, t, g=0.18):
 
 
 def sfx(A):
-    t_sn = A.W(0, "SNAP")
-    for k in range(3):
-        A.thump(0.2 + k * 0.7, 0.35, 50)
+    t_sn = A.W(0, "Snap")
     _snap(A, t_sn - 0.05)
     A.thump(t_sn, 0.6, 55)
-    _rumble(A, A.W(0, "Cable") - 0.1, A.S(1) + A.W(1, "Par") - A.W(0, "Cable"))
-    A.whoosh(A.W(0, "Cable") + 0.2, 0.2, 0.5)
+    _rumble(A, A.W(0, "cable") - 0.1, A.S(1) + A.W(1, "three") - A.W(0, "cable"))
+    A.whoosh(A.W(0, "cable") + 0.2, 0.2, 0.5)
     _click(A, A.S(1) + 0.1); _click(A, A.S(1) + 0.35)
     A.ding(A.W(1, "170") + 0.4, 0.07, 1568)
     for k in range(3):
-        _click(A, A.W(1, "Par") + 0.15 + k * 0.3)
-    A.boing(A.W(1, "Teesri"), 0.12, 320)
+        _click(A, A.W(1, "three") + 0.15 + k * 0.3)
+    A.boing(A.W(1, "third"), 0.12, 320)
     A.whoosh(A.S(2), 0.15, 0.3)
     for k in range(6):
         A.pop(A.W(2, "cables") + k * 0.08, 0.12)
-    A.ding(A.W(2, "Ek"), 0.08, A.note(79))
+    A.ding(A.W(2, "Just"), 0.08, A.note(79))
     A.whoosh(A.S(3), 0.15, 0.3)
-    _rumble(A, A.S(3), A.W(3, "jakad") - A.S(3), 0.25)
-    _screech(A, A.W(3, "jakad") - 0.1, 0.9)
-    A.thump(A.W(3, "jakad") + 0.05, 0.5, 60)
+    _rumble(A, A.S(3), A.W(3, "grab") - A.S(3), 0.25)
+    _screech(A, A.W(3, "grab") - 0.1, 0.9)
+    A.thump(A.W(3, "grab") + 0.05, 0.5, 60)
     A.whoosh(A.S(4), 0.15, 0.3)
     A.whoosh(A.W(4, "jump") + 0.1, 0.18, 0.4)
-    A.thump(A.W(4, "MYTH") - 0.03, 0.6, 60)
-    A.boing(A.W(4, "filmon"), 0.12, 260, 0.6)
-    for w in ("alarm", "andar", "wait"):
+    A.thump(A.W(4, "Myth") - 0.03, 0.6, 60)
+    A.boing(A.W(4, "movies"), 0.12, 260, 0.6)
+    for w in ("alarm", "inside", "wait"):
         A.pop(A.W(5, w), 0.3)
     for k in range(3):
         A.ding(A.W(5, "alarm") + 0.1 + k * 0.25, 0.05, 1760, 0.25)
-    A.pop(A.W(6, "YES"), 0.3); A.pop(A.W(6, "NO"), 0.3)
+    A.pop(A.W(6, "yes"), 0.3); A.pop(A.W(6, "no", 1), 0.3)
     for k, m in enumerate((79, 84, 88)):
         A.ding(A.W(6, "Comment") + 0.1 + k * 0.1, 0.06, A.note(m))

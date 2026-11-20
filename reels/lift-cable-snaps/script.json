@@ -1,150 +1,158 @@
 {
  "title": "What If Your Lift Cable Snapped on the 40th Floor?",
  "style": "card",
- "lang": "hi",
- "voice": "hf_alpha",
+ "lang": "en-us",
+ "voice": "af_heart",
  "timing": {
   "lead": 0.15,
-  "gap": 0.22,
+  "gap": 0.3,
   "tail": 1.0,
-  "precut": 0.1
+  "precut": 0.1,
+  "grid": 0.3
  },
- "end_cta": "BHEJO USSE JO ROZ LIFT LETA HAI",
+ "end_cta": "SEND THIS TO SOMEONE WHO TAKES THE LIFT",
  "lines": [
   [
    [
-    "चालीसवाँ फ़्लोर.",
+    "Fortieth floor.",
     "dramatic",
-    0.22,
+    0.1,
     0.95,
     "40th floor."
    ],
    [
-    "और... स्नैप!",
+    "Snap!",
     "dramatic",
-    0.22,
+    0.1,
     0.95,
-    "Aur... SNAP!"
+    null
    ],
    [
-    "केबल टूट गई.",
+    "The cable just broke.",
     "low",
     0,
     0.95,
-    "Cable toot gayi."
+    null
    ]
   ],
   [
    [
-    "पाँच सेकंड में, एक सौ सत्तर की स्पीड!",
+    "Free fall: about a hundred and seventy kilometres an hour, in five seconds.",
     "excited",
-    0.25,
+    0.1,
     0.95,
-    "5 second mein 170 km/h!"
+    "Free fall: about 170 km/h, in 5 seconds."
    ],
    [
-    "पर तीन चीज़ें बचाती हैं.",
+    "But three things save you.",
     "normal",
-    0.2,
+    0.05,
     0.95,
-    "Par 3 cheezein bachaati hain."
+    null
    ],
    [
-    "तीसरी... आप हो.",
+    "The third one is you.",
     "low",
     0,
     0.95,
-    "Teesri... aap ho."
+    null
    ]
   ],
   [
    [
-    "पहली: लिफ़्ट आठ तक केबल्स पे लटकती है.",
+    "One: a lift hangs on up to eight cables.",
     "build",
-    0.22,
+    0.05,
     0.95,
-    "Pehli: lift 8 tak cables pe latakti hai."
+    "One: a lift hangs on up to 8 cables."
    ],
    [
-    "एक अकेली भी काफ़ी है.",
+    "Just one can hold it alone.",
     "warm",
     0,
     0.95,
-    "Ek akeli bhi kaafi hai."
+    null
    ]
   ],
   [
    [
-    "दूसरी: स्पीड बढ़ी,",
+    "Two: too fast,",
     "question",
-    0.15,
+    0.05,
     0.95,
-    "Doosri: speed badhi,"
+    null
    ],
    [
-    "तो सेफ़्टी ब्रेक्स रेल को जकड़ लेते हैं.",
+    "and safety brakes grab the rails.",
     "dramatic",
     0,
     0.95,
-    "toh safety brakes rail jakad lete hain."
+    null
    ]
   ],
   [
    [
-    "तीसरी: आप. आख़िरी सेकंड पे जंप?",
+    "Three: you. Jump at the last second?",
     "question",
-    0.22,
+    0.05,
     0.95,
-    "Teesri: aap. Last second pe jump?"
+    null
    ],
    [
-    "मिथ!",
+    "Myth.",
     "dramatic",
-    0.22,
+    0.05,
     0.95,
-    "MYTH!"
+    null
    ],
    [
-    "ये सिर्फ़ फ़िल्मों में चलता है.",
+    "That only works in movies.",
     "deadpan",
     0,
     0.95,
-    "Ye sirf filmon mein chalta hai."
+    null
    ]
   ],
   [
    [
-    "सही काम: अलार्म दबाओ, अंदर रहो, वेट करो.",
+    "The real move: press the alarm, stay inside, and wait.",
     "warm",
     0,
     0.95,
-    "Sahi kaam: alarm dabao, andar raho, wait karo."
+    null
    ]
   ],
   [
    [
-    "आठ केबल्स, पता था?",
+    "Did you know about the eight cables?",
     "question",
-    0.2,
+    0.05,
     0.95,
-    "8 cables, pata tha?"
+    "Did you know about the 8 cables?"
    ],
    [
-    "कमेंट करो, यस या नो!",
+    "Comment yes or no!",
     "excited",
-    0,
+    0.1,
     0.95,
-    "Comment karo, YES ya NO!"
+    null
+   ],
+   [
+    "Send this to someone who takes the lift!",
+    "funny",
+    0,
+    0.97,
+    null
    ]
   ]
  ],
  "post": {
-  "instagram": "40th floor pe lift ki cable tooti. 3 cheezein aapko bachaati hain 😱\n\nLift 8 tak cables pe latakti hai, aur ek akeli bhi kaafi hai. Speed badhi, toh safety brakes rail ko jakad lete hain. Aur last second pe jump? Myth: ye sirf filmon mein chalta hai. Sahi kaam: alarm dabao, andar raho, wait karo.\n\n8 cables pata tha? Comment karo YES ya NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #LiftSafety #ElevatorFacts #SafetyTips #PhysicsFacts",
-  "instagram_first_comment": "8 cables pata tha? Comment karo YES ya NO 🛗👇",
-  "facebook": "40th floor pe lift ki cable tooti. 3 cheezein aapko bachaati hain 😱\n\n8 cables pata tha? Comment karo YES ya NO.\n\nShare karo us dost ke saath jo roz lift leta hai.\n\n#WhatIf #LiftSafety #SafetyTips",
+  "instagram": "Your lift cable snaps on the 40th floor. 3 things save you, and the third one is you 😱\n\nA lift hangs on up to 8 cables, and just one can hold it alone. Too fast? Safety brakes grab the rails. Jump at the last second? Myth: that only works in movies. The real move: press the alarm, stay inside, and wait.\n\nDid you know about the 8 cables? Comment YES or NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #LiftSafety #ElevatorFacts #SafetyTips #PhysicsFacts",
+  "instagram_first_comment": "Did you know lifts have up to 8 cables? Comment YES or NO 🛗👇",
+  "facebook": "Your lift cable snaps on the 40th floor. 3 things save you, and the third one is you 😱\n\nDid you know lifts have up to 8 cables? Comment YES or NO.\n\nShare this with someone who takes the lift every day.\n\n#WhatIf #LiftSafety #SafetyTips",
   "facebook_title": "Lift cable snaps on the 40th floor?",
-  "youtube_title": "Lift Cable Tooti 40th Floor Pe? 3 Cheezein Bachaati Hain 😱 #shorts",
-  "youtube_description": "A lift hangs on 4 to 8 steel cables, and each one alone can hold the car. If it still falls too fast, a speed governor trips safety brakes that grab the guide rails. Jumping at the last second is a myth, so if a lift stops, press the alarm, stay inside and wait for help.\n\n8 cables pata tha? Comment karo YES ya NO.\nSubscribe for a new what-if every day.\n\n#shorts #LiftSafety #PhysicsFacts",
+  "youtube_title": "Lift Cable Snaps on the 40th Floor? 3 Things Save You 😱 #shorts",
+  "youtube_description": "A lift hangs on 4 to 8 steel cables, and each one alone can hold the car. If it still falls too fast, a speed governor trips safety brakes that grab the guide rails. Jumping at the last second is a myth, so if a lift stops, press the alarm, stay inside and wait for help.\n\nDid you know lifts have up to 8 cables? Comment YES or NO.\nSubscribe for a new what-if every day.\n\n#shorts #LiftSafety #PhysicsFacts",
   "youtube_tags": [
    "lift cable snapped",
    "elevator cable snaps",

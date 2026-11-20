@@ -3,7 +3,7 @@
 script.json "lines": list of lines; each line is a list of phrases
 [spoken_text, style, pause_after_s, speed, caption_text_or_null, voice_or_omitted].
 One line = one scene. Styles below change pitch, pitch range, end-rise and loudness."""
-import json, os
+import json, math, os
 import numpy as np, soundfile as sf
 import parselmouth
 from parselmouth.praat import call
@@ -50,15 +50,17 @@ def shape(s, sr, style, fmin=70, fmax=350):
     return snd.values[0] * 10 ** (gain / 20)
 
 
-def generate(lines, outdir, voice=VOICE, lang="en-us"):
-    """lang: Kokoro/espeak language code, e.g. "en-us", or "hi" for the Hindi voices (write Hindi text in Devanagari)"""
+def generate(lines, outdir, voice=VOICE, lang="en-us", grid=None):
+    """lang: Kokoro/espeak language code, e.g. "en-us", or "hi" for the Hindi voices (write Hindi text in Devanagari).
+    grid: if set (seconds, e.g. an 8th note), each phrase pause is stretched so the next phrase starts on the grid,
+    so the voice lands on the drum beat."""
     from kokoro_onnx import Kokoro
     k = Kokoro(os.path.join(MODELS, "kokoro-v1.0.onnx"), os.path.join(MODELS, "voices-v1.0.bin"))
     os.makedirs(outdir, exist_ok=True)
     meta = []
     for i, segs in enumerate(lines):
         parts, smeta, off = [], [], 0.0
-        for seg in segs:
+        for n, seg in enumerate(segs):
             text, style, pause, sp, cap = seg[:5]
             v = seg[5] if len(seg) > 5 and seg[5] else voice     # optional 6th field: per-phrase voice
             s, sr = k.create(text, voice=v, speed=sp, lang=lang)
@@ -66,7 +68,9 @@ def generate(lines, outdir, voice=VOICE, lang="en-us"):
             s = shape(_trim(s, sr), sr, style, *((100, 600) if fem else (70, 350)))
             d = len(s) / sr
             smeta.append({"text": cap or text, "off": off, "dur": d, "style": style})
-            parts += [s, np.zeros(int(pause * sr))]
+            if grid and n < len(segs) - 1:
+                pause = math.ceil((off + d + pause) / grid - 1e-6) * grid - off - d
+            parts += [s, np.zeros(int(round(pause * sr)))]
             off += d + pause
         line = np.clip(np.concatenate(parts), -0.99, 0.99)
         sf.write(os.path.join(outdir, f"line{i}.wav"), line, sr)

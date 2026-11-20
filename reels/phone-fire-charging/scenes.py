@@ -11,8 +11,8 @@ NO_FLASH = tuple(range(10))
 
 def cut_times(i):
     try:
-        return {1: [0, wt(1, "Takiya") - 0.1], 2: [0, wt(2, "Bina") - 0.1],
-                3: [0, wt(3, "NAHI") - 0.05], 5: [0, wt(5, "Original") - 0.1]}.get(i, [0])
+        return {1: [0, wt(1, "pillow") - 0.1], 2: [0, wt(2, "catch") - 0.1],
+                3: [0, wt(3, "No") - 0.05], 5: [0, wt(5, "Original") - 0.1]}.get(i, [0])
     except KeyError:
         return [0]
 
@@ -97,9 +97,9 @@ def run_icon(ctx, x, y, s, col):
 
 # ---------------------------------------------------------------- scenes
 def s0(ctx, tg, tl, T):
-    tt_ = wt(0, "Takiye"); td = wt(0, "dhuaan")
+    tt_ = wt(0, "Your"); td = wt(0, "smoking")
     bg(ctx, tg, RED, 0.12 + 0.08 * clamp(tl / 3))
-    headline(ctx, "raat ke 2 baje...", [("Phone se", WHT), ("DHUAAN", RED)], 1.0)
+    headline(ctx, "2 a.m., beside your pillow", [("Your phone is", WHT), ("SMOKING", RED)], 1.0)
     card(ctx, 540, 840, 760, 640, RED if tl > td else (0.25, 0.27, 0.35), 1.0, glow=0.7)
     pillow(ctx, 430, 860, 420, 260)
     phone(ctx, 740, 820, 0.95, tl, "hot" if tl > 1.0 else "ok", rot=0.12)
@@ -110,10 +110,10 @@ def s0(ctx, tg, tl, T):
 
 
 def s1(ctx, tg, tl, T):
-    tp = wt(1, "POP"); tb = wt(1, "Battery"); tk = wt(1, "Takiya")
+    tp = wt(1, "pop"); tb = wt(1, "battery"); tk = wt(1, "pillow")
     if tl < tk - 0.1:
         bg(ctx, tg, RED, 0.2)
-        headline(ctx, "hisss... pop!", [("Battery", WHT), ("phool rahi", RED)], tl)
+        headline(ctx, "hiss... pop!", [("The battery is", WHT), ("swelling", RED)], tl)
         sw = clamp((tl - tb + 0.1) / 0.8)
         card(ctx, 540, 840, 560, 640, RED, 1.0, glow=0.8)
         phone(ctx, 540, 800, 1.3, tl, "hot", swell=sw)
@@ -123,7 +123,7 @@ def s1(ctx, tg, tl, T):
     else:
         tt = tl - tk + 0.1
         bg(ctx, tg, ORG, 0.18)
-        headline(ctx, "takiye ke neeche", [("Garmi", ORG), ("phans gayi", WHT)], tt)
+        headline(ctx, "under the pillow", [("The heat is", WHT), ("trapped", ORG)], tt)
         card(ctx, 540, 840, 760, 640, ORG, tt, glow=0.7)
         phone(ctx, 540, 880, 0.75, tl, "hot", rot=1.5708)
         pillow(ctx, 540, 760, 560, 200, 0.95)
@@ -134,29 +134,29 @@ def s1(ctx, tg, tl, T):
             yy = 1000 - 200 * ph
             ctx.move_to(x, yy); ctx.line_to(x, yy - 60); ctx.set_source_rgba(*RED, 1 - ph); ctx.set_line_width(8); ctx.stroke()
             ctx.move_to(x - 16, yy - 50); ctx.line_to(x, yy - 72); ctx.line_to(x + 16, yy - 50); ctx.stroke()
-        pill(ctx, "heat bahar nahi jaati", 540, 1180, tt - 0.3, ORG, 40)
+        pill(ctx, "heat can't escape", 540, 1180, tt - 0.3, ORG, 40)
 
 
 def s2(ctx, tg, tl, T):
-    tth = wt(2, "thermal"); tbn = wt(2, "Bina"); tag = wt(2, "aag")
+    tth = wt(2, "thermal"); tbn = wt(2, "catch"); tag = wt(2, "fire")
     if tl < tbn - 0.1:
         bg(ctx, tg, ORG, 0.18)
-        headline(ctx, "garmi badhti jaati hai", [("Thermal", ORG), ("runaway", WHT)], tl)
+        headline(ctx, "the heat keeps building", [("Thermal", ORG), ("runaway", WHT)], tl)
         card(ctx, 540, 840, 640, 640, ORG, tl, glow=0.8)
         lvl = clamp(0.3 + tl / 2.6)
         thermo(ctx, 380, 820, lvl)
-        say(ctx, "GARMI", 650, 760, 96, RED)
+        say(ctx, "HEAT", 650, 760, 96, RED)
         # circular arrows: heat makes more heat
         ctx.save(); ctx.translate(650, 920); ctx.rotate(tl * 3)
         ctx.arc(0, 0, 70, 0.3, 5.6); ctx.set_source_rgb(*ORG); ctx.set_line_width(10); ctx.stroke()
         ctx.move_to(70 * math.cos(5.6) + 18, 70 * math.sin(5.6) - 10); ctx.line_to(70 * math.cos(5.6) - 18, 70 * math.sin(5.6) - 18)
         ctx.line_to(70 * math.cos(5.6), 70 * math.sin(5.6) + 18); ctx.close_path(); ctx.fill()
         ctx.restore()
-        pill(ctx, "garmi > thandak", 540, 1180, tl - tth, ORG, 40)
+        pill(ctx, "heat in > heat out", 540, 1180, tl - tth, ORG, 40)
     else:
         tt = tl - tbn + 0.1
         bg(ctx, tg, RED, 0.25)
-        headline(ctx, "bina warning", [("Aag", RED), ("lag sakti hai", WHT)], tt)
+        headline(ctx, "without warning", [("It can catch", WHT), ("fire", RED)], tt)
         card(ctx, 540, 840, 560, 640, RED, 1.0, glow=1.0)
         phone(ctx, 540, 840, 1.2, tl, "fire")
         if tl > tag - 0.15:
@@ -166,9 +166,9 @@ def s2(ctx, tg, tl, T):
 
 
 def s3(ctx, tg, tl, T):
-    tn = wt(3, "NAHI"); tz = wt(3, "zehreela"); ts = wt(3, "Selfies")
+    tn = wt(3, "No"); tz = wt(3, "toxic"); ts = wt(3, "Selfies")
     bg(ctx, tg, YEL if tl < tn - 0.05 else RED, 0.15)
-    headline(ctx, "pehla khayaal?", [("Phone", WHT), ("uthaoge?", YEL)], tl if tl < tn - 0.05 else 1.0)
+    headline(ctx, "your first instinct?", [("Grab", WHT), ("it?", YEL)], tl if tl < tn - 0.05 else 1.0)
     card(ctx, 540, 840, 560, 640, YEL if tl < tn - 0.05 else RED, 1.0, glow=0.6)
     phone(ctx, 540, 880, 1.0, tl, "hot")
     smoke(ctx, 540, 700, tl, a=0.4)
@@ -179,50 +179,51 @@ def s3(ctx, tg, tl, T):
         for k in range(3):
             rrect(ctx, hx - 50, 830 + k * 30, 80, 26, 13); ctx.fill()
     else:
-        stamp(ctx, "NAHI!", 540, 760, tl - tn + 0.05, RED, 120, -0.12)
-        pill(ctx, "dhuaan zehreela", 540, 1195, tl - tz + 0.1, PUR, 40, icon=xmark)
+        stamp(ctx, "NO!", 540, 760, tl - tn + 0.05, RED, 120, -0.12)
+        pill(ctx, "the smoke is toxic", 540, 1195, tl - tz + 0.1, PUR, 40, icon=xmark)
         if tl > ts - 0.1:
-            stamp(ctx, "selfies baad mein", 540, 600, tl - ts + 0.1, ORG, 44, 0.06)
+            stamp(ctx, "selfies can wait", 540, 600, tl - ts + 0.1, ORG, 44, 0.06)
 
 
 def s4(ctx, tg, tl, T):
-    tb = wt(4, "bahar"); td = wt(4, "Darwaza"); tc = wt(4, "112")
+    tb = wt(4, "out"); td = wt(4, "Close"); tc = wt(4, "112")
     bg(ctx, tg, GRN, 0.14)
-    headline(ctx, "sahi kaam", [("3", GRN), ("steps", WHT)], tl)
-    steps = [("Bahar niklo", run_icon, tb), ("Darwaza band karo", door, td), ("Bahar se 112 call", phone_icon, tc)]
+    headline(ctx, "do this", [("3", GRN), ("steps", WHT)], tl)
+    steps = [("Get out", run_icon, tb), ("Close the door", door, td), ("Call 112 from outside", phone_icon, tc)]
     for k, (lab, ic, t0) in enumerate(steps):
         on = t0 - 0.15 <= tl < (steps[k + 1][2] - 0.15 if k < 2 else 99)
         numcard(ctx, 540, 560 + k * 215, 660, 185, k + 1, lab, tl - t0 + 0.45, on=on, col=GRN, icon=ic, done=tl > t0 + 0.6)
 
 
 def s5(ctx, tg, tl, T):
-    tbd = wt(5, "bed"); ttb = wt(5, "table"); to = wt(5, "Original"); tsw = wt(5, "Sote")
+    tbd = wt(5, "bed"); ttb = wt(5, "table"); to = wt(5, "Original"); tsw = wt(5, "never")
     if tl < to - 0.1:
         bg(ctx, tg, GRN, 0.12)
-        headline(ctx, "kal se", [("Bed", RED), ("nahi,", WHT), ("table", GRN)], tl)
-        card(ctx, 330, 840, 380, 480, RED, tl - tbd + 0.2, glow=0.6)
+        headline(ctx, "from now on", [("Table,", GRN), ("not", WHT), ("bed", RED)], tl)
+        card(ctx, 330, 840, 380, 480, RED if tl > tbd - 0.2 else (0.25, 0.27, 0.35), tl - 0.1, glow=0.6)
+        pillow(ctx, 330, 800, 260, 160, clamp(tl / 0.2))
+        say(ctx, "BED", 330, 960, 64, RED, alpha=clamp(tl / 0.2))
         if tl > tbd - 0.2:
-            pillow(ctx, 330, 800, 260, 160)
-            say(ctx, "BED", 330, 960, 64, RED)
             xmark(ctx, 330, 650, 90, RED)
-        card(ctx, 750, 840, 380, 480, GRN, tl - ttb + 0.2, glow=0.8)
-        if tl > ttb - 0.2:
+        card(ctx, 750, 840, 380, 480, GRN if tl > ttb - 0.2 else (0.25, 0.27, 0.35), tl - 0.25, glow=0.8)
+        if tl > 0.25:
             rrect(ctx, 600, 820, 300, 24, 8); ctx.set_source_rgb(0.6, 0.45, 0.3); ctx.fill()
             ctx.rectangle(620, 844, 16, 90); ctx.rectangle(864, 844, 16, 90); ctx.fill()
             rrect(ctx, 710, 790, 80, 30, 6); ctx.set_source_rgb(0.2, 0.2, 0.26); ctx.fill()
             say(ctx, "TABLE", 750, 960, 64, GRN)
-            tick(ctx, 750, 650, 100, GRN)
+            if tl > ttb - 0.2:
+                tick(ctx, 750, 650, 100, GRN)
     else:
         bg(ctx, tg, BLU, 0.12)
-        headline(ctx, "aur", [("2 aadatein", BLU)], tl - to + 0.1)
+        headline(ctx, "and", [("2 habits", BLU)], tl - to + 0.1)
         numcard(ctx, 540, 620, 660, 200, 1, "Original charger", tl - to + 0.2, on=tl < tsw - 0.1, col=GRN, icon=bolt, done=True)
-        numcard(ctx, 540, 860, 660, 200, 2, "Sote waqt charge nahi", tl - tsw + 0.2, on=tl > tsw - 0.1, col=RED, icon=clock)
+        numcard(ctx, 540, 860, 660, 200, 2, "Never while you sleep", tl - tsw + 0.2, on=tl > tsw - 0.1, col=RED, icon=clock)
 
 
 def s6(ctx, tg, tl, T):
-    tbd = wt(6, "BED"); ttb = wt(6, "TABLE")
+    tbd = wt(6, "Bed"); ttb = wt(6, "table")
     bg(ctx, tg, BLU, 0.14)
-    headline(ctx, "comment karo", [("Abhi", WHT), ("kahan charge", YEL), ("ho raha?", WHT)], tl)
+    headline(ctx, "comment below", [("Where is it", WHT), ("charging now?", YEL)], tl)
     phone(ctx, 540, 660, 0.7, tl, "ok")
     for k, (lab, col, t0) in enumerate((("BED", RED, tbd), ("TABLE", GRN, ttb))):
         x = 330 + k * 420
@@ -250,26 +251,24 @@ def _crackle(A, t, d=1.2, g=0.25):
 
 
 def sfx(A):
-    for k in range(3):
-        A.thump(0.2 + k * 0.7, 0.3, 50)
     _hiss(A, 0.4, 3.0, 0.08)
-    A.ding(A.W(0, "dhuaan"), 0.06, 1318.5)
+    A.ding(A.W(0, "smoking"), 0.06, 1318.5)
     _hiss(A, A.S(1), 0.8, 0.18)
-    A.thump(A.W(1, "POP"), 0.6, 70); A.pop(A.W(1, "POP"), 0.4)
-    A.whoosh(A.W(1, "Takiya") - 0.05, 0.15, 0.3)
+    A.thump(A.W(1, "pop"), 0.6, 70); A.pop(A.W(1, "pop"), 0.4)
+    A.whoosh(A.W(1, "pillow") - 0.05, 0.15, 0.3)
     A.whoosh(A.S(2), 0.15, 0.3)
     A.ding(A.W(2, "thermal"), 0.06, A.note(76))
-    _crackle(A, A.W(2, "aag") - 0.1, 1.4, 0.3)
-    A.thump(A.W(2, "aag") - 0.1, 0.5, 60)
+    _crackle(A, A.W(2, "fire") - 0.1, 1.4, 0.3)
+    A.thump(A.W(2, "fire") - 0.1, 0.5, 60)
     A.whoosh(A.S(3) + 0.1, 0.15, 0.4)
-    A.thump(A.W(3, "NAHI") - 0.03, 0.6, 60)
-    A.pop(A.W(3, "zehreela"), 0.25); A.boing(A.W(3, "Selfies"), 0.12, 300)
-    for w in ("bahar", "Darwaza", "112"):
+    A.thump(A.W(3, "No") - 0.03, 0.6, 60)
+    A.pop(A.W(3, "toxic"), 0.25); A.boing(A.W(3, "Selfies"), 0.12, 300)
+    for w in ("out", "Close", "112"):
         A.pop(A.W(4, w), 0.3)
     A.ding(A.W(4, "112") + 0.3, 0.07, A.note(84))
     A.pop(A.W(5, "bed"), 0.25); A.ding(A.W(5, "table"), 0.07, A.note(79))
     A.whoosh(A.W(5, "Original") - 0.05, 0.15, 0.3)
-    A.pop(A.W(5, "Sote"), 0.25)
-    A.pop(A.W(6, "BED"), 0.3); A.pop(A.W(6, "TABLE"), 0.3)
+    A.pop(A.W(5, "never"), 0.25)
+    A.pop(A.W(6, "Bed"), 0.3); A.pop(A.W(6, "table"), 0.3)
     for k, m in enumerate((79, 84, 88)):
-        A.ding(A.W(6, "TABLE") + 0.3 + k * 0.1, 0.06, A.note(m))
+        A.ding(A.W(6, "table") + 0.3 + k * 0.1, 0.06, A.note(m))

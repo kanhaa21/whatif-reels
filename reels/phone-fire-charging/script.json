@@ -1,157 +1,165 @@
 {
  "title": "What If Your Phone Caught Fire While Charging?",
  "style": "card",
- "lang": "hi",
- "voice": "hf_alpha",
+ "lang": "en-us",
+ "voice": "af_heart",
  "timing": {
   "lead": 0.15,
-  "gap": 0.22,
+  "gap": 0.3,
   "tail": 1.0,
-  "precut": 0.1
+  "precut": 0.1,
+  "grid": 0.3
  },
- "end_cta": "BHEJO USSE JO BED PE CHARGE KARTA HAI",
+ "end_cta": "SEND THIS TO SOMEONE WHO CHARGES IN BED",
  "lines": [
   [
    [
-    "रात के दो बजे.",
+    "Two a.m.",
     "dramatic",
-    0.2,
+    0.1,
     0.95,
-    "Raat ke 2 baje."
+    "2 a.m."
    ],
    [
-    "तकिये के पास, फ़ोन से धुआँ!",
+    "Your phone starts smoking beside your pillow.",
     "low",
     0,
     0.95,
-    "Takiye ke paas, phone se dhuaan!"
+    null
    ]
   ],
   [
    [
-    "हिस्स... पॉप!",
+    "Hiss... pop!",
     "dramatic",
-    0.2,
+    0.1,
     0.95,
-    "Hisss... POP!"
+    null
    ],
    [
-    "बैटरी फूल रही है.",
+    "The battery is swelling.",
     "build",
-    0.2,
+    0.05,
     0.95,
-    "Battery phool rahi hai."
+    null
    ],
    [
-    "तकिया गर्मी रोक लेता है.",
+    "The pillow traps the heat.",
     "normal",
     0,
     0.95,
-    "Takiya garmi rok leta hai."
+    null
    ]
   ],
   [
    [
-    "गर्मी बढ़ती जाती है: थर्मल रनअवे.",
+    "The heat keeps building: thermal runaway.",
     "build",
-    0.2,
+    0.05,
     0.95,
-    "Garmi badhti jaati hai: thermal runaway."
+    null
    ],
    [
-    "बिना वॉर्निंग, आग लग सकती है.",
+    "It can catch fire without warning.",
     "dramatic",
     0,
     0.95,
-    "Bina warning, aag lag sakti hai."
+    null
    ]
   ],
   [
    [
-    "फ़ोन उठाओगे?",
+    "Grab it?",
     "question",
-    0.2,
+    0.05,
     0.95,
-    "Phone uthaoge?"
+    null
    ],
    [
-    "नहीं!",
+    "No!",
     "dramatic",
-    0.2,
+    0.05,
     0.95,
-    "NAHI!"
+    null
    ],
    [
-    "धुआँ ज़हरीला है. सेल्फ़ीज़ बाद में.",
+    "The smoke is toxic. Selfies can wait.",
     "deadpan",
     0,
     0.95,
-    "Dhuaan zehreela hai. Selfies baad mein."
+    null
    ]
   ],
   [
    [
-    "सही काम: बाहर निकलो.",
+    "Get out.",
     "excited",
-    0.18,
+    0.05,
     0.95,
-    "Sahi kaam: bahar niklo."
+    null
    ],
    [
-    "दरवाज़ा बंद करो.",
+    "Close the door.",
     "build",
-    0.18,
+    0.05,
     0.95,
-    "Darwaza band karo."
+    null
    ],
    [
-    "बाहर से, वन वन टू पे कॉल करो.",
+    "Call one one two from outside.",
     "warm",
     0,
     0.95,
-    "Bahar se, 112 pe call karo."
+    "Call 112 from outside."
    ]
   ],
   [
    [
-    "कल से: बेड नहीं, टेबल पे चार्ज करो.",
+    "From now on: charge on a table, not your bed.",
     "warm",
-    0.2,
+    0.05,
     0.95,
-    "Kal se: bed nahi, table pe charge karo."
+    null
    ],
    [
-    "ओरिजिनल चार्जर. सोते वक़्त नहीं.",
+    "Original charger, and never while you sleep.",
     "normal",
     0,
     0.95,
-    "Original charger. Sote waqt nahi."
+    null
    ]
   ],
   [
    [
-    "आपका फ़ोन अभी कहाँ चार्ज हो रहा है?",
+    "Where is your phone charging right now?",
     "question",
-    0.2,
+    0.05,
     0.95,
-    "Aapka phone abhi kahan charge ho raha hai?"
+    null
    ],
    [
-    "बेड या टेबल?",
+    "Bed or table?",
     "excited",
-    0,
+    0.1,
     0.95,
-    "BED ya TABLE?"
+    null
+   ],
+   [
+    "Send this to someone who charges in bed!",
+    "funny",
+    0,
+    0.97,
+    null
    ]
   ]
  ],
  "post": {
-  "instagram": "Raat ke 2 baje, takiye ke paas phone se dhuaan 😱\n\nTakiya garmi rok leta hai, battery phoolti hai, aur bina warning aag lag sakti hai. Phone mat uthao, dhuaan zehreela hai (selfies baad mein). Bahar niklo, darwaza band karo, bahar se 112 call karo.\n\nAapka phone abhi kahan charge ho raha hai? Comment karo BED ya TABLE.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #PhoneSafety #BatterySafety #FireSafety #SafetyTips",
-  "instagram_first_comment": "Aapka phone abhi kahan charge ho raha hai? BED ya TABLE? 🔥👇",
-  "facebook": "Raat ke 2 baje, takiye ke paas phone se dhuaan 😱\n\nAapka phone abhi kahan charge ho raha hai? Comment karo BED ya TABLE.\n\nShare karo us dost ke saath jo bed pe charge karta hai.\n\n#WhatIf #FireSafety #PhoneSafety",
-  "facebook_title": "Phone se dhuaan, raat ke 2 baje?",
-  "youtube_title": "Phone Se Dhuaan, Takiye Ke Paas? Ye Galti Mat Karna 😱 #shorts",
-  "youtube_description": "A phone charging under a pillow can't get rid of its heat, and a damaged lithium battery can go into thermal runaway and catch fire without warning. If a device is smoking, don't touch it: get out, close the door and call 112 from outside. Charge on a hard surface with the original charger, and not while you sleep.\n\nAapka phone abhi kahan charge ho raha hai? Comment karo BED ya TABLE.\nSubscribe for a new what-if every day.\n\n#shorts #FireSafety #PhoneSafety",
+  "instagram": "2 a.m. Your phone starts smoking beside your pillow 😱\n\nThe pillow traps the heat, the battery swells, and it can catch fire without warning. Don't grab it: the smoke is toxic (selfies can wait). Get out, close the door, and call 112 from outside.\n\nWhere is your phone charging right now? Comment BED or TABLE.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #PhoneSafety #BatterySafety #FireSafety #SafetyTips",
+  "instagram_first_comment": "Where is your phone charging right now? BED or TABLE? 🔥👇",
+  "facebook": "2 a.m. Your phone starts smoking beside your pillow 😱\n\nWhere is your phone charging right now? Comment BED or TABLE.\n\nShare this with someone who charges their phone in bed.\n\n#WhatIf #FireSafety #PhoneSafety",
+  "facebook_title": "Phone smoking beside your pillow?",
+  "youtube_title": "Your Phone Starts Smoking Beside Your Pillow 😱 #shorts",
+  "youtube_description": "A phone charging under a pillow can't get rid of its heat, and a damaged lithium battery can go into thermal runaway and catch fire without warning. If a device is smoking, don't touch it: get out, close the door and call 112 from outside. Charge on a hard surface with the original charger, and not while you sleep.\n\nWhere is your phone charging right now? Comment BED or TABLE.\nSubscribe for a new what-if every day.\n\n#shorts #FireSafety #PhoneSafety",
   "youtube_tags": [
    "phone caught fire while charging",
    "phone smoking while charging",

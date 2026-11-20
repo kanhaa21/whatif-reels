@@ -1,5 +1,5 @@
 """Word, caption-chunk and scene timing from voice lines.json (one scene per voice line)."""
-import json, re
+import json, math, re
 
 FPS = 30
 W, H = 1080, 1920
@@ -22,7 +22,8 @@ def _pause(w):
     return 0.0
 
 
-def build(src, lead=None, gap=None, tail=None, precut=None):
+def build(src, lead=None, gap=None, tail=None, precut=None, grid=None):
+    """grid: snap every line start to lead + k * grid (the drum grid) so the voice lands on the beat"""
     global LEAD, GAP, TAIL, PRECUT
     LEAD = LEAD if lead is None else lead; GAP = GAP if gap is None else gap
     TAIL = TAIL if tail is None else tail; PRECUT = PRECUT if precut is None else precut
@@ -31,6 +32,8 @@ def build(src, lead=None, gap=None, tail=None, precut=None):
     t = LEAD
     out = []
     for i, ln in enumerate(lines):
+        if grid and i > 0:
+            t = LEAD + math.ceil((t - LEAD) / grid - 1e-6) * grid
         wl = []
         for sg in ln["segs"]:
             words = sg["text"].split()
@@ -80,6 +83,6 @@ def build(src, lead=None, gap=None, tail=None, precut=None):
             c["e"] = min(chunks[k + 1]["s"], c["words"][-1]["e"] + 0.3)
         else:
             c["e"] = c["words"][-1]["e"] + 0.9
-    return {"lines": out, "scenes": scenes, "chunks": chunks, "total": total / FPS}
+    return {"lines": out, "scenes": scenes, "chunks": chunks, "total": total / FPS, "grid": grid, "grid0": LEAD}
 
 

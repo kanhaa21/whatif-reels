@@ -12,10 +12,11 @@ Read this file fully before starting a run.
 
 ## Card style (owner, 21 Nov 2026): the current house style
 
-The owner did not like the cartoon look of the 21 Nov lift reel and asked for the style of two reference reels they sent (Hinglish tech explainers). `reels/lift-cable-snaps` (v2) is the template; copy it. This overrides the Look, Voice, Characters and Jokes points in the next section:
+The owner did not like the cartoon look of the 21 Nov lift reel and asked for the style of two reference reels they sent (tech explainers). `reels/lift-cable-snaps` (v2) is the template; copy it. This overrides the Look, Voice, Characters and Jokes points in the next section:
 
 - Set `"style": "card"` in script.json and draw with `reelkit/cards.py`. Near-black screen with a soft colour glow, no title chip. Each beat has a small grey kicker line over a bold white headline with one accent word (`headline`). Centre content is clean neon-bordered UI cards (`card`, `numcard` "01 02 03" step cards, `pill` tags, slammed `stamp`), simple icons and diagrams, not cartoon people. Small word-by-word captions at y=1330 are built in.
-- Hinglish. Voice: Kokoro `hf_alpha` (female) with `"lang": "hi"`. Write the spoken text in Devanagari (English words transliterated) and put the Roman Hinglish caption in each phrase's 5th field. Speed about 0.95, pauses of about 0.2 to 0.3 s between phrases and `"gap"` about 0.22, so every word is clear. Mix high styles (question, excited, build) with low ones (low, dramatic, deadpan) for clear rise and fall.
+- **English only** (owner, 21 Nov 2026), for the voice and all on-screen text. Voice: Kokoro `af_heart` (female), `"lang": "en-us"`, speed about 0.95. Mix high styles (question, excited, build) with low ones (low, dramatic, deadpan) for clear rise and fall.
+- **Voice on the beat** (owner, 21 Nov 2026): set `"timing": {"lead": 0.15, "gap": 0.3, "tail": 1.0, "precut": 0.1, "grid": 0.3}`. With `grid`, every phrase and line starts on an 8th-note grid and a light kick/drum loop (100 bpm) plays on the same grid from frame 0. Keep phrase pauses small (about 0.05 to 0.1); the grid adds the gaps.
 - Keep it simple: one idea per beat, about 35 seconds, a new card or tag every 1 to 2 seconds. One light joke is enough.
 
 ## Style the owner likes (before 21 Nov 2026)

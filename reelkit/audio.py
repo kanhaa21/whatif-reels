@@ -116,6 +116,27 @@ class Mixer:
                 self.add(self.music, np.sin(2 * np.pi * self.note(ch[0] - 24) * tt) * self.env(n2, 0.005, 0.35), t, 0.35 * g)
             t += beat; b += 1
 
+    def drums(self, t0, t1, step, level=1.0, root=45):
+        """light drum loop on an 8th-note grid of `step` seconds: soft kick on every beat, clap on 2 and 4,
+        closed hat on the off-beats, a short sub note on beat 1 of each bar"""
+        tk = np.arange(int(0.3 * SR)) / SR
+        kick = np.sin(2 * np.pi * np.cumsum(48 + 110 * np.exp(-tk * 30)) / SR) * np.exp(-tk * 9)
+        clap = self.bp(self.noise(0.14), 900, 5000) * self.env(int(0.14 * SR), 0.002, 0.045)
+        hat = self.hp(self.noise(0.05), 7000) * self.env(int(0.05 * SR), 0.001, 0.012)
+        n = 0; t = t0
+        while t < t1:
+            beat, on = divmod(n, 2)
+            if on == 0:
+                self.add(self.music, kick, t, 0.95 * level)
+                if beat % 2 == 1: self.add(self.music, clap, t, 0.28 * level)
+                if beat % 4 == 0:
+                    n2 = int(step * 3.5 * SR); tt = np.arange(n2) / SR
+                    f = self.note(root + (0, 0, -2, -4)[(beat // 4) % 4])
+                    self.add(self.music, np.sin(2 * np.pi * f * tt) * self.env(n2, 0.005, 0.5), t, 0.3 * level)
+            else:
+                self.add(self.music, hat, t, 0.22 * level)
+            n += 1; t = t0 + n * step
+
     def music_level(self, t0, t1, level):
         self.mgain[self.at(t0):self.at(t1)] = level
 
@@ -126,7 +147,8 @@ class Mixer:
         g[end:] *= np.linspace(1, 0, len(g) - end) ** 1.5
         k = int(0.12 * SR)
         duck = np.convolve(self.vmask, np.ones(k) / k, mode="same")
-        mix = self.voice + self.music * g * (0.32 - 0.17 * duck) + self.sfx_buf
+        hi, depth = getattr(self, "music_mix", (0.32, 0.17))
+        mix = self.voice + self.music * g * (hi - depth * duck) + self.sfx_buf
         mix = np.tanh(mix * 1.1) / np.tanh(1.1)
         mix /= np.max(np.abs(mix)) / 0.95
         sf.write(out_wav, np.stack([mix, mix], 1).astype(np.float32), SR)
@@ -135,9 +157,14 @@ class Mixer:
 def build(tl, voice_dir, scenes_mod, out_wav):
     A = Mixer(tl, voice_dir)
     cfg = getattr(scenes_mod, "MUSIC", {})
-    beat_from = A.S(cfg.get("beat_from_scene", 1))
-    A.drone(0, beat_from + 0.3)
-    A.beat(beat_from, tl["total"] - 0.8, bpm=cfg.get("bpm", 112))
+    if tl.get("grid"):
+        # voice is snapped to an 8th-note grid (timing "grid"): a light kick/drum loop on the same grid from frame 0
+        A.drums(tl["grid0"], tl["total"] - 0.6, tl["grid"], level=cfg.get("drums", 1.0))
+        A.music_mix = (0.34, 0.12)    # duck less, so the kick stays audible under the voice
+    else:
+        beat_from = A.S(cfg.get("beat_from_scene", 1))
+        A.drone(0, beat_from + 0.3)
+        A.beat(beat_from, tl["total"] - 0.8, bpm=cfg.get("bpm", 112))
     if cfg.get("whoosh_on_cuts", True):
         for s in tl["scenes"][1:]:
             A.whoosh(s["t0"])
