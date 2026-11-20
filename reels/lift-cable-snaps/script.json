@@ -1,163 +1,150 @@
 {
  "title": "What If Your Lift Cable Snapped on the 40th Floor?",
- "title_chip": "WHAT IF YOUR LIFT CABLE SNAPPED?",
- "voice": "am_michael",
+ "style": "card",
+ "lang": "hi",
+ "voice": "hf_alpha",
  "timing": {
-  "lead": 0.2,
-  "gap": 0.12,
+  "lead": 0.15,
+  "gap": 0.22,
   "tail": 1.0,
   "precut": 0.1
  },
- "hook": {
-  "text": [
-   "40TH FLOOR.",
-   "LIFT CABLE SNAPS."
-  ],
-  "until": 2.3
- },
- "end_cta": "SEND THIS TO A HIGH-RISE FRIEND",
+ "end_cta": "BHEJO USSE JO ROZ LIFT LETA HAI",
  "lines": [
   [
    [
-    "Fortieth floor.",
+    "चालीसवाँ फ़्लोर.",
     "dramatic",
-    0.1,
-    0.9,
+    0.22,
+    0.95,
     "40th floor."
    ],
    [
-    "Snap!",
+    "और... स्नैप!",
     "dramatic",
-    0.12,
-    0.85,
-    null
+    0.22,
+    0.95,
+    "Aur... SNAP!"
    ],
    [
-    "The lift drops.",
+    "केबल टूट गई.",
     "low",
     0,
-    0.9,
-    null
+    0.95,
+    "Cable toot gayi."
    ]
   ],
   [
    [
-    "About a hundred and seventy kilometres an hour, in five seconds.",
-    "build",
-    0.08,
-    0.9,
-    "About 170 km/h, in 5 seconds."
+    "पाँच सेकंड में, एक सौ सत्तर की स्पीड!",
+    "excited",
+    0.25,
+    0.95,
+    "5 second mein 170 km/h!"
    ],
    [
-    "Three things save you.",
+    "पर तीन चीज़ें बचाती हैं.",
     "normal",
-    0.02,
-    0.9,
-    null
+    0.2,
+    0.95,
+    "Par 3 cheezein bachaati hain."
    ],
    [
-    "The third is you.",
+    "तीसरी... आप हो.",
     "low",
     0,
-    0.9,
-    null
+    0.95,
+    "Teesri... aap ho."
    ]
   ],
   [
    [
-    "One. Lifts hang on four to eight cables. Each holds the lift alone.",
-    "excited",
-    0.04,
-    0.9,
-    "One. Lifts hang on 4 to 8 cables. Each holds the lift alone."
+    "पहली: लिफ़्ट आठ तक केबल्स पे लटकती है.",
+    "build",
+    0.22,
+    0.95,
+    "Pehli: lift 8 tak cables pe latakti hai."
    ],
    [
-    "More backups than an Indian mummy.",
-    "funny",
+    "एक अकेली भी काफ़ी है.",
+    "warm",
     0,
-    0.9,
-    null
+    0.95,
+    "Ek akeli bhi kaafi hai."
    ]
   ],
   [
    [
-    "Two. Too fast? Brakes grab the rails.",
-    "excited",
-    0.04,
-    0.9,
-    null
-   ],
-   [
-    "Screech! Like an auto spotting a passenger.",
-    "funny",
-    0,
-    0.9,
-    null
-   ]
-  ],
-  [
-   [
-    "Three: you. Jump at the last second?",
+    "दूसरी: स्पीड बढ़ी,",
     "question",
-    0.06,
-    0.9,
-    null
+    0.15,
+    0.95,
+    "Doosri: speed badhi,"
    ],
    [
-    "Myth.",
+    "तो सेफ़्टी ब्रेक्स रेल को जकड़ लेते हैं.",
     "dramatic",
-    0.04,
-    0.85,
-    null
+    0,
+    0.95,
+    "toh safety brakes rail jakad lete hain."
+   ]
+  ],
+  [
+   [
+    "तीसरी: आप. आख़िरी सेकंड पे जंप?",
+    "question",
+    0.22,
+    0.95,
+    "Teesri: aap. Last second pe jump?"
    ],
    [
-    "It cancels only a few kilometres an hour.",
+    "मिथ!",
+    "dramatic",
+    0.22,
+    0.95,
+    "MYTH!"
+   ],
+   [
+    "ये सिर्फ़ फ़िल्मों में चलता है.",
     "deadpan",
     0,
-    0.9,
-    "It cancels only a few km/h."
+    0.95,
+    "Ye sirf filmon mein chalta hai."
    ]
   ],
   [
    [
-    "You'd need Bollywood hero legs.",
-    "funny",
-    0.12,
-    0.9,
-    null
-   ],
-   [
-    "Press the alarm, stay inside, wait.",
-    "build",
+    "सही काम: अलार्म दबाओ, अंदर रहो, वेट करो.",
+    "warm",
     0,
-    0.9,
-    null
+    0.95,
+    "Sahi kaam: alarm dabao, andar raho, wait karo."
    ]
   ],
   [
    [
-    "Eight cables! Knew that? Yes or no?",
+    "आठ केबल्स, पता था?",
     "question",
-    0.08,
-    0.9,
-    "8 cables! Knew that? Yes or no?"
+    0.2,
+    0.95,
+    "8 cables, pata tha?"
    ],
    [
-    "Send this to a high-rise friend!",
-    "funny",
+    "कमेंट करो, यस या नो!",
+    "excited",
     0,
-    0.92,
-    null
+    0.95,
+    "Comment karo, YES ya NO!"
    ]
   ]
  ],
  "post": {
-  "instagram": "Your lift cable snaps on the 40th floor. 3 things save you, and the third one is you 😱\n\nLifts hang on 4 to 8 cables, and each one can hold the lift alone: more backup plans than an Indian mummy. Falling too fast? Safety brakes grab the rails. And jumping at the last second? Myth: your best jump cancels only a few km/h. The real move: press the alarm, stay inside, wait.\n\nDid you know lifts have up to 8 cables? Comment YES or NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #LiftSafety #ElevatorFacts #SafetyTips #PhysicsFacts",
-  "instagram_first_comment": "Did you know lifts have up to 8 cables? Comment YES or NO 🛗👇",
-  "facebook": "Your lift cable snaps on the 40th floor. 3 things save you, and the third one is you 😱\n\nDid you know lifts have up to 8 cables? Comment YES or NO.\n\nShare this with a friend who lives in a high-rise.\n\n#WhatIf #LiftSafety #SafetyTips",
+  "instagram": "40th floor pe lift ki cable tooti. 3 cheezein aapko bachaati hain 😱\n\nLift 8 tak cables pe latakti hai, aur ek akeli bhi kaafi hai. Speed badhi, toh safety brakes rail ko jakad lete hain. Aur last second pe jump? Myth: ye sirf filmon mein chalta hai. Sahi kaam: alarm dabao, andar raho, wait karo.\n\n8 cables pata tha? Comment karo YES ya NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #LiftSafety #ElevatorFacts #SafetyTips #PhysicsFacts",
+  "instagram_first_comment": "8 cables pata tha? Comment karo YES ya NO 🛗👇",
+  "facebook": "40th floor pe lift ki cable tooti. 3 cheezein aapko bachaati hain 😱\n\n8 cables pata tha? Comment karo YES ya NO.\n\nShare karo us dost ke saath jo roz lift leta hai.\n\n#WhatIf #LiftSafety #SafetyTips",
   "facebook_title": "Lift cable snaps on the 40th floor?",
-  "youtube_title": "Lift Cable Snaps on the 40th Floor? 3 Things Save You 😱 #shorts",
-  "youtube_description": "A lift hangs on 4 to 8 steel cables, and each one alone can hold the car. If it still falls too fast, a speed governor trips safety brakes that grab the guide rails. Jumping at the last second is a myth: your best jump cancels only a few km/h, so if a lift stops, press the alarm, stay inside and wait for help.\n\nDid you know lifts have up to 8 cables? Comment YES or NO.\nSubscribe for a new what-if every day.\n\n#shorts #LiftSafety #PhysicsFacts",
+  "youtube_title": "Lift Cable Tooti 40th Floor Pe? 3 Cheezein Bachaati Hain 😱 #shorts",
+  "youtube_description": "A lift hangs on 4 to 8 steel cables, and each one alone can hold the car. If it still falls too fast, a speed governor trips safety brakes that grab the guide rails. Jumping at the last second is a myth, so if a lift stops, press the alarm, stay inside and wait for help.\n\n8 cables pata tha? Comment karo YES ya NO.\nSubscribe for a new what-if every day.\n\n#shorts #LiftSafety #PhysicsFacts",
   "youtube_tags": [
    "lift cable snapped",
    "elevator cable snaps",

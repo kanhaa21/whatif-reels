@@ -31,14 +31,14 @@ def _trim(s, sr):
     return s[max(0, idx[0] - int(0.02 * sr)): idx[-1] + int(0.06 * sr)]
 
 
-def shape(s, sr, style):
+def shape(s, sr, style, fmin=70, fmax=350):
     snd = parselmouth.Sound(s.astype(np.float64), sampling_frequency=sr)
     if style == "chipmunk":
         out = call(snd, "Change gender", 75, 400, 1.22, 260, 1.6, 1.0)
         v = out.values[0]
         return v / max(1e-6, np.max(np.abs(v))) * np.max(np.abs(s))
     st, rf, rise, gain = STYLES[style]
-    manip = call(snd, "To Manipulation", 0.01, 70, 350)
+    manip = call(snd, "To Manipulation", 0.01, fmin, fmax)
     pt = call(manip, "Extract pitch tier")
     if call(pt, "Get number of points") > 2:
         mean = call(pt, "Get mean (curve)", 0, 0)
@@ -50,7 +50,8 @@ def shape(s, sr, style):
     return snd.values[0] * 10 ** (gain / 20)
 
 
-def generate(lines, outdir, voice=VOICE):
+def generate(lines, outdir, voice=VOICE, lang="en-us"):
+    """lang: Kokoro/espeak language code, e.g. "en-us", or "hi" for the Hindi voices (write Hindi text in Devanagari)"""
     from kokoro_onnx import Kokoro
     k = Kokoro(os.path.join(MODELS, "kokoro-v1.0.onnx"), os.path.join(MODELS, "voices-v1.0.bin"))
     os.makedirs(outdir, exist_ok=True)
@@ -60,8 +61,9 @@ def generate(lines, outdir, voice=VOICE):
         for seg in segs:
             text, style, pause, sp, cap = seg[:5]
             v = seg[5] if len(seg) > 5 and seg[5] else voice     # optional 6th field: per-phrase voice
-            s, sr = k.create(text, voice=v, speed=sp, lang="en-us")
-            s = shape(_trim(s, sr), sr, style)
+            s, sr = k.create(text, voice=v, speed=sp, lang=lang)
+            fem = v[1:2] == "f"          # af_/bf_/hf_ voices: wider pitch window
+            s = shape(_trim(s, sr), sr, style, *((100, 600) if fem else (70, 350)))
             d = len(s) / sr
             smeta.append({"text": cap or text, "off": off, "dur": d, "style": style})
             parts += [s, np.zeros(int(pause * sr))]

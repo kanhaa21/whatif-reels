@@ -123,6 +123,12 @@ class Frame:
         ctx.save(); ctx.translate(540, 880); ctx.scale(pz, pz); ctx.translate(-540, -880)
         self.mod.SCENES[i](ctx, tg, loc, T)
         ctx.restore()
+        if self.script.get("style") == "card":
+            # card style (owner's reference, 20 Nov 2026): scenes draw their own headline; small captions, no title chip
+            from . import cards as C
+            C.draw_end_cta(ctx, tg, self.script.get("end_cta"), self.tl["lines"][-1]["end"])
+            C.draw_captions(ctx, tg, tl["chunks"])
+            return
         self.draw_hook(ctx, tg)
         self.draw_end_cta(ctx, tg)
         draw_title(ctx, self.script.get("title_chip", "WHAT IF?"))
@@ -174,7 +180,7 @@ def main():
     b = os.path.join(d, "build"); os.makedirs(b, exist_ok=True)
     vdir = os.path.join(b, "voice")
     if a.revoice or not os.path.exists(os.path.join(vdir, "lines.json")):
-        V.generate(script["lines"], vdir, script.get("voice", V.VOICE))
+        V.generate(script["lines"], vdir, script.get("voice", V.VOICE), script.get("lang", "en-us"))
     t = script.get("timing", {})
     tl = TLmod.build(os.path.join(vdir, "lines.json"), t.get("lead"), t.get("gap"), t.get("tail"), t.get("precut"))
     json.dump(tl, open(os.path.join(b, "timeline.json"), "w"), indent=1)
