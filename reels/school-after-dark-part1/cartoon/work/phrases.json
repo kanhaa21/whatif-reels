@@ -1,0 +1,75 @@
+{
+ "duration": 35.5,
+ "phrases": [
+  {
+   "text": "Your dream finally comes true.",
+   "s": 0.2,
+   "e": 1.926
+  },
+  {
+   "text": "You're hiding in school after dark...",
+   "s": 2.146,
+   "e": 4.141
+  },
+  {
+   "text": "and everyone is gone.",
+   "s": 4.261,
+   "e": 5.608
+  },
+  {
+   "text": "No teachers.",
+   "s": 5.988,
+   "e": 7.045
+  },
+  {
+   "text": "No students.",
+   "s": 7.425,
+   "e": 8.411
+  },
+  {
+   "text": "No noise.",
+   "s": 8.861,
+   "e": 9.847
+  },
+  {
+   "text": "But every night,",
+   "s": 10.447,
+   "e": 11.511
+  },
+  {
+   "text": "the guard checks every classroom...",
+   "s": 11.711,
+   "e": 14.149
+  },
+  {
+   "text": "He saw something...",
+   "s": 16.1,
+   "e": 17.461
+  },
+  {
+   "text": "or maybe he saw me.",
+   "s": 18.311,
+   "e": 19.885
+  },
+  {
+   "text": "He walked out...",
+   "s": 20.6,
+   "e": 21.646
+  },
+  {
+   "text": "and locked the classroom door.",
+   "s": 21.946,
+   "e": 23.794
+  },
+  {
+   "text": "The guard had already left.",
+   "s": 29.3,
+   "e": 31.104
+  },
+  {
+   "text": "Then who knocked?",
+   "s": 32.104,
+   "e": 33.489
+  }
+ ]
+}
