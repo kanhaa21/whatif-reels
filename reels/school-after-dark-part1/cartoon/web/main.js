@@ -150,9 +150,9 @@ at(add(new THREE.CylinderGeometry(0.035, 0.035, 0.06, 12), toon(0xc8ccd8), lever
 const leverArm = add(new THREE.BoxGeometry(0.035, 0.035, 0.16), toon(0xd8dce8), lever, { thin: true }); at(leverArm, 0.04, 0, 0.08);
 at(add(new THREE.BoxGeometry(0.02, 0.2, 0.06), toon(0xb8bcc8), lever, { thin: true }), -0.01, -0.02, 0);
 const underDoor = new THREE.Mesh(new THREE.PlaneGeometry(0.02, 0.95), new THREE.MeshBasicMaterial({ color: 0xffd9a0, fog: false }));
-at(underDoor, 15.98, 0.012, -2.0, 0, Math.PI / 2); scene.add(underDoor);
+at(underDoor, 15.98, 0.012, -2.0, -Math.PI / 2, 0); scene.add(underDoor);
 const underShadow = new THREE.Mesh(new THREE.PlaneGeometry(0.025, 0.3), new THREE.MeshBasicMaterial({ color: 0x050508, fog: false }));
-at(underShadow, 15.975, 0.013, -2.0, 0, Math.PI / 2); scene.add(underShadow);
+at(underShadow, 15.975, 0.013, -2.0, -Math.PI / 2, 0); scene.add(underShadow);
 const moon = new THREE.PointLight(0xa8b8ff, 0, 4, 1.2); moon.position.set(16.7, 1.5, -1.5); scene.add(moon);
 // chalkboard
 const board = new THREE.Mesh(new THREE.PlaneGeometry(4.2, 1.6), new THREE.MeshToonMaterial({ map: P.chalkboard(), gradientMap: grad }));
@@ -241,7 +241,11 @@ function kidPose(f, sh) {
   const p = { expr: 'smile', arms: 'hang', look: 0, sit: true };
   if (sh.name === 'desk') { if (f < 266) { p.expr = 'grin'; p.arms = Math.floor(f / 9) % 2 ? 'cheer' : 'up'; } else { p.expr = 'worry'; p.arms = 'knees'; } }
   else if (sh.name === 'stop') { p.expr = 'scared'; p.arms = 'mouth'; }
-  else if (sh.name === 'silence') { p.expr = 'scared'; p.arms = f < 800 ? 'knees' : 'mouth'; p.look = f < 800 ? 6 : -6; }
+  else if (sh.name === 'silence') {
+    if (NEWF < 1076) { p.expr = 'worry'; p.arms = 'knees'; p.look = -6; }
+    else if (NEWF < 1127) { p.expr = 'smile'; p.arms = 'knees'; p.look = 0; }
+    else { p.expr = 'scared'; p.arms = 'mouth'; p.look = -6; }
+  }
   else { p.expr = 'scared'; p.arms = 'knees'; }
   return p;
 }
@@ -259,17 +263,36 @@ function bigText(ctx, lines, y, alpha, size = 120, col = '#ffffff') {
   ctx.restore();
 }
 
-window.renderFrame = function (f) {
+// ---------- v3: picture retimed to the owner's recorded voiceover (44.5 s) ----------
+// The animation is authored in "old" frames; REMAP maps each new frame to an old frame (piecewise linear),
+// anchored on the words of the recording. audio.py uses the same table for the effects.
+const REMAP = [[0, 0], [200, 180], [291, 266], [343, 310], [486, 414], [525, 470], [594, 500], [691, 520], [726, 560],
+  [855, 594], [866, 610], [920, 662], [940, 670], [990, 750], [1127, 786], [1141, 828], [1154, 843], [1265, 875], [1345, 940], [1350, 945]]
+const NEW_END = 1455, BLACK = 1350;
+function toOld(n) {
+  for (let k = 0; k < REMAP.length - 1; k++) { const [a, oa] = REMAP[k], [b, ob] = REMAP[k + 1]; if (n <= b) return oa + (ob - oa) * (n - a) / (b - a); }
+  return REMAP[REMAP.length - 1][1];
+}
+// door POV inserts during the knocks (new frames)
+const DOOR_CUTS = [[1120, 1162], [1195, 1265]];
+const inDoor = n => DOOR_CUTS.some(([a, b]) => n >= a && n < b);
+let NEWF = 0;
+function renderBlack(n) {
+  outCtx.fillStyle = '#000'; outCtx.fillRect(0, 0, W, H);
+  { const z = 1 + 0.0009 * (n - BLACK); outCtx.save(); outCtx.translate(W / 2, 930); outCtx.scale(z, z); outCtx.translate(-W / 2, -930); }
+  // the question lands with "who was standing outside?" (45.27 s); the Part 2 card joins after the last word
+  if (n >= 1358) bigText(outCtx, ['THEN WHO', 'KNOCKED?'], 760, clamp((n - 1358) / 10), 130, '#ffffff');
+  if (n >= 1408) { bigText(outCtx, ['PART 2'], 1110, clamp((n - 1408) / 8), 100, '#ffffff'); bigText(outCtx, ['FOLLOW TO FIND OUT'], 1220, clamp((n - 1412) / 8), 64, '#ff4a4a'); }
+  outCtx.restore();
+  return outCv.toDataURL('image/jpeg', 0.93);
+}
+window.renderFrame = function (n) {
+  NEWF = n;
+  if (n >= BLACK) return renderBlack(n);
+  return renderOld(toOld(n));
+};
+function renderOld(f) {
   const sh = shotAt(f);
-  if (sh.name === 'black') {
-    outCtx.fillStyle = '#000'; outCtx.fillRect(0, 0, W, H);
-    { const z = 1 + 0.0009 * (f - 945); outCtx.save(); outCtx.translate(W / 2, 930); outCtx.scale(z, z); outCtx.translate(-W / 2, -930); }
-    // question lands with the whispered "Then who knocked?" (32.5 s); the Part 2 card joins below it
-    if (f >= 972) bigText(outCtx, ['THEN WHO', 'KNOCKED?'], 760, clamp((f - 972) / 10), 130, '#ffffff');
-    if (f >= 1030) { bigText(outCtx, ['PART 2'], 1110, clamp((f - 1030) / 8), 100, '#ffffff'); bigText(outCtx, ['FOLLOW TO FIND OUT'], 1220, clamp((f - 1034) / 8), 64, '#ff4a4a'); }
-    outCtx.restore();
-    return outCv.toDataURL('image/jpeg', 0.93);
-  }
   // hallway lights: switch off one by one, far to near
   let on = 0;
   panels.forEach((p, k) => { const off = 12 + (11 - k) * 11; const lit = f < off; p.material.color.set(lit ? 0xffffff : 0x2a2a36); if (lit) on++; });
@@ -281,7 +304,8 @@ window.renderFrame = function (f) {
   kid.mesh.scale.setScalar(kidScale);
   let rise = 0; if (sh.name === 'silence') rise = 0.06 * sstep((f - 760) / 40);
   const bounce = sh.name === 'desk' && f < 266 ? 0.02 * Math.abs(Math.sin(f * 0.35)) : 0;
-  kid.mesh.position.set(KID.x, -0.24 + rise + bounce, KID.z);
+  const breathe = sh.name === 'silence' ? 0.006 * Math.sin(NEWF * 0.21) : 0;
+  kid.mesh.position.set(KID.x, -0.24 + rise + bounce + breathe, KID.z);
   guard.mesh.visible = false; aimTorch(V(0, 0, 0), V(0, 0, -1), 0);
   if (sh.name === 'corridor') {
     const z = -24 + (f - 310) * 0.14, step = Math.round(Math.sin((f - 310) * 0.28) * 10) / 10;
@@ -309,13 +333,19 @@ window.renderFrame = function (f) {
   const doorAng = sh.name === 'leave' ? -1.35 * (1 - sstep((f - 655) / 15)) : ['enter', 'stop', 'look'].includes(sh.name) ? -1.35 : 0;
   doorPivot.rotation.y = doorAng;
   lever.rotation.x = sh.name === 'handle' ? 0.6 * sstep((f - 885) / 55) : 0;
-  underDoor.visible = underShadow.visible = sh.name === 'handle' || (sh.name === 'silence' && f > 780);
-  moon.intensity = sh.name === 'handle' ? 0.9 : 0;
-  underShadow.position.z = -2.2 + 0.25 * sstep((f - 790) / 60);
+  underDoor.visible = underShadow.visible = sh.name === 'handle' || (sh.name === 'silence' && NEWF >= 1100);
+  moon.intensity = sh.name === 'handle' ? 0.9 : (sh.name === 'silence' && inDoor(NEWF)) ? 0.7 : 0;
+  underShadow.position.z = -2.2 + 0.25 * sstep((NEWF - 1205) / 50);
   // camera
   let [, cp, ct, fov, roll] = camFor(sh, f);
+  // keep long holds alive: slow push-in on the kid in the silence, slight drift on the handle close-up
+  if (sh.name === 'silence' && !inDoor(NEWF)) { cp = cp.clone().lerp(ct, 0.22 * sstep((NEWF - 990) / 200)); cp.y += 0.01 * Math.sin(NEWF * 0.05); }
+  if (sh.name === 'stop') cp = cp.clone().lerp(ct, 0.18 * clamp((NEWF - 594) / 132));
+  if (sh.name === 'look') cp = cp.clone().lerp(ct, 0.2 * clamp((NEWF - 726) / 129));
+  if (sh.name === 'handle') { cp = cp.clone().add(V(-0.0012 * (NEWF - 1265), 0.0006 * (NEWF - 1265), 0)); }
+  if (sh.name === 'silence' && inDoor(NEWF)) { const u = (NEWF - 1120) / 145; cp = V(17.5 - 0.08 * u, 0.42, -4.2 + 0.3 * u); ct = V(15.95, 0.62, -2.0); fov = 42; roll = 0; }
   let shake = 0;
-  for (const kf of [786, 828, 843]) if (f >= kf && f < kf + 6) shake += 0.008 * (1 + (kf - 786) / 60) * (1 - (f - kf) / 6);
+  for (const [kf, g] of [[1127, 1], [1141, 1.2], [1154, 1.45]]) if (NEWF >= kf && NEWF < kf + 6) shake += 0.009 * g * (1 - (NEWF - kf) / 6);
   camera.position.copy(cp).add(V(Math.sin(f * 2.3) * shake + 0.008 * Math.sin(f * 0.04), Math.cos(f * 1.7) * shake + 0.006 * Math.sin(f * 0.031), 0));
   camera.fov = fov; camera.updateProjectionMatrix(); camera.up.set(0, 1, 0); camera.lookAt(ct);
   camera.rotateZ(THREE.MathUtils.degToRad(roll || 0));
@@ -333,6 +363,6 @@ window.renderFrame = function (f) {
   if (sh.name === 'hook' && f < 172) bigText(outCtx, ['EVERYONE LEFT', 'EXCEPT YOU'], 1010, f < 160 ? 1 : clamp((172 - f) / 12), 118);
   if (sh.name === 'handle' && f >= 940) { outCtx.fillStyle = `rgba(0,0,0,${clamp((f - 940) / 4)})`; outCtx.fillRect(0, 0, W, H); }
   return outCv.toDataURL('image/jpeg', 0.93);
-};
-window.FRAMES = END;
+}
+window.FRAMES = NEW_END;
 window.ready = true;

@@ -1,15 +1,18 @@
-I Stayed in School After Dark (Part 1)
+I Stayed in School After Dark (Part 1) - final, owner's recording "who-was-standing-outside-cinematic.wav" (48.5 s)
 
-Narration v2 (Kokoro af_heart, chunked: v = soft voiced, e = stressed, w = whisper, we = stressed whisper; see cartoon/voice_build.py):
-  0.20- 2.24  Your dream... finally comes true.
-  2.39- 4.62  You're hiding in school after dark...
-  4.70- 6.05  and everyone is gone.
-  6.05- 9.66  No teachers. No students. No noise.
- 10.45-13.90  But every night, the guard checks every classroom...
- 16.10-19.80  He saw something... or maybe he saw me.
- 20.60-23.85  He walked out... and locked the classroom door.
- 29.30-31.50  The guard had already left.
- 32.50-34.62  Then who knocked?
+I finally got what I always wanted... The entire school was empty.        0.3-6.3
+No teachers. No students. No noise.                                        6.9-10.2
+But every night, the security guard checked every classroom.              11.5-15.4
+That night... he entered mine.                                             16.4-18.6
+His flashlight passed over my desk... and stopped.                         19.8-23.5
+For one terrifying second, I thought he had seen me.                       24.3-27.6
+Then he walked out... and locked the door.                                 28.7-31.3
+His footsteps slowly disappeared. I finally took a breath.                33.0-37.2
+[three knocks in the recording: 37.61, 38.05, 38.49]
+Then- three knocks came from the door. But the guard had already left.    38.8-44.0
+So... who was standing outside?                                            44.6-46.9
 
-On-screen text: EVERYONE LEFT / EXCEPT YOU (0-5.7 s); THEN WHO KNOCKED? from 32.4 s, joined by PART 2 / FOLLOW TO FIND OUT from 34.3 s.
-No music after 25 s. Knocks at 26.2, 27.6, 28.1 s (louder each time, the last at 0.9x the voice peak). Last 0.5 s silent.
+The recording carries its own drone bed, whoosh, torch click and knocks; cartoon/audio_vo3.py adds the rest in the
+pauses (light clunks, footsteps + keys, door creak, beam glide/swipe/stop hit, heartbeat, slam + key + bolt, fading
+steps, wooden-door body on the knocks, floorboard groan, handle creak + latch, riser + impact, last quiet knock).
+On-screen text: EVERYONE LEFT / EXCEPT YOU; THEN WHO KNOCKED? from 45.3 s; PART 2 / FOLLOW TO FIND OUT from 46.9 s.
