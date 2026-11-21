@@ -1,6 +1,7 @@
 """mix_school.py voice.wav music.wav sfx.wav out.wav
 Same level-lock as mix.py, but this reel asks for music "very subtle beneath the narration":
-music at 16 % of the voice's gated RMS (-16 dB), SFX at 50 % (-6 dB) with peaks capped at 0.7x the voice peak.
+music at 16 % of the voice's gated RMS (-16 dB). SFX are built in peak units (1.0 = the last, hardest knock) and
+scaled so that knock sits at 0.9x the voice peak: the owner asked for clear, evident knocks and effects.
 No ducking or compression. Last 0.5 s forced to digital silence."""
 import sys
 import numpy as np, soundfile as sf
@@ -18,9 +19,7 @@ v, m, s = (load(p) for p in sys.argv[1:4])
 n = max(len(v), len(m), len(s)); v, m, s = (np.pad(a, (0, n - len(a))) for a in (v, m, s))
 rv = gated_rms(v)
 m *= 0.16 * rv / gated_rms(m)
-s *= 0.50 * rv / gated_rms(s)
-cap = 0.7 * np.abs(v).max()
-if np.abs(s).max() > cap: s *= cap / np.abs(s).max()
+s *= 0.9 * np.abs(v).max()
 db = lambda a, b: 20 * np.log10(gated_rms(a) / gated_rms(b))
 print(f"music vs voice: {db(m, v):+.1f} dB   sfx vs voice: {db(s, v):+.1f} dB   sfx peak/voice peak: {np.abs(s).max() / np.abs(v).max():.2f}")
 mix = v + m + s

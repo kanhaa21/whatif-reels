@@ -54,70 +54,91 @@ fo = np.ones(N); i0, i1 = at(23.9), at(25.0); fo[i0:i1] = np.linspace(1, 0, i1 -
 music *= fo
 
 # ---------------- SFX ----------------
-# room tone through the whole piece (very quiet), slow breathing air movement
-x = tt(35.0); tone = lp(noise(35.0), 380) * (0.8 + 0.2 * np.sin(2 * np.pi * 0.09 * x)) + 0.15 * hp(noise(35.0), 5000)
-add(sfx, tone * np.minimum(1, x / 0.6), 0.0, 0.05)
-# fluorescent buzz: 100 Hz + harmonics, quieter as the 12 panels go off (frames 12..133), then a tiny residue
-x = tt(10.0); hum = sum(np.sin(2 * np.pi * 100 * h * x) / h for h in (1, 2, 3, 5, 7))
-lit = np.clip(1 - np.maximum(0, x - F(12)) / (F(133) - F(12)), 0, 1)
-add(sfx, hp(hum, 150) * (0.15 + 0.85 * lit) * np.minimum(1, (10 - x) / 2), 0.0, 0.035)
-for k in range(12):  # relay clunk for each panel, far ones quieter
-    off = 12 + (11 - k) * 11; c = bp(noise(0.05), 600, 3000) * np.exp(-tt(0.05) * 90) + 0.6 * np.sin(2 * np.pi * 90 * tt(0.05)) * np.exp(-tt(0.05) * 60)
-    add(sfx, room(c, 0.6), F(off), 0.10 + 0.25 * k / 11)
-# one distant school bell, after "No noise."
-x = tt(3.0); bell = sum(a * np.sin(2 * np.pi * 880 * r * x) * np.exp(-x * d) for a, r, d in ((1, 1, 1.4), (0.5, 2.76, 2.4), (0.3, 5.4, 4), (0.2, 0.5, 1.0)))
-bell *= (1 + 0.5 * np.sin(2 * np.pi * 7 * x)) * np.minimum(1, x / 0.01)  # one short ring burst, trembling
-bell = lp(room(bell, 0.9), 2200)
-add(sfx, bell, 9.95, 0.09)
-# footsteps: heel + scuff on tiles, louder as the guard approaches (corridor f310-414, inside f470-495)
-def step(g):
-    h = lp(noise(0.12), 900) * np.exp(-tt(0.12) * 55) + 0.8 * np.sin(2 * np.pi * 75 * tt(0.12)) * np.exp(-tt(0.12) * 40)
-    s = bp(noise(0.12), 1500, 5000) * np.exp(-tt(0.12) * 30) * 0.25
-    return room(h + s, 0.6) * g
-for k in range(10):
-    f = 310 + 11.2 * k + 3; add(sfx, step(1), F(f), 0.10 + 0.30 * k / 9)
-for f in (473, 484, 495): add(sfx, step(1), F(f), 0.45)
-# flashlight click on
-c = bp(noise(0.02), 2500, 8000) * np.exp(-tt(0.02) * 300); add(sfx, c, F(311), 0.35); add(sfx, c, F(311) + 0.035, 0.25)
-# low bass tension when the torch stops on the desk (f520) and he looks (to f594)
-x = tt(3.4); sw = np.sin(2 * np.pi * np.cumsum(38 + 4 * x / 3.4) / SR) + 0.5 * np.sin(2 * np.pi * 57 * x)
-sw = lp(sw + 0.4 * lp(noise(3.4), 120), 160) * np.minimum(1, x / 0.6) ** 2 * np.minimum(1, (3.4 - x) / 0.9)
-add(sfx, sw, F(510), 0.15)
-# guard turns to leave: steps out
-for f in (618, 630, 642, 654): add(sfx, step(1), F(f), 0.38)
-# door shuts (f670) + lock click (f678)
-x = tt(0.6); thud = lp(noise(0.6), 300) * np.exp(-x * 14) + np.sin(2 * np.pi * 62 * x) * np.exp(-x * 11)
-add(sfx, room(thud, 0.7), F(669), 0.6)
-k1 = bp(noise(0.03), 2000, 7000) * np.exp(-tt(0.03) * 200); k2 = bp(noise(0.05), 1200, 5000) * np.exp(-tt(0.05) * 120)
-add(sfx, room(k1, 0.4), F(678), 0.55); add(sfx, room(k2, 0.4), F(678) + 0.09, 0.7)
-# footsteps fading behind the door, slower and further
-for k in range(9):
-    add(sfx, lp(step(1), 700 - 50 * k), F(690) + k * 0.42, 0.30 * (1 - k / 9) ** 1.5)
-# three knocks on the wooden door, getting harder: 786 (one), 828 + 843 (two)
-def knock(g):
-    d = 0.35; x = tt(d)
-    body = sum(a * np.sin(2 * np.pi * fr * x) * np.exp(-x * dc) for a, fr, dc in ((1, 160, 28), (0.6, 245, 34), (0.4, 380, 45)))
-    click = bp(noise(d), 1500, 4500) * np.exp(-x * 160) * 0.7
-    thump = lp(noise(d), 250) * np.exp(-x * 50)
-    return room((body + click + thump) * np.minimum(1, x / 0.0015), 0.45) * g
-add(sfx, knock(1.0), F(786), 0.9)
-add(sfx, knock(1.0), F(828), 1.2)
-add(sfx, knock(1.0), F(843), 1.5)
-# slow door-handle creak (f885-940) + latch at the end of the turn
-d = F(940) - F(885); x = tt(d)
-rate = 22 + 18 * np.sin(np.pi * x / d) + 4 * rng.standard_normal(len(x)).cumsum() / np.sqrt(SR) * 3
-ph = np.cumsum(rate) / SR; pulses = (np.diff(np.floor(ph), prepend=0) > 0).astype(float)
-cr = bp(np.convolve(pulses, np.exp(-tt(0.004) * 900), 'same') + 0.05 * noise(d), 700, 2600)
-add(sfx, room(cr * np.sin(np.pi * x / d) ** 0.5, 0.5), F(885), 2.2)
-add(sfx, room(bp(noise(0.04), 1500, 6000) * np.exp(-tt(0.04) * 150), 0.5), F(938), 0.5)
-# one low cinematic impact right before the cut to black (f943)
-x = tt(2.6); boom = np.sin(2 * np.pi * np.cumsum(30 + 45 * np.exp(-x * 6)) / SR) * np.exp(-x * 1.9)
-boom += 0.6 * lp(noise(2.6), 140) * np.exp(-x * 3.0) + 0.3 * bp(noise(2.6), 200, 1200) * np.exp(-x * 20)
-add(sfx, boom * np.minimum(1, x / 0.003), F(943), 1.3)
+# Every event is normalised to its own peak (1.0 = the loudest knock); mix_school.py sets knock 3 just under the voice peak.
+def hit(x, t, pk): add(sfx, x / (np.abs(x).max() + 1e-12) * pk, t)
+IR2 = lp(noise(1.6), 6000) * np.exp(-tt(1.6) * 3.6); IR2[0] = 0; IR2 /= np.sqrt(np.sum(IR2 ** 2))
+def hall(x, wet=0.5): y = fftconvolve(x, IR2); z = np.zeros(len(y)); z[:len(x)] = x; return z + wet * y
+def modes(ex, fr):  # excitation through a bank of decaying resonances
+    x = tt(len(ex) / SR); out = np.zeros(len(ex))
+    for f, a, d in fr: out += a * fftconvolve(ex, np.sin(2 * np.pi * f * x) * np.exp(-x * d))[:len(ex)]
+    return out
+# room tone (quiet but present)
+x = tt(35.0); tone = lp(noise(35.0), 400) * (0.8 + 0.2 * np.sin(2 * np.pi * 0.09 * x)) + 0.2 * hp(noise(35.0), 4000)
+hit(tone * np.minimum(1, x / 0.6), 0.0, 0.035)
+# fluorescent buzz with audible harmonics (phones don't play 100 Hz), dying as the panels go off
+x = tt(9.5); hum = sum(np.sin(2 * np.pi * 100 * h * x) / h ** 0.6 for h in (1, 2, 3, 4, 5, 6, 7, 9, 11))
+hum = np.tanh(2.5 * hum) * (1 + 0.3 * np.sin(2 * np.pi * 0.7 * x))
+lit = np.clip(1 - np.maximum(0, x - F(12)) / (F(140) - F(12)), 0, 1) ** 0.7
+hit(bp(hum, 180, 4000) * (0.08 + 0.92 * lit) * np.minimum(1, (9.5 - x) / 2), 0.0, 0.08)
+for k in range(12):  # heavy relay clunk as each panel dies (near ones louder)
+    off = 12 + (11 - k) * 11; d = 0.25; x = tt(d)
+    c = modes(np.r_[noise(0.004), np.zeros(int(d * SR) - int(0.004 * SR))], ((140, 1, 40), (620, 0.6, 70), (1900, 0.4, 120)))
+    c += bp(noise(d), 2000, 7000) * np.exp(-x * 220) * 0.5 * np.abs(c).max()
+    hit(hall(c, 0.6), F(off), 0.16 + 0.24 * k / 11)
+# one distant school bell (single electric ring burst, about 0.9 s, carried down the hallway)
+x = tt(0.9); bell = sum(a * np.sin(2 * np.pi * 1050 * r * x) for a, r in ((1, 1), (0.6, 2.71), (0.4, 4.1), (0.25, 5.9)))
+bell *= (0.55 + 0.45 * np.sign(np.sin(2 * np.pi * 22 * x))) * np.minimum(1, x / 0.01) * np.minimum(1, (0.9 - x) / 0.15)
+hit(lp(hall(bell, 1.2), 3800), 9.75, 0.38)
+# footsteps: hard heel click + thud, then a softer toe 60 ms later; hallway reverb
+def step(br=1.0):
+    d = 0.18; x = tt(d)
+    heel = bp(noise(d), 1800, 6500) * np.exp(-x * 160) * br + 0.9 * modes(np.r_[noise(0.003), np.zeros(int(d * SR) - int(0.003 * SR))], ((110, 1, 45), (420, 0.5, 80)))
+    toe = np.zeros(len(heel)); n = int(0.06 * SR); toe[n:] = 0.35 * bp(noise(d), 1500, 5000)[:len(heel) - n] * np.exp(-x[:len(heel) - n] * 200)
+    return hall(heel + toe, 0.55)
+for k in range(10): hit(step(), F(310 + 11.2 * k + 3), 0.14 + 0.34 * k / 9)
+for f in (473, 484, 495): hit(step(), F(f), 0.5)
+# flashlight: two-stage plastic switch click
+c = np.r_[bp(noise(0.012), 3000, 9000) * np.exp(-tt(0.012) * 500), np.zeros(int(0.03 * SR)), 0.7 * bp(noise(0.015), 2000, 7000) * np.exp(-tt(0.015) * 400)]
+hit(hall(c, 0.3), F(311) - 0.1, 0.5)
+# tension when the torch stops on the desk: saturated low drone + high dissonant whine, so phones hear it too
+x = tt(3.4); sw = np.tanh(3 * (np.sin(2 * np.pi * np.cumsum(41 + 5 * x / 3.4) / SR) + 0.5 * np.sin(2 * np.pi * 61.5 * x)))
+whine = 0.05 * (np.sin(2 * np.pi * 1480 * x) + np.sin(2 * np.pi * 1568 * x))
+sw = (bp(sw, 40, 900) + whine) * np.minimum(1, x / 0.5) ** 2 * np.minimum(1, (3.4 - x) / 0.9)
+hit(sw, F(508), 0.11)
+# guard leaves: steps out, door slams shut, key turns, bolt clacks
+for f in (618, 630, 642, 654): hit(step(), F(f), 0.34)
+d = 0.7; x = tt(d)
+thud = modes(np.r_[noise(0.006), np.zeros(int(d * SR) - int(0.006 * SR))], ((72, 1, 12), (150, 0.8, 20), (310, 0.5, 30), (900, 0.25, 60)))
+thud += np.r_[np.zeros(int(0.03 * SR)), bp(noise(d - 0.03), 1500, 6000) * np.exp(-tt(d - 0.03) * 120) * 0.6 * np.abs(thud).max()][:len(thud)]
+hit(hall(thud, 0.6), F(668), 0.62)
+scrape = bp(noise(0.16), 1200, 4500) * np.sin(np.pi * tt(0.16) / 0.16) * (0.6 + 0.4 * np.sin(2 * np.pi * 45 * tt(0.16)))
+hit(hall(scrape, 0.3), F(676), 0.3)
+d = 0.35; x = tt(d)
+clack = sum(a * np.sin(2 * np.pi * f * x) * np.exp(-x * dc) for f, a, dc in ((2350, 1, 40), (3720, 0.7, 55), (5150, 0.5, 70), (180, 0.8, 35)))
+clack = clack * np.minimum(1, x / 0.001) + bp(noise(d), 2000, 8000) * np.exp(-x * 300) * 1.5
+hit(hall(clack, 0.4), F(676) + 0.17, 0.6)
+# his footsteps fading down the hallway, muffled through the door
+for k in range(9): hit(lp(step(), 1400 - 110 * k), F(690) + k * 0.43, 0.42 * (1 - k / 9) ** 1.4)
+# three knocks on the wooden classroom door, each harder: 786 (one) ... 828, 843 (two)
+def knock(force):
+    d = 0.6; ex = np.r_[noise(0.0025) * np.hanning(int(0.0025 * SR)), np.zeros(int(d * SR) - int(0.0025 * SR))]
+    m = modes(ex, ((92, 1.0, 18), (138, 0.9, 22), (205, 0.8, 26), (310, 0.6, 34), (455, 0.45, 45),
+                   (690, 0.35 * force, 60), (1040, 0.25 * force, 80), (1600, 0.18 * force, 110)))
+    knuckle = bp(noise(d), 1200, 5000) * np.exp(-tt(d) * 260) * 0.35 * force * np.abs(m).max()
+    return hall(np.tanh(1.5 * (m + knuckle) / np.abs(m + knuckle).max()), 0.75)
+hit(knock(0.8), F(786), 0.72)
+hit(knock(1.0), F(828), 0.86)
+hit(knock(1.3), F(843), 1.0)
+# door handle turning from the other side: stick-slip metal squeak + spring groan, then the latch clunk
+d = F(940) - F(885); x = tt(d); u = x / d
+f0 = 820 + 420 * u + 60 * np.sin(2 * np.pi * 1.3 * x)
+sq = sum(np.sin(2 * np.pi * h * np.cumsum(f0) / SR) / h for h in (1, 2, 3, 4))
+slip = 0.5 + 0.5 * np.sign(np.sin(2 * np.pi * np.cumsum(28 + 14 * np.sin(np.pi * u)) / SR))
+groan = np.tanh(2 * np.sin(2 * np.pi * np.cumsum(140 + 30 * u) / SR)) * 0.4
+cr = (bp(sq * slip, 600, 4000) + bp(groan, 100, 900)) * np.sin(np.pi * u) ** 0.4
+hit(hall(cr, 0.4), F(885), 0.24)
+latch = modes(np.r_[noise(0.003), np.zeros(int(0.3 * SR) - int(0.003 * SR))], ((160, 1, 40), (2100, 0.6, 60), (3300, 0.4, 80)))
+hit(hall(latch, 0.4), F(938), 0.5)
+# riser into one low cinematic impact before black (f943); mid-range body so phones hear it
+x = tt(1.0); riser = bp(noise(1.0), 300, 3000) * (x / 1.0) ** 3 * np.minimum(1, (1.0 - x) / 0.03)
+hit(riser, F(943) - 1.0, 0.25)
+x = tt(2.6); boom = np.sin(2 * np.pi * np.cumsum(38 + 70 * np.exp(-x * 6)) / SR) * np.exp(-x * 1.9)
+boom = np.tanh(2.2 * boom) + 0.7 * lp(noise(2.6), 400) * np.exp(-x * 4.0) + 0.5 * bp(noise(2.6), 300, 2500) * np.exp(-x * 18)
+hit(hall(boom * np.minimum(1, x / 0.002), 0.5), F(943), 0.95)
 
 # hard silence for the last 0.5 s
 for b in (music, sfx):
     i = at(DUR - 0.5); j = at(DUR - 0.8); b[j:i] *= np.linspace(1, 0, i - j); b[i:] = 0
-for b in (music, sfx): b /= np.abs(b).max() / 0.9  # stems are level-locked later in mix_school.py
+music /= np.abs(music).max() / 0.9  # music is level-locked in mix_school.py; sfx keeps its peak units
 sf.write('work/music.wav', music, SR, subtype='FLOAT'); sf.write('work/sfx.wav', sfx, SR, subtype='FLOAT')
 print('stems written', DUR)

@@ -264,8 +264,9 @@ window.renderFrame = function (f) {
   if (sh.name === 'black') {
     outCtx.fillStyle = '#000'; outCtx.fillRect(0, 0, W, H);
     { const z = 1 + 0.0009 * (f - 945); outCtx.save(); outCtx.translate(W / 2, 930); outCtx.scale(z, z); outCtx.translate(-W / 2, -930); }
-    if (f >= 958 && f < 1018) bigText(outCtx, ['THEN WHO', 'KNOCKED?'], 880, clamp((f - 958) / 12) * (f > 1008 ? clamp((1018 - f) / 10) : 1), 130, '#ffffff');
-    if (f >= 1018) { bigText(outCtx, ['PART 2'], 840, clamp((f - 1018) / 10), 140, '#ffffff'); bigText(outCtx, ['FOLLOW TO FIND OUT'], 1010, clamp((f - 1024) / 10), 70, '#ff4a4a'); }
+    // question lands with the whispered "Then who knocked?" (32.5 s); the Part 2 card joins below it
+    if (f >= 972) bigText(outCtx, ['THEN WHO', 'KNOCKED?'], 760, clamp((f - 972) / 10), 130, '#ffffff');
+    if (f >= 1030) { bigText(outCtx, ['PART 2'], 1110, clamp((f - 1030) / 8), 100, '#ffffff'); bigText(outCtx, ['FOLLOW TO FIND OUT'], 1220, clamp((f - 1034) / 8), 64, '#ff4a4a'); }
     outCtx.restore();
     return outCv.toDataURL('image/jpeg', 0.93);
   }
