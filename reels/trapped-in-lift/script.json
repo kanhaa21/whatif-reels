@@ -1,0 +1,174 @@
+{
+ "title": "What If You Got Trapped in a Lift With No Signal?",
+ "style": "card",
+ "lang": "en-us",
+ "voice": "af_heart",
+ "timing": {
+  "lead": 0.15,
+  "gap": 0.3,
+  "tail": 1.0,
+  "precut": 0.1,
+  "grid": 0.3
+ },
+ "end_cta": "SEND THIS TO SOMEONE WHO HATES LIFTS",
+ "lines": [
+  [
+   [
+    "The lift just stopped,",
+    "dramatic",
+    0.1,
+    0.95,
+    null
+   ],
+   [
+    "and your phone has no signal.",
+    "low",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "First instinct: pry the doors open.",
+    "build",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Don't!",
+    "dramatic",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Four calm moves get you out. Move three kills the biggest fear.",
+    "question",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "One: press door open.",
+    "excited",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Sometimes you're right at a floor.",
+    "normal",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Two: press the alarm.",
+    "excited",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "The lift has its own bell and intercom.",
+    "normal",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Three: breathe.",
+    "warm",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "You will not run out of air.",
+    "dramatic",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Lifts have air vents built in.",
+    "deadpan",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Four: stay inside and wait.",
+    "warm",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "It could start moving again.",
+    "low",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "That roof hatch? It's for rescuers, not action heroes.",
+    "deadpan",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Did you know about the air vents?",
+    "question",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Comment yes or no!",
+    "excited",
+    0.1,
+    0.95,
+    null
+   ],
+   [
+    "Send this to someone who hates lifts!",
+    "funny",
+    0,
+    0.97,
+    null
+   ]
+  ]
+ ],
+ "post": {
+  "instagram": "The lift stops between floors, and your phone shows 0 bars 😰\n\nDon't pry the doors: you may be facing a wall. Press door open, press the alarm, breathe (lifts have air vents, you won't run out of air), and stay inside. That roof hatch is for rescuers, not action heroes.\n\nDid you know about the air vents? Comment YES or NO.\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #LiftSafety #ElevatorSafety #SafetyTips #EmergencyTips",
+  "instagram_first_comment": "Did you know lifts have air vents? Comment YES or NO 👇",
+  "facebook": "The lift stops between floors, and your phone shows 0 bars 😰\n\nDid you know about the air vents? Comment YES or NO.\n\nShare this with someone who hates lifts.\n\n#WhatIf #LiftSafety #SafetyTips",
+  "facebook_title": "Trapped in a lift with no signal?",
+  "youtube_title": "Trapped in a Lift With No Signal? Do These 4 Things 😰 #shorts",
+  "youtube_description": "If a lift stops between floors, don't pry the doors open: the car may not be at a door opening, and a stuck lift could start moving again. Press door open (sometimes you're at a floor), press the alarm or use the intercom, breathe (lifts have air vents, so you won't run out of air) and stay inside until trained help arrives. The roof hatch is for rescuers only.\n\nDid you know about the air vents? Comment YES or NO.\nSubscribe for a new what-if every day.\n\n#shorts #LiftSafety #ElevatorSafety",
+  "youtube_tags": [
+   "trapped in a lift",
+   "stuck in elevator what to do",
+   "lift stuck between floors",
+   "elevator safety",
+   "can you run out of air in an elevator",
+   "lift safety tips",
+   "what if",
+   "kaamkagyann"
+  ]
+ }
+}

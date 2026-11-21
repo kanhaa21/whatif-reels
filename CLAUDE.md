@@ -52,7 +52,7 @@ The first four reels each got only a few views. Instagram's head says the top ra
    **Owner's queue (set 18 Nov 2026), used before the rule above:** one reel a day. The reel for Fri 20 Nov is "What if you became invisible for a day?"; the reel for Sat 21 Nov is "What if your lift cable snapped on the 40th floor?". Skip any of these whose Status is already filled in. After both are done, go to the next queue.
    **Owner's everyday-emergencies queue (set 20 Nov 2026), used next, one topic a day in this order.** Each comes with the owner's hook line; use it (or a close variant) as the first spoken line and show the situation in the first second:
    1. Phone catches fire while charging: "Your phone starts smoking beside your pillow." (made on 21 Nov 2026 as `reels/phone-fire-charging` in card style; sent to the owner for approval, not scheduled)
-   2. Trapped in a lift: "The lift stopped, and your phone has no signal."
+   2. Trapped in a lift: "The lift stopped, and your phone has no signal." (made on 21 Nov 2026 as `reels/trapped-in-lift` in card style; sent to the owner for approval, not scheduled)
    3. Car breaks down in the middle of nowhere: "No network. No lights. 20 kilometres from help."
    4. Lost in a parking garage: "The same car has passed you three times."
    5. Gas leak at night: "You smell gas, but the kitchen light is already on."
