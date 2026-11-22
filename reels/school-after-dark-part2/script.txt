@@ -1,0 +1,21 @@
+I Stayed in School After Dark (Part 2) - AI narration (voice_build.py: am_michael whispered narrator,
+'guard' mimic = am_onyx lowered and doubled, 'mom' mimic = af_bella with an octave-down shadow). 51.64 s.
+
+The handle turned... and the door he locked... slowly opened.  0.2-4.5
+Nobody was there.                                              5.8-7.0
+Then footprints appeared on the floor... one by one... coming toward my desk. 7.7-12.8
+They stopped right in front of me.                             13.3-15.6
+[GUARD MIMIC] Is anyone in here?                                             16.7-18.4
+That was the guard's voice... but the guard had gone home.     19.4-22.8
+I ran.                                                         23.4-24.1
+Under the exit sign... something tall was waiting. It had no face. 24.8-30.1
+The lights died, one by one... coming for me.                  30.6-33.7
+I hid in a locker. My phone lit up.                            34.4-37.2
+[MOM MIMIC] Beta... open the door. It's me.                                38.9-41.8
+But Mom... was still at the gate.                              42.7-45.1
+So who was outside my locker?                                  46.3-48.4
+
+On-screen: THE LOCKED DOOR / OPENED... (0-2.3 s); phone: Mom 'I'm at the school gate. Where are you?', then
+'Why aren't you answering?? I'm STILL at the gate.'; end card THEN WHO IS / OUTSIDE? + PART 3 / FOLLOW TO FIND OUT.
+Captions burned in (red typewriter, mimic voices in white italics), as the owner asked on 23 Nov 2026.
+Hook for Part 3: the thing copies voices (the guard, then Mom), and it is standing outside the locker.

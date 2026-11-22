@@ -1,0 +1,114 @@
+"""Narration for 'I Stayed in School After Dark' (Part 2). Same chunked whisper/stress method as the Part 1 v2 voice,
+but with a low male narrator (Part 1's final narration was a low male voice) plus two "mimic" voices:
+  guard = the thing outside, copying the guard: very low, slowed, doubled a semitone apart (uncanny), long tail
+  mom   = the thing outside the locker, copying Mom: soft and close, a faint octave-down shadow under it
+Modes: v = soft voiced, e = stressed voiced, w = whisper (LPC re-excited with noise), we = stressed whisper.
+Lines run back to back with a gap before each (room for the effects). Writes voice.wav + work/phrases.json
+(phrase start/end and every chunk's start/end, which the picture and captions lock to)."""
+import json, os, sys
+import numpy as np, soundfile as sf, parselmouth
+from parselmouth.praat import call
+from scipy.signal import butter, sosfilt, fftconvolve
+from kokoro_onnx import Kokoro
+sys.path.insert(0, '/home/claude/whatif-reels')
+from reelkit.voice import shape, _trim
+
+M = os.path.expanduser('~/.cache/reelkit'); k = Kokoro(f'{M}/kokoro-v1.0.onnx', f'{M}/voices-v1.0.bin')
+SR = 24000; rng = np.random.default_rng(7)
+NARR = 'am_michael'
+MODE = {'v': (0.12, 1.00), 'e': (0.10, 1.35), 'w': (0.95, 1.05), 'we': (0.95, 1.45)}
+# (gap before, [(text, mode, style, speed, gain, gap after)], who)
+L = [
+ (0.25, [("The handle turned...", 'w', 'low', 0.84, 1.0, 0.35), ("and the door he locked...", 'v', 'low', 0.88, 0.95, 0.12),
+         ("slowly opened.", 'we', 'dramatic', 0.8, 1.0, 0)], 'n'),
+ (1.25, [("Nobody was there.", 'we', 'low', 0.82, 1.0, 0)], 'n'),
+ (0.7, [("Then footprints appeared on the floor...", 'v', 'low', 0.9, 0.95, 0.3), ("one by one...", 'w', 'low', 0.8, 0.95, 0.25),
+        ("coming toward my desk.", 'e', 'dramatic', 0.86, 1.0, 0)], 'n'),
+ (0.55, [("They stopped", 'we', 'low', 0.8, 1.0, 0.15), ("right in front of me.", 'w', 'low', 0.8, 0.9, 0)], 'n'),
+ (1.1, [("Is anyone in here?", None, None, 0.78, 1.0, 0)], 'guard'),
+ (1.0, [("That was the guard's voice...", 'v', 'low', 0.9, 0.95, 0.3), ("but the guard had gone home.", 'we', 'dramatic', 0.82, 1.0, 0)], 'n'),
+ (0.6, [("I ran.", 'e', 'dramatic', 0.9, 1.1, 0)], 'n'),
+ (0.7, [("Under the exit sign...", 'v', 'low', 0.9, 0.95, 0.2), ("something tall was waiting.", 'we', 'low', 0.82, 1.0, 0.5),
+        ("It had no face.", 'we', 'dramatic', 0.78, 1.05, 0)], 'n'),
+ (0.5, [("The lights died, one by one...", 'v', 'low', 0.9, 0.95, 0.15), ("coming for me.", 'we', 'dramatic', 0.8, 1.0, 0)], 'n'),
+ (0.7, [("I hid in a locker.", 'w', 'low', 0.85, 0.95, 0.4), ("My phone lit up.", 'v', 'normal', 0.92, 0.95, 0)], 'n'),
+ (1.7, [("Beta... open the door.", None, None, 0.82, 1.0, 0.35), ("It's me.", None, None, 0.78, 1.0, 0)], 'mom'),
+ (0.9, [("But Mom...", 'w', 'low', 0.82, 0.95, 0.25), ("was still at the gate.", 'we', 'dramatic', 0.78, 1.05, 0)], 'n'),
+ (1.2, [("So who was outside my locker?", 'w', 'question', 0.8, 1.0, 0)], 'n'),
+]
+BREATHS_AFTER = {0: [('in', 0.6, 0.8)], 1: [('shaky', 0.2, 1.0)], 3: [('shaky', 0.25, 1.1)], 4: [('shaky', 0.3, 1.0)],
+                 6: [('out', 0.1, 0.9)], 8: [('in', 0.25, 0.9)], 9: [('shaky', 0.35, 0.9)], 10: [('shaky', 0.25, 1.1)]}
+TAIL = 3.2   # end card hold after the last word
+
+def bpf(x, lo, hi): return sosfilt(butter(2, [lo, hi], 'bandpass', fs=SR, output='sos'), x)
+def lpf(x, f): return sosfilt(butter(2, f, 'lowpass', fs=SR, output='sos'), x)
+def env_rms(x, hop=120):
+    n = len(x) // hop + 1; r = np.sqrt(np.array([np.mean(x[i*hop:(i+1)*hop]**2) if len(x[i*hop:(i+1)*hop]) else 0 for i in range(n)]) + 1e-12)
+    return np.repeat(np.convolve(r, np.ones(3) / 3, mode='same'), hop)[:len(x)]
+def whisperize(x, amt):
+    snd = parselmouth.Sound(x.astype(np.float64), sampling_frequency=SR)
+    lpc = call(snd, "To LPC (burg)", 18, 0.025, 0.005, 50.0)
+    noise = parselmouth.Sound(rng.standard_normal(len(x)) * 0.1, sampling_frequency=SR)
+    w = call([lpc, noise], "Filter", "no").values[0][:len(x)]
+    w = sosfilt(butter(2, 300, 'highpass', fs=SR, output='sos'), w)
+    w = w + 0.6 * bpf(w, 2000, 5500)
+    w = w * np.minimum(env_rms(x) / (env_rms(w) + 1e-6), 20)
+    return (1 - amt) * x + amt * w + (0.08 * x if amt > 0.5 else 0)
+def rms(x): return np.sqrt(np.mean(x[np.abs(x) > 0.02 * np.abs(x).max()] ** 2))
+def regender(x, pitch, formant=1.0, rng_=1.0):
+    snd = parselmouth.Sound(x.astype(np.float64), sampling_frequency=SR)
+    return call(snd, "Change gender", 60, 600, formant, pitch, rng_, 1.0).values[0]
+IR = lpf(rng.standard_normal(int(1.8 * SR)), 5000) * np.exp(-np.arange(int(1.8 * SR)) / SR * 3.2); IR[0] = 0; IR /= np.sqrt(np.sum(IR ** 2))
+def verb(x, wet): y = fftconvolve(x, IR); z = np.zeros(len(y)); z[:len(x)] = x; return z + wet * y
+
+def guard_voice(text, sp):
+    s, sr = k.create(text, voice='am_onyx', speed=sp, lang='en-us'); s = _trim(s, sr)
+    a = regender(s, 72, 0.88, 0.5)                      # lower and flatter than any real guard
+    b = regender(s, 68, 0.84, 0.5)                      # second copy, a semitone under: two throats, one voice
+    n = int(0.022 * SR); b = np.r_[np.zeros(n), b][:len(a)]
+    x = a + 0.55 * b + 0.25 * whisperize(a, 1.0)
+    x = lpf(x, 3800)                                    # heard through a door
+    return verb(x, 0.45)
+def mom_voice(text, sp, last):
+    s, sr = k.create(text, voice='af_bella', speed=sp, lang='en-us'); s = _trim(s, sr)
+    s = whisperize(shape(s, sr, 'soft', 100, 600), 0.35)
+    if last:                                            # the copy slips: an octave-down shadow under "It's me."
+        sh = regender(s, 95, 0.8, 0.6); s = s + 0.35 * sh[:len(s)]
+    return verb(lpf(s, 5000), 0.18)
+
+out = np.zeros(int(90 * SR)); meta = []; prev_end = 0.0; breaths = []
+for li, (gap0, chunks, who) in enumerate(L):
+    t = prev_end + gap0; t0 = t; ch_meta = []
+    for ci, (text, mode, style, sp, g, gap) in enumerate(chunks):
+        if who == 'guard': s = guard_voice(text, sp); s = s / rms(s) * 0.085 * g
+        elif who == 'mom': s = mom_voice(text, sp, ci == len(chunks) - 1); s = s / rms(s) * 0.07 * g
+        else:
+            amt, mg = MODE[mode]
+            s, sr = k.create(text, voice=NARR, speed=sp, lang='en-us')
+            s = whisperize(shape(_trim(s, sr), sr, style, 100, 600), amt)
+            s = s / rms(s) * 0.075 * mg * g
+            n = int((0.25 if text.endswith(('.', '?')) and mode == 'w' else 0.06) * SR); s[-n:] *= np.linspace(1, 0, n) ** 1.5
+        i = int(t * SR); out[i:i + len(s)] += s
+        # chunk end = where the speech energy ends (ignores reverb tails)
+        e = env_rms(s); spoken = np.nonzero(e > 0.08 * e.max())[0]; dur = (spoken[-1] + 1) / SR if len(spoken) else len(s) / SR
+        ch_meta.append({"text": text, "s": round(t, 3), "e": round(t + dur, 3)})
+        t += dur + gap
+    prev_end = t
+    meta.append({"text": " ".join(c[0] for c in chunks), "who": who, "s": round(t0, 3), "e": round(t, 3), "chunks": ch_meta})
+    for kind, off, lv in BREATHS_AFTER.get(li, []): breaths.append((t + off, kind, lv))
+    print(f"{li:2d} {t0:6.2f} -> {t:6.2f}  [{who}] {' | '.join(c[0] for c in chunks)}")
+
+def breath(kind):
+    d = {'in': 0.6, 'out': 0.75, 'shaky': 0.85}[kind]; n = int(d * SR); x = rng.standard_normal(n); u = np.linspace(0, 1, n)
+    if kind == 'out': x = bpf(x, 250, 1800); e = np.minimum(1, u / 0.12) * (1 - u) ** 1.3
+    else: x = bpf(x, 500, 3200) + 0.4 * bpf(x, 3500, 6000); e = np.sin(np.pi * u) ** 1.2
+    if kind == 'shaky': e = e * (0.55 + 0.45 * np.abs(np.sin(2 * np.pi * 6.5 * u * d)))
+    return x * e
+for t, kind, lv in breaths:
+    b = breath(kind); i = int(t * SR); b = b / np.abs(b).max() * 0.085 * lv; out[i:i + len(b)] += b
+TOTAL = round(prev_end + TAIL, 2)
+out = out[:int(TOTAL * SR)]; out[int((TOTAL - 0.5) * SR):] = 0
+out = out / max(1.0, np.abs(out).max() / 0.95)
+sf.write('voice.wav', out.astype(np.float32), SR)
+json.dump({"duration": TOTAL, "phrases": meta}, open('work/phrases.json', 'w'), indent=1)
+print("total", TOTAL)
