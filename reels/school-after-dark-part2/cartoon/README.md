@@ -1,6 +1,7 @@
 # School After Dark Part 2: build
 
-    python3 voice_build.py                         # voice.wav + work/phrases.json (all timings)
+    python3 voice_build.py                         # voice.wav; chunks placed at work/phrases_lock.json times
+                                                   # w/we chunks use whisper2.py (tense whisper matched to work/ref_tensed_whisper.wav)
     cp work/phrases.json web/phrases.json
     cat web/base_part1.js web/story.js > web/main.js
     cd web && npm i three@0.160.0 && python3 -m http.server 8767 --bind 127.0.0.1 &

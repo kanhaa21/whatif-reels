@@ -12,6 +12,7 @@ from scipy.signal import butter, sosfilt, fftconvolve
 from kokoro_onnx import Kokoro
 sys.path.insert(0, '/home/claude/whatif-reels')
 from reelkit.voice import shape, _trim
+import whisper2 as W2   # v2 tense whisper for the w / we chunks (owner's reference, 23 Nov 2026)
 
 M = os.path.expanduser('~/.cache/reelkit'); k = Kokoro(f'{M}/kokoro-v1.0.onnx', f'{M}/voices-v1.0.bin')
 SR = 24000; rng = np.random.default_rng(7)
@@ -76,23 +77,43 @@ def mom_voice(text, sp, last):
         sh = regender(s, 95, 0.8, 0.6); s = s + 0.35 * sh[:len(s)]
     return verb(lpf(s, 5000), 0.18)
 
+# EQ towards the owner's reference whisper, designed once from all the w / we lines
+EQ = 'work/whisper_eq.npy'
+if not os.path.exists(EQ):
+    parts = []
+    for gap0, chunks, who in L:
+        if who != 'n': continue
+        for text, mode, style, sp, g, gap in chunks:
+            if mode in ('w', 'we'):
+                y, sr = k.create(text, voice=NARR, speed=sp, lang='en-us')
+                parts.append(W2.raw(shape(_trim(y, sr), sr, style, 100, 600), sr, mode == 'we'))
+    ref, rsr = sf.read('work/ref_tensed_whisper.wav'); assert rsr == SR
+    np.save(EQ, W2.design_eq(ref if ref.ndim == 1 else ref.mean(1), np.concatenate(parts), SR))
+FIR = np.load(EQ)
+
+# the picture is locked to the v1 timings: place every chunk at its v1 start (work/phrases_lock.json)
+LOCK = json.load(open('work/phrases_lock.json')) if os.path.exists('work/phrases_lock.json') else None
 out = np.zeros(int(90 * SR)); meta = []; prev_end = 0.0; breaths = []
 for li, (gap0, chunks, who) in enumerate(L):
-    t = prev_end + gap0; t0 = t; ch_meta = []
+    t = LOCK['phrases'][li]['s'] if LOCK else prev_end + gap0; t0 = t; ch_meta = []
     for ci, (text, mode, style, sp, g, gap) in enumerate(chunks):
         if who == 'guard': s = guard_voice(text, sp); s = s / rms(s) * 0.085 * g
         elif who == 'mom': s = mom_voice(text, sp, ci == len(chunks) - 1); s = s / rms(s) * 0.07 * g
         else:
             amt, mg = MODE[mode]
             s, sr = k.create(text, voice=NARR, speed=sp, lang='en-us')
-            s = whisperize(shape(_trim(s, sr), sr, style, 100, 600), amt)
+            dry = shape(_trim(s, sr), sr, style, 100, 600)
+            s = whisperize(dry, amt)                       # v1 path (also keeps the noise generator in step)
+            if mode in ('w', 'we'): s = W2.apply_eq(W2.raw(dry, sr, mode == 'we'), FIR)
             s = s / rms(s) * 0.075 * mg * g
             n = int((0.25 if text.endswith(('.', '?')) and mode == 'w' else 0.06) * SR); s[-n:] *= np.linspace(1, 0, n) ** 1.5
+        if LOCK: t = LOCK['phrases'][li]['chunks'][ci]['s']
         i = int(t * SR); out[i:i + len(s)] += s
         # chunk end = where the speech energy ends (ignores reverb tails)
         e = env_rms(s); spoken = np.nonzero(e > 0.08 * e.max())[0]; dur = (spoken[-1] + 1) / SR if len(spoken) else len(s) / SR
-        ch_meta.append({"text": text, "s": round(t, 3), "e": round(t + dur, 3)})
+        ch_meta.append(LOCK['phrases'][li]['chunks'][ci] if LOCK else {"text": text, "s": round(t, 3), "e": round(t + dur, 3)})
         t += dur + gap
+    if LOCK: t = LOCK['phrases'][li]['e']
     prev_end = t
     meta.append({"text": " ".join(c[0] for c in chunks), "who": who, "s": round(t0, 3), "e": round(t, 3), "chunks": ch_meta})
     for kind, off, lv in BREATHS_AFTER.get(li, []): breaths.append((t + off, kind, lv))
@@ -106,7 +127,7 @@ def breath(kind):
     return x * e
 for t, kind, lv in breaths:
     b = breath(kind); i = int(t * SR); b = b / np.abs(b).max() * 0.085 * lv; out[i:i + len(b)] += b
-TOTAL = round(prev_end + TAIL, 2)
+TOTAL = LOCK['duration'] if LOCK else round(prev_end + TAIL, 2)
 out = out[:int(TOTAL * SR)]; out[int((TOTAL - 0.5) * SR):] = 0
 out = out / max(1.0, np.abs(out).max() / 0.95)
 sf.write('voice.wav', out.astype(np.float32), SR)

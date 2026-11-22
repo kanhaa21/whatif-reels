@@ -1,0 +1,234 @@
+{
+ "duration": 51.64,
+ "phrases": [
+  {
+   "text": "The handle turned... and the door he locked... slowly opened.",
+   "who": "n",
+   "s": 0.25,
+   "e": 4.51,
+   "chunks": [
+    {
+     "text": "The handle turned...",
+     "s": 0.25,
+     "e": 1.4
+    },
+    {
+     "text": "and the door he locked...",
+     "s": 1.75,
+     "e": 3.185
+    },
+    {
+     "text": "slowly opened.",
+     "s": 3.305,
+     "e": 4.51
+    }
+   ]
+  },
+  {
+   "text": "Nobody was there.",
+   "who": "n",
+   "s": 5.76,
+   "e": 6.96,
+   "chunks": [
+    {
+     "text": "Nobody was there.",
+     "s": 5.76,
+     "e": 6.96
+    }
+   ]
+  },
+  {
+   "text": "Then footprints appeared on the floor... one by one... coming toward my desk.",
+   "who": "n",
+   "s": 7.66,
+   "e": 12.76,
+   "chunks": [
+    {
+     "text": "Then footprints appeared on the floor...",
+     "s": 7.66,
+     "e": 9.715
+    },
+    {
+     "text": "one by one...",
+     "s": 10.015,
+     "e": 11.085
+    },
+    {
+     "text": "coming toward my desk.",
+     "s": 11.335,
+     "e": 12.76
+    }
+   ]
+  },
+  {
+   "text": "They stopped right in front of me.",
+   "who": "n",
+   "s": 13.31,
+   "e": 15.59,
+   "chunks": [
+    {
+     "text": "They stopped",
+     "s": 13.31,
+     "e": 14.15
+    },
+    {
+     "text": "right in front of me.",
+     "s": 14.3,
+     "e": 15.59
+    }
+   ]
+  },
+  {
+   "text": "Is anyone in here?",
+   "who": "guard",
+   "s": 16.69,
+   "e": 18.38,
+   "chunks": [
+    {
+     "text": "Is anyone in here?",
+     "s": 16.69,
+     "e": 18.38
+    }
+   ]
+  },
+  {
+   "text": "That was the guard's voice... but the guard had gone home.",
+   "who": "n",
+   "s": 19.38,
+   "e": 22.83,
+   "chunks": [
+    {
+     "text": "That was the guard's voice...",
+     "s": 19.38,
+     "e": 20.985
+    },
+    {
+     "text": "but the guard had gone home.",
+     "s": 21.285,
+     "e": 22.83
+    }
+   ]
+  },
+  {
+   "text": "I ran.",
+   "who": "n",
+   "s": 23.43,
+   "e": 24.135,
+   "chunks": [
+    {
+     "text": "I ran.",
+     "s": 23.43,
+     "e": 24.135
+    }
+   ]
+  },
+  {
+   "text": "Under the exit sign... something tall was waiting. It had no face.",
+   "who": "n",
+   "s": 24.835,
+   "e": 30.14,
+   "chunks": [
+    {
+     "text": "Under the exit sign...",
+     "s": 24.835,
+     "e": 26.16
+    },
+    {
+     "text": "something tall was waiting.",
+     "s": 26.36,
+     "e": 28.15
+    },
+    {
+     "text": "It had no face.",
+     "s": 28.65,
+     "e": 30.14
+    }
+   ]
+  },
+  {
+   "text": "The lights died, one by one... coming for me.",
+   "who": "n",
+   "s": 30.64,
+   "e": 33.665,
+   "chunks": [
+    {
+     "text": "The lights died, one by one...",
+     "s": 30.64,
+     "e": 32.53
+    },
+    {
+     "text": "coming for me.",
+     "s": 32.68,
+     "e": 33.665
+    }
+   ]
+  },
+  {
+   "text": "I hid in a locker. My phone lit up.",
+   "who": "n",
+   "s": 34.365,
+   "e": 37.225,
+   "chunks": [
+    {
+     "text": "I hid in a locker.",
+     "s": 34.365,
+     "e": 35.655
+    },
+    {
+     "text": "My phone lit up.",
+     "s": 36.055,
+     "e": 37.225
+    }
+   ]
+  },
+  {
+   "text": "Beta... open the door. It's me.",
+   "who": "mom",
+   "s": 38.925,
+   "e": 41.84,
+   "chunks": [
+    {
+     "text": "Beta... open the door.",
+     "s": 38.925,
+     "e": 40.53
+    },
+    {
+     "text": "It's me.",
+     "s": 40.88,
+     "e": 41.84
+    }
+   ]
+  },
+  {
+   "text": "But Mom... was still at the gate.",
+   "who": "n",
+   "s": 42.74,
+   "e": 45.145,
+   "chunks": [
+    {
+     "text": "But Mom...",
+     "s": 42.74,
+     "e": 43.53
+    },
+    {
+     "text": "was still at the gate.",
+     "s": 43.78,
+     "e": 45.145
+    }
+   ]
+  },
+  {
+   "text": "So who was outside my locker?",
+   "who": "n",
+   "s": 46.345,
+   "e": 48.435,
+   "chunks": [
+    {
+     "text": "So who was outside my locker?",
+     "s": 46.345,
+     "e": 48.435
+    }
+   ]
+  }
+ ]
+}
