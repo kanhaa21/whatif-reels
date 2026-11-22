@@ -53,7 +53,7 @@ The first four reels each got only a few views. Instagram's head says the top ra
    **Owner's everyday-emergencies queue (set 20 Nov 2026), used next, one topic a day in this order.** Each comes with the owner's hook line; use it (or a close variant) as the first spoken line and show the situation in the first second:
    1. Phone catches fire while charging: "Your phone starts smoking beside your pillow." (made on 21 Nov 2026 as `reels/phone-fire-charging` in card style; sent to the owner for approval, not scheduled)
    2. Trapped in a lift: "The lift stopped, and your phone has no signal." (made on 21 Nov 2026 as `reels/trapped-in-lift` in card style; sent to the owner for approval, not scheduled)
-   3. Car breaks down in the middle of nowhere: "No network. No lights. 20 kilometres from help."
+   3. Car breaks down in the middle of nowhere: "No network. No lights. 20 kilometres from help." (made on 22 Nov 2026 as `reels/car-breakdown-nowhere` in card style; sent to the owner for approval, not scheduled)
    4. Lost in a parking garage: "The same car has passed you three times."
    5. Gas leak at night: "You smell gas, but the kitchen light is already on."
    6. Tyre bursts at high speed: "The steering wheel suddenly starts shaking."

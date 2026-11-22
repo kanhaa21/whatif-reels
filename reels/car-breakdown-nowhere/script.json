@@ -1,0 +1,174 @@
+{
+ "title": "What If Your Car Broke Down in the Middle of Nowhere?",
+ "style": "card",
+ "lang": "en-us",
+ "voice": "af_heart",
+ "timing": {
+  "lead": 0.15,
+  "gap": 0.3,
+  "tail": 1.0,
+  "precut": 0.1,
+  "grid": 0.3
+ },
+ "end_cta": "SEND THIS TO A NIGHT DRIVER",
+ "lines": [
+  [
+   [
+    "No network.",
+    "dramatic",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "No lights.",
+    "dramatic",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Twenty kilometres from help.",
+    "low",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Walk for help on the highway?",
+    "question",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Don't.",
+    "dramatic",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Four moves instead. The last one feels like magic.",
+    "build",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "One: hazard lights on.",
+    "excited",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Fully off the road.",
+    "normal",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Two: get out on the left, away from traffic.",
+    "excited",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Never stand behind your car.",
+    "dramatic",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Three: warning triangle, fifty metres back.",
+    "excited",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Bonnet up.",
+    "normal",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "That's car language for help, bhai!",
+    "funny",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Four: zero bars? Dial one one two anyway.",
+    "build",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Your phone can borrow another company's tower.",
+    "dramatic",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Did you know the one one two trick?",
+    "question",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Comment yes or no!",
+    "excited",
+    0.1,
+    0.95,
+    null
+   ],
+   [
+    "Send this to a friend who drives at night!",
+    "funny",
+    0,
+    0.97,
+    null
+   ]
+  ]
+ ],
+ "post": {
+  "instagram": "No network. No lights. 20 km from help 🚗🌑\n\nDon't walk the highway. Hazards on, car fully off the road, get out on the left away from traffic, triangle 50 m back, and bonnet up (car language for \"help, bhai!\"). Zero bars? Dial 112 anyway: if any network is in range, the call can go through another company's tower.\n\nDid you know the 112 trick? Comment YES or NO 👇\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #RoadSafety #CarBreakdown #DrivingTips #NightDriving",
+  "instagram_first_comment": "Did you know the 112 trick? Comment YES or NO 👇",
+  "facebook": "No network. No lights. 20 km from help 🚗🌑\n\nDid you know the 112 trick? Comment YES or NO.\n\nShare this with someone who drives at night.\n\n#WhatIf #RoadSafety #CarBreakdown",
+  "facebook_title": "Car breaks down 20 km from help?",
+  "youtube_title": "Car Breaks Down 20 km From Help? Do These 4 Things 🚗 #shorts",
+  "youtube_description": "If your car breaks down on a dark highway, don't walk along the road for help. Switch on the hazard lights, get the car fully off the road, get out on the side away from traffic (the left in India) and never stand behind the car. Place a warning triangle 50 metres back (India's driving regulations), raise the bonnet, and dial 112 even with zero bars: if any network is in range, the emergency call can go through another operator's tower.\n\nDid you know the 112 trick? Comment YES or NO.\nSubscribe for a new what-if every day.\n\n#shorts #RoadSafety #CarBreakdown",
+  "youtube_tags": [
+   "car breakdown at night",
+   "what to do if car breaks down",
+   "car breakdown highway safety",
+   "call 112 without network",
+   "warning triangle 50 metres",
+   "road safety tips india",
+   "what if",
+   "kaamkagyann"
+  ]
+ }
+}
