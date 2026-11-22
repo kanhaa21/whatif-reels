@@ -1,3 +1,5 @@
 reels/*/build/
 __pycache__/
 *.part.mp4
+reels/*/cartoon/frames/
+node_modules/
