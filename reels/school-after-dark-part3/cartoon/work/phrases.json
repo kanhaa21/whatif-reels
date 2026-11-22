@@ -1,0 +1,216 @@
+{
+ "duration": 51.7,
+ "phrases": [
+  {
+   "text": "Three knocks... then it whispered my name.",
+   "who": "n",
+   "s": 1.55,
+   "e": 4.555,
+   "chunks": [
+    {
+     "text": "Three knocks...",
+     "s": 1.55,
+     "e": 2.63
+    },
+    {
+     "text": "then it whispered my name.",
+     "s": 2.98,
+     "e": 4.555
+    }
+   ]
+  },
+  {
+   "text": "Then it walked away.",
+   "who": "n",
+   "s": 5.455,
+   "e": 6.705,
+   "chunks": [
+    {
+     "text": "Then it walked away.",
+     "s": 5.455,
+     "e": 6.705
+    }
+   ]
+  },
+  {
+   "text": "When I opened the locker... its footprints circled me... again and again.",
+   "who": "n",
+   "s": 8.005,
+   "e": 12.72,
+   "chunks": [
+    {
+     "text": "When I opened the locker...",
+     "s": 8.005,
+     "e": 9.41
+    },
+    {
+     "text": "its footprints circled me...",
+     "s": 9.66,
+     "e": 11.255
+    },
+    {
+     "text": "again and again.",
+     "s": 11.455,
+     "e": 12.72
+    }
+   ]
+  },
+  {
+   "text": "My phone buzzed. I typed: don't come in... It wouldn't send.",
+   "who": "n",
+   "s": 13.32,
+   "e": 18.745,
+   "chunks": [
+    {
+     "text": "My phone buzzed.",
+     "s": 13.32,
+     "e": 14.375
+    },
+    {
+     "text": "I typed: don't come in...",
+     "s": 15.875,
+     "e": 17.29
+    },
+    {
+     "text": "It wouldn't send.",
+     "s": 17.59,
+     "e": 18.745
+    }
+   ]
+  },
+  {
+   "text": "Then the school bell rang... at midnight.",
+   "who": "n",
+   "s": 20.045,
+   "e": 22.9,
+   "chunks": [
+    {
+     "text": "Then the school bell rang...",
+     "s": 20.045,
+     "e": 21.455
+    },
+    {
+     "text": "at midnight.",
+     "s": 21.755,
+     "e": 22.9
+    }
+   ]
+  },
+  {
+   "text": "All students... return to your classrooms.",
+   "who": "pa",
+   "s": 23.8,
+   "e": 28.395,
+   "chunks": [
+    {
+     "text": "All students...",
+     "s": 23.8,
+     "e": 25.725
+    },
+    {
+     "text": "return to your classrooms.",
+     "s": 26.175,
+     "e": 28.395
+    }
+   ]
+  },
+  {
+   "text": "Every classroom door opened... at the same time.",
+   "who": "n",
+   "s": 29.195,
+   "e": 32.36,
+   "chunks": [
+    {
+     "text": "Every classroom door opened...",
+     "s": 29.195,
+     "e": 30.88
+    },
+    {
+     "text": "at the same time.",
+     "s": 31.13,
+     "e": 32.36
+    }
+   ]
+  },
+  {
+   "text": "Inside my classroom... every seat was taken.",
+   "who": "n",
+   "s": 33.56,
+   "e": 36.615,
+   "chunks": [
+    {
+     "text": "Inside my classroom...",
+     "s": 33.56,
+     "e": 34.93
+    },
+    {
+     "text": "every seat was taken.",
+     "s": 35.18,
+     "e": 36.615
+    }
+   ]
+  },
+  {
+   "text": "Except one.",
+   "who": "n",
+   "s": 37.615,
+   "e": 38.635,
+   "chunks": [
+    {
+     "text": "Except one.",
+     "s": 37.615,
+     "e": 38.635
+    }
+   ]
+  },
+  {
+   "text": "Then behind me... I heard Mom.",
+   "who": "n",
+   "s": 40.135,
+   "e": 42.595,
+   "chunks": [
+    {
+     "text": "Then behind me...",
+     "s": 40.135,
+     "e": 41.295
+    },
+    {
+     "text": "I heard Mom.",
+     "s": 41.595,
+     "e": 42.595
+    }
+   ]
+  },
+  {
+   "text": "Beta? Where are you?",
+   "who": "momreal",
+   "s": 43.395,
+   "e": 44.975,
+   "chunks": [
+    {
+     "text": "Beta? Where are you?",
+     "s": 43.395,
+     "e": 44.975
+    }
+   ]
+  },
+  {
+   "text": "So which Mom... was the real one?",
+   "who": "n",
+   "s": 46.075,
+   "e": 48.5,
+   "chunks": [
+    {
+     "text": "So which Mom...",
+     "s": 46.075,
+     "e": 46.995
+    },
+    {
+     "text": "was the real one?",
+     "s": 47.245,
+     "e": 48.5
+    }
+   ]
+  }
+ ]
+}
