@@ -54,7 +54,7 @@ The first four reels each got only a few views. Instagram's head says the top ra
    1. Phone catches fire while charging: "Your phone starts smoking beside your pillow." (made on 21 Nov 2026 as `reels/phone-fire-charging` in card style; sent to the owner for approval, not scheduled)
    2. Trapped in a lift: "The lift stopped, and your phone has no signal." (made on 21 Nov 2026 as `reels/trapped-in-lift` in card style; sent to the owner for approval, not scheduled)
    3. Car breaks down in the middle of nowhere: "No network. No lights. 20 kilometres from help." (made on 22 Nov 2026 as `reels/car-breakdown-nowhere` in card style; sent to the owner for approval, not scheduled)
-   4. Lost in a parking garage: "The same car has passed you three times."
+   4. Lost in a parking garage: "The same car has passed you three times." (made on 23 Nov 2026 as `reels/lost-parking-garage` in card style; sent to the owner for approval, not scheduled)
    5. Gas leak at night: "You smell gas, but the kitchen light is already on."
    6. Tyre bursts at high speed: "The steering wheel suddenly starts shaking."
    These topics are not in the ideas Sheet, so skip the Sheet steps for them and track them here instead (mark each as made, with its slug). For these six, the owner asked (20 Nov 2026) for: about 35 seconds; a female voice; the essential safe action inside the same video (never held back for a Part 2); a visual change every 1 to 2 seconds; escalation, one surprising detail and a satisfying payoff; easy to follow with the sound off. **Review first:** for these six, do not schedule. Send the owner the video and wait for their approval before scheduling (this overrides the standing approval for these topics only).

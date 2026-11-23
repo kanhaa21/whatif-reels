@@ -1,0 +1,160 @@
+{
+ "title": "What If You Got Lost in a Parking Garage?",
+ "style": "card",
+ "lang": "en-us",
+ "voice": "af_heart",
+ "timing": {
+  "lead": 0.15,
+  "gap": 0.3,
+  "tail": 1.0,
+  "precut": 0.1,
+  "grid": 0.3
+ },
+ "end_cta": "SEND THIS TO A FORGETFUL DRIVER",
+ "lines": [
+  [
+   [
+    "The same car has passed you three times.",
+    "dramatic",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "And you can't find yours.",
+    "low",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Probably just someone hunting for parking.",
+    "deadpan",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "But don't bet on it.",
+    "dramatic",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Four moves. The second one is already in your pocket.",
+    "build",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "One: walk to the lift lobby or the exit booth.",
+    "excited",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Lights. People. A guard.",
+    "normal",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Two: open your maps app.",
+    "excited",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Your phone may have pinned your car by itself.",
+    "dramatic",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Three: press the panic button on your key.",
+    "excited",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Your car honks like it's stuck in Delhi traffic.",
+    "funny",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Four: keys in hand. Glance at the back seat.",
+    "build",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Get in. Lock the doors.",
+    "dramatic",
+    0,
+    0.95,
+    null
+   ]
+  ],
+  [
+   [
+    "Did you know your phone can pin your car?",
+    "question",
+    0.05,
+    0.95,
+    null
+   ],
+   [
+    "Comment yes or no!",
+    "excited",
+    0.1,
+    0.95,
+    null
+   ],
+   [
+    "Send this to a friend who always loses their car!",
+    "funny",
+    0,
+    0.97,
+    null
+   ]
+  ]
+ ],
+ "post": {
+  "instagram": "The same car has passed you three times. And you can't find yours 🅿️😰\n\nWalk to the lift lobby or exit booth (lights, people, a guard). Open your maps app: if your phone is paired with your car, it may have saved your parking spot by itself. Press the panic button so your car honks like it's stuck in Delhi traffic. Keys in hand, glance at the back seat, get in and lock the doors.\n\nDid you know your phone can pin your car? Comment YES or NO 👇\n\nFollow @kaamkagyann for a new what-if every day.\n\n#WhatIf #ParkingGarage #PersonalSafety #SafetyTips #CarTips",
+  "instagram_first_comment": "Did you know your phone can pin your car? Comment YES or NO 👇",
+  "facebook": "The same car has passed you three times. And you can't find yours 🅿️😰\n\nDid you know your phone can pin your car? Comment YES or NO.\n\nShare this with someone who always loses their car.\n\n#WhatIf #PersonalSafety #ParkingGarage",
+  "facebook_title": "Lost in a parking garage?",
+  "youtube_title": "Lost in a Parking Garage? Do These 4 Things 🅿️ #shorts",
+  "youtube_description": "Lost in a parking garage and the same car keeps passing you? Walk to a lit, busy spot like the lift lobby or exit booth. Open your maps app: Apple Maps and Google Maps on iPhone can save your parking spot automatically when the phone is connected to your car by Bluetooth or CarPlay. Press your key's panic button so the car honks and flashes, have your keys in hand, check the back seat, and lock the doors as soon as you get in.\n\nDid you know your phone can pin your car? Comment YES or NO.\nSubscribe for a new what-if every day.\n\n#shorts #PersonalSafety #ParkingGarage",
+  "youtube_tags": [
+   "lost in parking garage",
+   "can't find my car",
+   "find parked car",
+   "parking garage safety",
+   "car panic button",
+   "apple maps parked car",
+   "what if",
+   "kaamkagyann"
+  ]
+ }
+}
