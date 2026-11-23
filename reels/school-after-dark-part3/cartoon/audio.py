@@ -1,8 +1,9 @@
-"""Music and SFX stems for "I Stayed in School After Dark" Part 3 (44.1 kHz mono), same palette as Parts 1-2
-(room tone, drone bed + heartbeat, creaks, latch, barefoot frost steps, metal locker knocks, stings, low booms,
-phone buzzes, Part 1's wooden knock), plus this part's new beats: the wordless whisper at the vents, typing and a
-failed send, the old electric school bell, the clock ticking into a midnight chime, the loudspeaker (click, feedback,
-static), every classroom door opening at once, heads creaking as they tilt, a chair scraping by itself.
+"""Music and SFX stems for "I Stayed in School After Dark" Part 3 (v2, after the owner's notes; 44.1 kHz mono).
+Same palette as Parts 1-2 (room tone, drone bed + heartbeat, creaks, latch, frost steps, metal locker knocks, stings,
+low booms, phone buzzes, Part 1's wooden knock), plus: the alarm (an old electric school bell with a buzzer under it,
+red light in the picture), the clock into a midnight chime, the loudspeaker (click, feedback, static), room 109's door
+creaking open on its own, chalk ticks on the attendance board, the class's heads creaking round on "Jimmy", a roar on
+the third "Jimmy!", Mom's text buzz, and an unknown caller's ringtone that keeps ringing into the end card.
 Times come from work/phrases.json, the same anchors the picture uses.
 Writes work/music.wav and work/sfx.wav; SFX in peak units (1.0 = the loudest hit), mix.py sets levels."""
 import json
@@ -79,86 +80,81 @@ def low_boom(d=1.6, decay=3.5):
 def riser(d=1.2): x = tt(d); return bp(noise(d), 300, 3000) * (x / d) ** 3
 
 # ---------------- music: same low drone bed and heartbeat, dropping out before each scare ----------------
+ALARM0 = P(3).e + 0.4
 add(music, pad(33, DUR, 380), 0.0, 1.0)
-add(music, pad(45, DUR - P(4).s + 0.5, 900), P(4).s - 0.5, 0.35)
+add(music, pad(45, DUR - ALARM0, 900), ALARM0, 0.35)
 t = 0.0
-while t < P(2).s:                                                     # fast heartbeat still in the locker
+while t < P(3).e:                                                     # fast heartbeat in the locker
     add(music, beat(1.2), t); add(music, beat(0.7), t + 0.2); t += 0.62
-t = P(9).s
-while t < P(11).e:                                                    # and again when he hears "Mom"
+t = P(8).s
+while t < P(13).s:                                                    # and through the attendance
     add(music, beat(1.3), t); add(music, beat(0.75), t + 0.2); t += 0.58
 env = np.ones(N)
-for a, b in ((P(4).s - 0.9, P(4).s - 0.3), (C(6, 1).s - 0.5, C(6, 1).s), (C(7, 1).s - 0.4, C(7, 1).s + 0.1), (P(8).s - 0.5, P(8).s),
-             (C(9, 1).s - 0.5, C(9, 1).s), (P(11).e, DUR)):
-    i, j = at(a), at(b); r = at(0.15); env[i:j] = 0.12; env[max(0, i - r):i] = np.linspace(1, 0.12, i - max(0, i - r))
+for a_, b_ in ((C(1, 0).s - 0.5, C(1, 0).s), (ALARM0 - 0.5, ALARM0), (C(6, 1).s - 0.4, C(6, 1).s), (C(12, 0).s - 0.6, C(12, 0).s),
+               (C(14, 2).s - 0.4, C(14, 2).s), (P(15).e, DUR)):
+    i, j = at(a_), at(b_); r = at(0.15); env[i:j] = 0.12; env[max(0, i - r):i] = np.linspace(1, 0.12, i - max(0, i - r))
 music *= env
 music[at(DUR - 0.6):] *= np.linspace(1, 0, N - at(DUR - 0.6))
 
 # ---------------- SFX ----------------
 x = tt(DUR); tone = lp(noise(DUR), 400) * (0.8 + 0.2 * np.sin(2 * np.pi * 0.09 * x)) + 0.2 * hp(noise(DUR), 4000)
 hit(tone * np.minimum(1, x / 0.3), 0.0, 0.03)
-# three knocks on the locker (Part 2's ending), harder each time
+# three knocks on the locker, harder each time
 for k, (ts, g) in enumerate(((0.25, 0.55), (0.65, 0.7), (1.05, 0.9))): hit(metal(1.0 + 0.2 * k, 0.8), ts, g)
-# in the gap after "...whispered my name": the whisper itself, breathy and wordless, right at the vents
-d = 0.85; x = tt(d); u = x / d
-wh = sum(bp(noise(d), f, f * 1.25) for f in (700, 1300, 2600)) * (1 + 0.3 * np.sin(2 * np.pi * 1.7 * x)) * np.sin(np.pi * u) ** 1.5
-wh += 0.6 * bp(noise(d), 4000, 9000) * (u > 0.65) * np.sin(np.pi * np.clip((u - 0.65) / 0.35, 0, 1))
-hit(hall(wh, 0.2), P(0).e + 0.05, 0.22)
-# it walks away: barefoot steps fading down the hall
-for k in range(7): hit(lp(bare(0.9), 3000 - 300 * k), P(1).s + 0.1 + k * 0.42, 0.3 * (1 - k / 7) ** 1.3)
-# the locker door opens: rusty hinge squeal + latch
-hit(latch, P(2).s - 0.05, 0.35)
-hit(hall(creak(1.0, 900, 1400, 30, 600, 4500), 0.4), P(2).s, 0.3)
-# the circles of prints appear ring by ring: frost crackles and a swell
-for r in range(3):
-    tr = C(2, 1).s + 0.3 + r * 0.55; d = 0.5; x = tt(d)
-    hit(bp(noise(d), 3000, 9000) * np.exp(-x * 9) * (np.abs(np.sin(2 * np.pi * 31 * x)) > 0.6), tr, 0.12 + 0.05 * r)
-d = 2.6; x = tt(d); hit(np.sin(2 * np.pi * 41 * x) * np.sin(np.pi * x / d) ** 2 + 0.2 * bp(noise(d), 200, 1200) * np.sin(np.pi * x / d), C(2, 1).s, 0.1)
-# phone: buzz, typing taps, send whoosh, failed-send blip
-for k in range(2): hit(buzz(), P(3).s - 0.15 + k * 0.5, 0.22)
-for k in range(13): hit(bp(imp(0.04, 0.002), 2000, 6000), C(3, 1).s + 0.2 + k * 1.0 / 13 + 0.02 * rng.standard_normal(), 0.05)
-x = tt(0.35); hit(bp(noise(0.35), 1500, 6000) * np.sin(np.pi * x / 0.35) ** 2, C(3, 1).e + 0.1, 0.08)
-for k, f in enumerate((660, 440)): x = tt(0.14); hit(np.sin(2 * np.pi * f * x) * np.exp(-x * 12), C(3, 2).s + k * 0.16, 0.12)
-# THE SCHOOL BELL: a loud old electric bell, then it rings on under the line
-d = 2.6; x = tt(d)
-bell = modes(imp(d, 0.002), ((2093, 1, 4), (3250, 0.6, 6), (4700, 0.35, 9), (1046, 0.4, 3)))
-bell = bell * (0.55 + 0.45 * (np.sin(2 * np.pi * 26 * x) > 0)) + 0.4 * bp(noise(d), 2000, 6000) * (np.sin(2 * np.pi * 26 * x) > 0.6)
-bell *= np.minimum(1, x / 0.01) * np.where(x < 1.0, 1.0, np.exp(-(x - 1.0) * 1.6))
-hit(hall(bell, 0.6), P(4).s - 1.1, 0.75)
-# "at midnight": the clock ticks, then one deep chime
+# breath against the vents between the two "Jimmy"s
+d = 0.7; x = tt(d); hit(bp(noise(d), 500, 3000) * np.sin(np.pi * x / d) ** 1.2, C(1, 0).e + 0.15, 0.08)
+# it walks away; the locker door opens
+for k in range(6): hit(lp(bare(0.9), 3000 - 350 * k), P(3).s - 0.2 + k * 0.38, 0.28 * (1 - k / 6) ** 1.3)
+hit(latch, C(3, 1).s - 0.25, 0.3)
+hit(hall(creak(0.9, 900, 1400, 30, 600, 4500), 0.4), C(3, 1).s - 0.15, 0.25)
+# THE ALARM: old electric school bell + a harsh buzzer under it; loud in the gap, rings on under the line
+d = P(4).e - ALARM0 + 0.3; x = tt(d)
+env_a = np.minimum(1, x / 0.01) * np.where(x < 1.6, 1.0, np.maximum(0.12, np.exp(-(x - 1.6) * 1.4)))
+bell = modes(imp(d, 0.002), ((2093, 1, 0.5), (3250, 0.6, 0.7), (4700, 0.35, 1.0), (1046, 0.4, 0.4)))
+bell = bell / (np.abs(bell).max() + 1e-9) * (0.5 + 0.5 * (np.sin(2 * np.pi * 24 * x) > 0))
+buzz_a = bp(np.sign(np.sin(2 * np.pi * 120 * x)) + 0.5 * np.sign(np.sin(2 * np.pi * 180 * x)), 200, 3000)
+alarm = (bell + 0.35 * buzz_a / (np.abs(buzz_a).max() + 1e-9)) * env_a
+alarm[-int(0.3 * SR):] *= np.linspace(1, 0, int(0.3 * SR))
+hit(hall(alarm, 0.5), ALARM0, 0.8)
+# "at midnight": ticks, then one deep chime
 for k in range(3): hit(modes(imp(0.08, 0.001), ((3000, 1, 90), (5200, 0.5, 120))), C(4, 1).s - 0.2 + k * 0.33, 0.06)
 d = 3.0; x = tt(d); chime = sum(a * np.sin(2 * np.pi * f * x) * np.exp(-x * dc) for f, a, dc in ((98, 1, 1.0), (196.5, 0.5, 1.4), (293, 0.35, 2.0), (523, 0.15, 3.0)))
-hit(hall(chime * np.minimum(1, x / 0.005), 0.5), C(4, 1).e + 0.05, 0.5)
+hit(hall(chime * np.minimum(1, x / 0.005), 0.5), C(4, 1).e + 0.05, 0.45)
 # the loudspeaker: click on, feedback whine, static under the voice, click off
 click = modes(imp(0.12, 0.002), ((200, 1, 60), (1800, 0.5, 90)))
 hit(click, P(5).s - 0.55, 0.3)
 d = 0.5; x = tt(d); hit(np.sin(2 * np.pi * (2400 + 300 * x / d) * x) * np.sin(np.pi * x / d) ** 2, P(5).s - 0.5, 0.08)
-d = P(5).e - P(5).s + 0.8; x = tt(d); hit(bp(noise(d), 1500, 5000) * (0.7 + 0.3 * (rng.random(len(x)) > 0.97)) * np.minimum(1, x / 0.1) * np.minimum(1, (d - x) / 0.1), P(5).s - 0.4, 0.035)
+d = P(5).e - P(5).s + 0.8; x = tt(d); hit(bp(noise(d), 1500, 5000) * np.minimum(1, x / 0.1) * np.minimum(1, (d - x) / 0.1), P(5).s - 0.4, 0.035)
 hit(click, P(5).e + 0.4, 0.3)
-# every door opens at once: a chord of creaks and a crash of doors hitting the walls
-for k in range(10):
-    ts = C(6, 1).s - 0.05 + 0.03 * rng.standard_normal()
-    hit(hall(creak(0.5, 260 + 40 * k, 420 + 30 * k, 16 + k), 0.5), ts, 0.12)
-for k in range(10): hit(hall(knock(1.2), 0.5), C(6, 1).s + 0.32 + 0.025 * rng.standard_normal(), 0.18)
-hit(sting(1.6, 62), C(6, 1).s + 0.3, 0.45)
-# eight heads tilt at once: a dry cluster of creaks, and a sting
-for k in range(8): hit(bp(creak(0.18, 600 + 50 * k, 500, 40 + 3 * k, 500, 4000), 500, 4000), C(7, 1).s + 0.1 + 0.02 * k, 0.06)
-hit(sting(1.6, 64), C(7, 1).s + 0.1, 0.55)
-# "Except one.": a low hit, then a chair scrapes on the floor all by itself
-hit(low_boom(1.2, 4.5), P(8).s - 0.02, 0.25)
-d = 0.9; x = tt(d); u = x / d
-scr = bp(noise(d), 300, 3000) * (0.5 + 0.5 * np.sign(np.sin(2 * np.pi * np.cumsum(22 + 15 * u) / SR))) * np.sin(np.pi * u) ** 0.7
-hit(hall(scr, 0.4), P(8).e + 0.2, 0.25)
-# "Then behind me...": slow shoes in the corridor, a sting on "I heard Mom"
-for k in range(3): hit(step(), P(9).s + 0.2 + k * 0.5, 0.12 + 0.05 * k)
-hit(sting(1.4, 61), C(9, 1).s, 0.4)
-# the last text arrives
-for k in range(2): hit(buzz(), C(11, 1).s - 0.25 + k * 0.5, 0.18)
-hit(sting(1.5, 63), C(11, 1).s, 0.3)
-# cut to black, then three knocks on the classroom door behind him under the Part 4 card (Part 1's knock)
-hit(riser(1.0), P(11).e - 0.95, 0.2)
-hit(low_boom(1.6, 3.5), P(11).e + 0.05, 0.9)
-for k, g in enumerate((0.55, 0.7, 0.9)): hit(knock(0.8 + 0.25 * k), P(11).e + 0.75 + k * 0.44, g)
+# room 109 opens by itself: one long slow creak, cold air, a sting on "Room 109"
+hit(hall(creak(1.8, 260, 420, 13), 0.55), P(6).s + 0.3, 0.4)
+d = 2.0; x = tt(d); hit(bp(noise(d), 300, 1800) * np.sin(np.pi * x / d) ** 2, P(6).s + 0.6, 0.06)
+hit(sting(1.6, 62), C(6, 1).s, 0.4)
+# attendance: chalk ticks on the board as each one answers
+def chalk(d=0.35):
+    x = tt(d); return bp(noise(d), 1500, 7000) * (0.4 + 0.6 * (np.sin(2 * np.pi * 45 * x) > 0)) * np.sin(np.pi * x / d) ** 0.5
+hit(chalk(), P(9).e + 0.05, 0.12); hit(chalk(), P(11).e + 0.05, 0.12)
+# "Jimmy." (1): every head creaks round + sting; (2) heavier sting + chalk circling the name; (3) roar, boom, screech
+for k in range(8): hit(bp(creak(0.2, 600 + 50 * k, 500, 40 + 3 * k, 500, 4000), 500, 4000), C(12, 0).s + 0.1 + 0.02 * k, 0.06)
+hit(sting(1.5, 63), C(12, 0).s, 0.25)
+hit(chalk(0.6), C(12, 0).e + 0.05, 0.12)
+hit(sting(1.5, 65), C(12, 1).s, 0.3); hit(chalk(0.6), C(12, 1).e + 0.05, 0.14)
+hit(low_boom(1.8, 3.0), C(12, 2).s - 0.02, 0.4); hit(sting(1.8, 61), C(12, 2).s, 0.35)
+# Mom's text
+for k in range(2): hit(buzz(), C(13, 1).s - 0.3 + k * 0.5, 0.2)
+# the unknown caller: an old two-tone ring that keeps going into the end card, then stops dead
+t0 = P(14).s - 0.35; t1 = DUR - 0.9
+def ring(d=2.0):
+    x = tt(d); on = (x < 1.0); s_ = (np.sin(2 * np.pi * 440 * x) + np.sin(2 * np.pi * 480 * x)) * (np.sin(2 * np.pi * 20 * x) > -0.2)
+    return bp(s_ * on, 300, 3000)
+t = t0
+while t < t1:
+    r = ring(); r[max(0, min(len(r), at(t1 - t))):] = 0; hit(r, t, 0.08); t += 2.0
+for k in range(2): hit(buzz(), C(14, 2).s - 0.2 + k * 0.5, 0.18)
+x = tt(0.3); hit(np.sin(2 * np.pi * 1320 * x) * np.exp(-x * 14), C(14, 2).s - 0.15, 0.08)   # message ping
+# cut to the end card: a low hit; the ring carries on; three knocks on the door behind him under PART 4
+hit(low_boom(1.6, 3.5), P(15).s - 0.15, 0.3)
+for k, g in enumerate((0.45, 0.6, 0.8)): hit(knock(0.8 + 0.25 * k), P(15).e + 0.55 + k * 0.44, g)
 
 i = at(DUR - 0.5); j = at(DUR - 0.9); sfx[j:i] *= np.linspace(1, 0, i - j); sfx[i:] = 0; music[i:] = 0
 sf.write('work/music.wav', music.astype(np.float32), SR); sf.write('work/sfx.wav', sfx.astype(np.float32), SR)

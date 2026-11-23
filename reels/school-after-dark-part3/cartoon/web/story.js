@@ -93,86 +93,98 @@ function hallLights(onFn, flick = 0) {
   });
 }
 
+// room 109: the one door that opens (right wall, second door), with its number plate
+const D109 = doorPivots.reduce((b, d) => (d.sx > 0 && Math.abs(d.pv.position.z - 0.5 - (-12.5)) < 0.01 ? d : b), null);
+const plate = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.2), new THREE.MeshBasicMaterial({ map: P.label('109', '#e8e2cf', '#2a2026', 512, 300, 200) }));
+at(plate, 1.785, 2.0, -12.5 + 0.78, 0, -Math.PI / 2); scene.add(plate);
+// inside room 109: darkness with a cold, low light near the floor (not a flat glow)
+D109.glow.material = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, fog: false, depthWrite: false, map: (() => {
+  const cv = document.createElement('canvas'); cv.width = 64; cv.height = 256; const x = cv.getContext('2d');
+  const g = x.createLinearGradient(0, 0, 0, 256); g.addColorStop(0, '#03040a'); g.addColorStop(0.55, '#0c1330'); g.addColorStop(1, '#5d6fb0');
+  x.fillStyle = g; x.fillRect(0, 0, 64, 256); const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return t; })() });
+// the attendance board: names get ticks as they answer; JIMMY gets circled, harder each time
+const attCv = document.createElement('canvas'); attCv.width = 1024; attCv.height = 512;
+const attTex = new THREE.CanvasTexture(attCv); attTex.colorSpace = THREE.SRGBColorSpace; let attKey = '';
+function drawAttendance(ticks, circ) {
+  const key = ticks + '/' + circ; if (key === attKey) return; attKey = key;
+  const x = attCv.getContext('2d');
+  x.fillStyle = '#2f4a3c'; x.fillRect(0, 0, 1024, 512); x.strokeStyle = '#6b4a2a'; x.lineWidth = 30; x.strokeRect(15, 15, 994, 482);
+  x.fillStyle = 'rgba(245,245,235,0.95)'; x.textAlign = 'left'; x.textBaseline = 'middle';
+  x.font = 'bold 64px sans-serif'; x.fillText('ATTENDANCE  -  109', 70, 90);
+  x.font = 'bold 80px sans-serif';
+  [['AARAV', 1], ['MEERA', 2]].forEach(([n, k], j) => { x.fillText(n, 110, 200 + j * 100); if (ticks >= k) { x.lineWidth = 12; x.strokeStyle = 'rgba(245,245,235,0.95)'; x.beginPath(); x.moveTo(470, 200 + j * 100); x.lineTo(500, 230 + j * 100); x.lineTo(560, 165 + j * 100); x.stroke(); } });
+  x.fillStyle = circ > 0 ? '#ffd2d2' : 'rgba(245,245,235,0.95)'; x.fillText('JIMMY', 110, 400);
+  for (let c = 0; c < circ; c++) { x.strokeStyle = 'rgba(255,80,80,0.9)'; x.lineWidth = 9 + 4 * c; x.beginPath(); x.ellipse(245, 400, 175 + 22 * c, 62 + 10 * c, -0.05 + 0.04 * c, 0, Math.PI * 2); x.stroke(); }
+  x.fillStyle = 'rgba(245,245,235,0.95)'; x.fillText('_____', 470, 410);
+  attTex.needsUpdate = true;
+}
+
 // ---------- shots ----------
 const SH = [
-  ['knock', 0], ['name', C(0, 1).s - 0.1], ['away', Ph(1).s - 0.2], ['open', Ph(2).s - 0.2], ['circle', C(2, 1).s - 0.1], ['circleUp', C(2, 2).s - 0.1],
-  ['phone', Ph(3).s - 0.25], ['bell', Ph(4).s - 0.3], ['clock', C(4, 1).s - 0.1], ['pa', Ph(5).s - 0.2], ['paHall', C(5, 1).s - 0.1],
-  ['doors', Ph(6).s - 0.1], ['class', Ph(7).s - 0.1], ['except', Ph(8).s - 0.15], ['behind', Ph(9).s - 0.2], ['mom', Ph(10).s - 0.25],
-  ['which', Ph(11).s - 0.2], ['black', Ph(11).e + 0.05],
+  ['knock', 0], ['jimmy', Ph(1).s - 0.25], ['knew', Ph(2).s - 0.15], ['out', Ph(3).s - 0.15], ['bell', Ph(3).e + 0.4], ['clock', C(4, 1).s - 0.1],
+  ['pa', Ph(5).s - 0.3], ['paHall', C(5, 1).s - 0.1], ['door109', Ph(6).s - 0.1], ['plate', C(6, 1).s - 0.15], ['attend', Ph(7).s - 0.1],
+  ['roll', Ph(8).s - 0.2], ['j1', C(12, 0).s - 0.1], ['j2', C(12, 1).s - 0.1], ['j3', C(12, 2).s - 0.08], ['mom', Ph(13).s - 0.2],
+  ['call', Ph(14).s - 0.2], ['black', Ph(15).s - 0.15],
 ];
 function shotAt(t) { let i = 0; for (let k = 0; k < SH.length; k++) if (t >= SH[k][1]) i = k; return { name: SH[i][0], t0: SH[i][1], t1: i + 1 < SH.length ? SH[i + 1][1] : TOTAL }; }
 function lerpCam(t, t0, t1, a, b) { const u = sstep((t - t0) / (t1 - t0)); return [a[0].clone().lerp(b[0], u), a[1].clone().lerp(b[1], u), a[2] + (b[2] - a[2]) * u]; }
 const LOCKCAM = [V(-1.18, 1.55, -10.0), V(2, 1.45, -10.0), 52];
+const ALARM0 = Ph(3).e + 0.4;                 // the bell starts in the gap before "Then the school bell rang"
 
 function setScene(sh, t) {
-  const L = t - sh.t0;
   kid.mesh.visible = false; entity.mesh.visible = false; guard.mesh.visible = false; aimTorch(V(0, 0, 0), V(0, 0, -1), 0);
-  ghosts.forEach(g => g.mesh.visible = false);
-  prints.forEach(p => { p.m.visible = false; });
-  hallLights(() => 0); setHallDoors(0); board.material.map = oldBoard; board.material.needsUpdate = true;
-  moon.intensity = 0.9; underDoor.visible = underShadow.visible = false; lever.rotation.x = 0;
-  hands[0].rotation.z = -0.0; hands[1].rotation.z = -0.0;   // both hands on twelve
-  spkLed.visible = false; bellG.visible = true;
+  ghosts.forEach(g => g.mesh.visible = false); prints.forEach(p => { p.m.visible = false; });
+  hallLights(() => 0); setHallDoors(0); board.material.map = oldBoard; board.material.needsUpdate = true; bellG.visible = false;
+  moon.intensity = 0.9; underDoor.visible = underShadow.visible = false; lever.rotation.x = 0; spkLed.visible = false;
   let cam = [V(0, 1, 5), V(0, 1, 0), 40];
   switch (sh.name) {
-    case 'knock': case 'name': case 'away': {
+    case 'knock': case 'jimmy': case 'out': {
       hallLights(k => (k === 3 ? 0.6 : 0), 1);
       entity.mesh.visible = true; entity.mesh.scale.setScalar(1.25);
-      let lean = sh.name === 'knock' ? 0.55 : sh.name === 'name' ? 0.55 + 0.45 * sstep((t - C(0, 1).s) / 0.8) : 1 - sstep((t - Ph(1).s) / 0.9);
-      let zoff = 0;
-      if (sh.name === 'away') zoff = -3.5 * sstep((t - Ph(1).s - 0.5) / 1.6);   // walks off down the hall
-      entity.set({ tilt: 0.25, reach: Math.round((sh.name === 'knock' ? 0.6 : 0.4) * 10) / 10 });
+      let lean = 0.55, zoff = 0;
+      if (sh.name === 'jimmy') lean = 0.55 + 0.25 * sstep((t - C(1, 0).s) / 0.6) + 0.2 * sstep((t - C(1, 1).s) / 0.5);
+      if (sh.name === 'out') { lean = 1 - sstep((t - sh.t0) / 0.6); zoff = -4 * sstep((t - sh.t0 - 0.4) / 1.6); }
+      entity.set({ tilt: 0.25, reach: 0.4 });
       entity.mesh.position.set(0.9 - 0.7 * lean, -0.81 * lean + 0.015 * Math.sin(t * 2.1), -10.0 + zoff + 0.05 * Math.sin(t * 0.9));
       cam = LOCKCAM;
       break;
     }
-    case 'open': cam = [V(-1.18, 1.55, -10.0), V(2, 1.3, -10.3), 54]; hallLights(k => (k === 3 ? 0.4 : 0), 1); break;
-    case 'circle': case 'circleUp': {
-      prints.forEach(p => { const tr = C(2, 1).s + 0.3 + p.ring * 0.55; const a = clamp((t - tr) / 0.25); p.m.visible = a > 0 && (sh.name === 'circleUp' || p.ring < 2 || t > tr); p.m.material.opacity = 0.9 * a; p.g.material.opacity = 0.35 * a; });
-      cam = sh.name === 'circle' ? lerpCam(t, sh.t0, sh.t1, [V(-0.55, 2.4, -8.4), V(-0.55, 0, -10.0), 50], [V(-0.55, 2.6, -8.6), V(-0.55, 0, -10.0), 50])
-        : lerpCam(t, sh.t0, sh.t1, [V(-0.55, 2.9, -8.2), V(-0.5, 0, -10.0), 54], [V(-0.4, 3.05, -7.6), V(-0.45, 0, -10.0), 60]);
-      break;
-    }
     case 'bell': case 'clock': case 'pa': case 'paHall': {
       hallLights(k => 0.7, 1);
-      if (sh.name === 'bell') { bellG.visible = false; cam = lerpCam(t, sh.t0, sh.t1, [V(0, 1.6, -2.0), V(0, 1.3, -30), 44], [V(0, 1.55, -3.0), V(0, 1.3, -30), 42]); }
+      if (sh.name === 'bell') cam = lerpCam(t, sh.t0, sh.t1, [V(0, 1.6, -2.0), V(0, 1.3, -30), 46], [V(0, 1.55, -3.5), V(0, 1.3, -30), 42]);
       if (sh.name === 'clock') cam = lerpCam(t, sh.t0, sh.t1, [V(-0.9, 2.45, -12.0), V(-1.785, 2.5, -12.0), 34], [V(-1.15, 2.48, -12.0), V(-1.785, 2.5, -12.0), 32]);
       if (sh.name === 'pa') { spkLed.visible = Math.floor(t * 4) % 2 === 0; cam = lerpCam(t, sh.t0, sh.t1, [V(0.6, 2.2, -8.0), V(1.7, 2.6, -9.0), 38], [V(0.9, 2.35, -8.4), V(1.7, 2.6, -9.0), 34]); }
-      if (sh.name === 'paHall') { spkLed.visible = Math.floor(t * 4) % 2 === 0; cam = lerpCam(t, sh.t0, sh.t1, [V(0, 1.5, -1.5), V(0, 1.4, -30), 40], [V(0, 1.5, -3.5), V(0, 1.4, -30), 40]); }
+      if (sh.name === 'paHall') { spkLed.visible = Math.floor(t * 4) % 2 === 0; cam = lerpCam(t, sh.t0, sh.t1, [V(-0.3, 1.5, -2.0), V(0.4, 1.3, -24), 42], [V(-0.3, 1.5, -4.0), V(0.4, 1.3, -24), 42]); }
       break;
     }
-    case 'doors': {
-      hallLights(k => 0.6, 1);
-      const u = sstep((t - C(6, 1).s + 0.05) / 0.35);
-      setHallDoors(u);
-      cam = lerpCam(t, sh.t0, sh.t1, [V(0, 1.45, -1.0), V(0, 1.3, -30), 44], [V(0, 1.45, -2.5), V(0, 1.3, -30), 44]);
+    case 'door109': case 'plate': {
+      hallLights(k => (k <= 4 ? 0.5 : 0), 1);
+      const u = sstep((t - Ph(6).s - 0.3) / 1.6);
+      D109.pv.rotation.y = -1.25 * u; D109.glow.material.opacity = 0.95 * u;   // swings in, into room 109
+      cam = sh.name === 'door109' ? lerpCam(t, sh.t0, sh.t1, [V(-1.0, 1.5, -8.6), V(1.6, 1.15, -12.5), 46], [V(-0.9, 1.5, -9.4), V(1.6, 1.15, -12.5), 42])
+        : lerpCam(t, sh.t0, sh.t1, [V(-1.25, 1.55, -12.15), V(1.78, 1.4, -12.25), 46], [V(-0.85, 1.55, -12.2), V(1.78, 1.4, -12.25), 42]);
       break;
     }
-    case 'class': case 'except': {
+    case 'attend': case 'roll': case 'j1': case 'j2': case 'j3': {
       ghosts.forEach(g => { g.mesh.visible = true; });
-      const tl = sstep((t - C(7, 1).s - 0.1) / 0.25) * 0.38;
+      const ticks = t > Ph(11).s ? 2 : t > Ph(9).s ? 1 : 0;
+      const circ = t > C(12, 2).s ? 3 : t > C(12, 1).s ? 2 : t > C(12, 0).s ? 1 : 0;
+      drawAttendance(ticks, circ); board.material.map = attTex; board.material.needsUpdate = true;
+      // every head turns to the door on the first "Jimmy"
+      const tl = sstep((t - C(12, 0).s - 0.1) / 0.3) * 0.4;
       ghosts.forEach((g, k) => g.set({ tilt: Math.round((k % 2 ? tl : -tl) * 50) / 50 }));
-      entity.mesh.visible = true; entity.mesh.scale.setScalar(1.25); entity.set({ tilt: 0.2 }); entity.mesh.position.set(21.3, 0, -7.3);
-      if (sh.name === 'except' || t > C(7, 1).s) board.material.map = lateTex; board.material.needsUpdate = true;
-      if (sh.name === 'class' && t >= C(7, 1).s - 0.1) entity.mesh.visible = false;
-      if (sh.name === 'class' && t < C(7, 1).s - 0.1) cam = lerpCam(t, sh.t0, C(7, 1).s, [V(16.6, 1.7, -0.9), V(20.6, 0.8, -3.4), 54], [V(17.0, 1.65, -1.2), V(20.6, 0.8, -3.4), 50]);
-      else if (sh.name === 'class') cam = lerpCam(t, C(7, 1).s - 0.1, sh.t1, [V(23.3, 1.55, -5.7), V(19.2, 0.85, -1.6), 56], [V(23.1, 1.5, -5.5), V(19.2, 0.85, -1.6), 52]);
-      else cam = lerpCam(t, sh.t0, sh.t1, [V(18.75, 1.4, -1.5), V(19.8, 1.15, -5.6), 56], [V(18.8, 1.35, -1.9), V(19.8, 1.1, -5.6), 52]);
+      entity.mesh.visible = true; entity.mesh.scale.setScalar(1.25); entity.mesh.position.set(21.0, 0, -7.3);
+      entity.set({ tilt: Math.round((0.15 + (circ >= 3 ? 0.3 : 0)) * 50) / 50, reach: circ >= 3 ? 0.6 : 0 });
+      if (sh.name === 'attend') cam = lerpCam(t, sh.t0, sh.t1, [V(16.6, 1.7, -0.9), V(20.6, 0.9, -3.6), 54], [V(17.0, 1.65, -1.2), V(20.6, 0.9, -3.6), 50]);
+      if (sh.name === 'roll') cam = lerpCam(t, sh.t0, sh.t1, [V(18.3, 1.45, -1.8), V(19.4, 1.25, -5.6), 56], [V(18.45, 1.45, -2.5), V(19.4, 1.25, -5.6), 52]);
+      if (sh.name === 'j1') cam = lerpCam(t, sh.t0, sh.t1, [V(19.1, 1.55, -4.0), V(19.1, 1.45, -8.0), 46], [V(19.1, 1.55, -4.7), V(19.1, 1.45, -8.0), 42]);
+      if (sh.name === 'j2') { entity.mesh.visible = false; cam = lerpCam(t, sh.t0, sh.t1, [V(23.3, 1.55, -5.7), V(19.2, 0.85, -1.6), 56], [V(23.1, 1.5, -5.5), V(19.2, 0.85, -1.6), 50]); }
+      if (sh.name === 'j3') cam = lerpCam(t, sh.t0, sh.t1, [V(20.4, 1.9, -3.9), V(21.0, 2.4, -7.3), 40], [V(20.6, 2.0, -4.8), V(21.0, 2.42, -7.3), 32]);
       break;
     }
-    case 'behind': {
-      kid.mesh.visible = true; kid.set({ expr: 'scared', arms: 'hang', look: t > C(9, 1).s ? 4 : 0, sit: false });
-      kid.mesh.scale.setScalar(0.6); kid.mesh.position.set(16.95 + 0.003 * Math.sin(NOW * 47), 0, -2.0);
-      cam = lerpCam(t, sh.t0, sh.t1, [V(18.6, 1.05, -3.0), V(16.95, 0.75, -2.0), 40], [V(18.2, 1.0, -2.75), V(16.95, 0.78, -2.0), 36]);
-      break;
-    }
-    case 'mom': case 'which':
-      cam = lerpCam(t, sh.t0, sh.t1, [V(19.4, 1.3, -2.4), V(15.0, 1.15, -2.0), 44], [V(18.6, 1.3, -2.3), V(15.0, 1.15, -2.0), 40]);
-      break;
   }
   return cam;
 }
-
 // ---------- 2D overlays ----------
 const outCv = document.createElement('canvas'); outCv.width = W; outCv.height = H; const outCtx = outCv.getContext('2d');
 function bigText(ctx, lines, y, alpha, size = 120, col = '#ffffff') {
@@ -222,44 +234,56 @@ function phoneShell(ctx, t, t0) {
   ctx.fillStyle = sg; ctx.beginPath(); ctx.roundRect(px, py, pw, ph, 56); ctx.fill();
   return { px, py, pw, ph };
 }
+function kidClose(ctx, t) {
+  // Jimmy inside the locker, lit only by his phone
+  ctx.fillStyle = '#030306'; ctx.fillRect(0, 0, W, H);
+  for (let k = 0; k < 4; k++) { ctx.fillStyle = 'rgba(140,160,200,0.10)'; ctx.fillRect(60 + k * 16, 650 + k * 120, 6, 62); }
+  kid.set({ expr: 'scared', arms: 'phone', look: -4, sit: false });
+  const s = 1.9 * (1 + 0.02 * (t - Ph(2).s)), jit = 2 * Math.sin(NOW * 41);
+  ctx.save(); ctx.translate(540 + jit, 1010); ctx.scale(s, s);
+  ctx.drawImage(kid.cv, 60, 150, 480, 560, -240, -340, 480, 560);
+  ctx.restore();
+  const g = ctx.createRadialGradient(540, 900, 100, 540, 900, 760); g.addColorStop(0, 'rgba(0,0,10,0)'); g.addColorStop(1, 'rgba(0,0,8,0.9)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
 function chat(ctx, t) {
-  const { px, py, pw } = phoneShell(ctx, t, Ph(3).s);
+  const { px, py, pw } = phoneShell(ctx, t, Ph(13).s);
   ctx.fillStyle = '#eef2ff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.font = '700 38px Poppins, sans-serif'; ctx.fillText('Mom', 540, py + 70);
-  ctx.font = '400 26px Poppins, sans-serif'; ctx.fillStyle = '#ff6b6b'; ctx.fillText('No service', 540, py + 112);
+  ctx.font = '400 26px Poppins, sans-serif'; ctx.fillStyle = '#8fd38f'; ctx.fillText('1 bar', 540, py + 112);
   ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(px, py + 150, pw, 2);
   let y = py + 190;
   y += bubble(ctx, "I'm at the school gate. Where are you?", px + 30, y, pw - 140, false, 1) + 24;
-  const a1 = clamp((t - (Ph(3).s + 0.25)) / 0.2);
-  y += bubble(ctx, "I'm coming inside to find you.", px + 30, y + 30 * (1 - a1), pw - 140, false, a1) + 40;
-  // the kid types, sends, and it fails
-  const tt = C(3, 1).s, typed = "DON'T COME IN", n = Math.floor(typed.length * clamp((t - tt - 0.2) / 1.0));
-  const sent = t > C(3, 1).e + 0.1;
-  if (sent) bubble(ctx, typed, px + 110, y, pw - 140, true, 1, t > C(3, 2).s ? '! Not delivered' : 'Sending...');
-  // input bar
-  const iy = py + 900 - 110;
-  ctx.fillStyle = 'rgba(255,255,255,0.10)'; ctx.beginPath(); ctx.roundRect(px + 24, iy, pw - 48, 76, 38); ctx.fill();
-  ctx.font = '500 34px Poppins, sans-serif'; ctx.textAlign = 'left'; ctx.fillStyle = sent || n === 0 ? 'rgba(255,255,255,0.4)' : '#fff';
-  ctx.fillText(sent || n === 0 ? 'Message' : typed.slice(0, n) + (Math.floor(t * 3) % 2 ? '|' : ''), px + 56, iy + 40);
-  ctx.restore();
-}
-function lockScreen(ctx, t) {
-  // the last beat: a text arrives from the Mom outside while "Mom" is behind him
-  const { px, py, pw } = phoneShell(ctx, t, Ph(11).s);
-  ctx.fillStyle = '#eef2ff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.font = '300 130px Poppins, sans-serif'; ctx.fillText('12:03', 540, py + 170);
-  ctx.font = '400 30px Poppins, sans-serif'; ctx.fillText('1 bar', 540, py + 70);
-  const a = clamp((t - C(11, 1).s + 0.1) / 0.18);
-  ctx.save(); ctx.globalAlpha = a; const x = px + 24, y = py + 300 + 30 * (1 - a), w = pw - 48;
-  ctx.font = '500 34px Poppins, sans-serif'; const lines = wrap(ctx, "The gate is locked. I can't get in. Where are you??", w - 60); const h = 120 + lines.length * 46;
-  ctx.fillStyle = 'rgba(235,238,248,0.95)'; ctx.beginPath(); ctx.roundRect(x, y, w, h, 34); ctx.fill();
-  ctx.fillStyle = '#2fbf5a'; ctx.beginPath(); ctx.roundRect(x + 28, y + 26, 54, 54, 14); ctx.fill();
-  ctx.fillStyle = '#111'; ctx.textAlign = 'left'; ctx.font = '700 36px Poppins, sans-serif'; ctx.fillText('Mom', x + 100, y + 54);
-  ctx.font = '400 28px Poppins, sans-serif'; ctx.fillStyle = '#666'; ctx.textAlign = 'right'; ctx.fillText('now', x + w - 30, y + 54);
-  ctx.textAlign = 'left'; ctx.fillStyle = '#111'; ctx.font = '500 34px Poppins, sans-serif'; lines.forEach((ln, k) => ctx.fillText(ln, x + 30, y + 120 + k * 46));
+  const a = clamp((t - C(13, 1).s + 0.15) / 0.2);
+  ctx.save(); ctx.translate(0, 24 * (1 - a));
+  bubble(ctx, "DON'T ANSWER ANYONE.", px + 30, y, pw - 100, false, a);
   ctx.restore(); ctx.restore();
 }
-// red typewriter captions, up to three words; the other voices in white italics
+function callScreen(ctx, t) {
+  const { px, py, pw, ph } = phoneShell(ctx, t, Ph(14).s);
+  const pulse = 0.5 + 0.5 * Math.sin(t * 9);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#c9d2ea'; ctx.font = '400 32px Poppins, sans-serif'; ctx.fillText('incoming call', 540, py + 140);
+  ctx.fillStyle = '#ffffff'; ctx.font = '600 58px Poppins, sans-serif'; ctx.fillText('Unknown', 540, py + 215);
+  ctx.fillStyle = '#9aa3bd'; ctx.font = '400 34px Poppins, sans-serif'; ctx.fillText('No caller ID', 540, py + 270);
+  // avatar ring pulsing with the ring
+  ctx.strokeStyle = `rgba(255,255,255,${0.25 + 0.4 * pulse})`; ctx.lineWidth = 6; ctx.beginPath(); ctx.arc(540, py + 430, 90 + 18 * pulse, 0, 6.3); ctx.stroke();
+  ctx.fillStyle = '#2a3048'; ctx.beginPath(); ctx.arc(540, py + 430, 84, 0, 6.3); ctx.fill();
+  ctx.fillStyle = '#c9d2ea'; ctx.font = '700 90px Poppins, sans-serif'; ctx.fillText('?', 540, py + 436);
+  for (const [x, col] of [[px + 140, '#e5484d'], [px + pw - 140, '#30c46b']]) { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, py + ph - 140, 62, 0, 6.3); ctx.fill(); }
+  ctx.fillStyle = '#fff'; ctx.font = '600 28px Poppins, sans-serif'; ctx.fillText('Decline', px + 140, py + ph - 50); ctx.fillText('Answer', px + pw - 140, py + ph - 50);
+  // the text banner drops in over the call
+  const a = clamp((t - C(14, 2).s + 0.2) / 0.18);
+  if (a > 0) {
+    ctx.save(); ctx.globalAlpha = a; const y = py + 30 - 40 * (1 - a), x = px + 20, w = pw - 40;
+    ctx.fillStyle = 'rgba(240,242,250,0.97)'; ctx.beginPath(); ctx.roundRect(x, y, w, 150, 30); ctx.fill();
+    ctx.fillStyle = '#7a7f90'; ctx.beginPath(); ctx.roundRect(x + 24, y + 24, 50, 50, 12); ctx.fill();
+    ctx.textAlign = 'left'; ctx.fillStyle = '#111'; ctx.font = '700 32px Poppins, sans-serif'; ctx.fillText('Unknown', x + 92, y + 50);
+    ctx.fillStyle = '#c21d1d'; ctx.font = '800 50px Poppins, sans-serif'; ctx.fillText('ANSWER IT.', x + 30, y + 112);
+    ctx.restore();
+  }
+  ctx.restore();
+}
 const CAPS = [];
 for (const ph of PH.phrases) for (const ch of ph.chunks) {
   const words = ch.text.split(' '); const groups = [];
@@ -282,43 +306,43 @@ function captions(ctx, t) {
 }
 
 // ---------- render ----------
-const STINGS = [...KNOCKS, C(0, 1).s, Ph(2).s, C(2, 1).s + 0.3, C(3, 2).s, Ph(4).s, C(5, 1).s, C(6, 1).s, C(7, 1).s + 0.1, Ph(8).s, C(9, 1).s, C(11, 1).s];
+const STINGS = [...KNOCKS, C(1, 0).s, C(1, 1).s, Ph(2).s, ALARM0, C(4, 1).s, C(5, 1).s, C(6, 1).s, C(12, 0).s, C(12, 1).s, C(12, 2).s, C(13, 1).s, C(14, 2).s];
 window.renderFrame = function (n) {
   const t = n / 30; NOW = t;
   const sh = shotAt(t);
   if (sh.name === 'black') {
     outCtx.fillStyle = '#000'; outCtx.fillRect(0, 0, W, H);
     const z = 1 + 0.02 * (t - sh.t0); outCtx.save(); outCtx.translate(W / 2, 930); outCtx.scale(z, z); outCtx.translate(-W / 2, -930);
-    bigText(outCtx, ['WHICH MOM', 'IS REAL?'], 760, clamp((t - sh.t0) / 0.3), 130);
-    const tp = sh.t0 + 0.6;
+    bigText(outCtx, ['WHAT WILL', 'YOU DO?'], 760, clamp((t - sh.t0) / 0.3), 130);
+    const tp = Ph(15).e + 0.3;
     if (t >= tp) { bigText(outCtx, ['PART 4'], 1110, clamp((t - tp) / 0.25), 100); bigText(outCtx, ['FOLLOW TO FIND OUT'], 1220, clamp((t - tp - 0.1) / 0.25), 64, '#ff4a4a'); }
     outCtx.restore(); captions(outCtx, t);
     return outCv.toDataURL('image/jpeg', 0.93);
   }
-  if (sh.name === 'phone') { chat(outCtx, t); captions(outCtx, t); return outCv.toDataURL('image/jpeg', 0.93); }
-  if (sh.name === 'which' && t > C(11, 1).s - 0.2) { lockScreen(outCtx, t); captions(outCtx, t); return outCv.toDataURL('image/jpeg', 0.93); }
+  if (sh.name === 'knew') { kidClose(outCtx, t); captions(outCtx, t); return outCv.toDataURL('image/jpeg', 0.93); }
+  if (sh.name === 'mom') { chat(outCtx, t); captions(outCtx, t); return outCv.toDataURL('image/jpeg', 0.93); }
+  if (sh.name === 'call') { callScreen(outCtx, t); captions(outCtx, t); return outCv.toDataURL('image/jpeg', 0.93); }
   let [cp, ct, fov] = setScene(sh, t);
   let shake = 0;
   for (const ts of STINGS) if (t >= ts && t < ts + 0.25) shake += 0.012 * (1 - (t - ts) / 0.25);
-  if (sh.name === 'bell') shake += 0.006;
+  if (sh.name === 'bell' || (sh.name === 'clock' && t < Ph(4).e)) shake += 0.01;
+  if (sh.name === 'j3') shake += 0.012 * Math.exp(-(t - C(12, 2).s) * 2);
   camera.position.copy(cp).add(V(Math.sin(t * 69) * shake + 0.008 * Math.sin(t * 1.2), Math.cos(t * 51) * shake + 0.006 * Math.sin(t * 0.93), 0));
   camera.fov = fov; camera.updateProjectionMatrix(); camera.up.set(0, 1, 0); camera.lookAt(ct);
   for (const c of cards) { const m = c.mesh; m.rotation.set(0, Math.atan2(camera.position.x - m.position.x, camera.position.z - m.position.z), 0); }
-  const inHall = ['knock', 'name', 'away', 'open', 'circle', 'circleUp', 'bell', 'clock', 'pa', 'paHall', 'doors'].includes(sh.name);
+  const inHall = ['knock', 'jimmy', 'out', 'bell', 'clock', 'pa', 'paHall', 'door109', 'plate'].includes(sh.name);
   applyLight('night', 'night', 0, inHall ? V(0, 0, -12) : V(RX, 0, RZ));
   if (inHall) hemi.intensity = 0.22;
   renderer.render(scene, camera);
   outCtx.drawImage(renderer.domElement, 0, 0);
   const g = outCtx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.72);
   g.addColorStop(0, 'rgba(0,0,10,0)'); g.addColorStop(1, 'rgba(0,0,12,0.6)'); outCtx.fillStyle = g; outCtx.fillRect(0, 0, W, H);
-  if (['knock', 'name', 'away'].includes(sh.name)) lockerMask(outCtx, 0);
-  if (sh.name === 'open') lockerMask(outCtx, clamp((t - Ph(2).s) / 0.9));
-  // "Mom" in the corridor: a phone light far down the dark doorway, coming closer
-  if (sh.name === 'mom' || sh.name === 'which') {
-    const u = clamp((t - Ph(10).s + 0.3) / 3.5), r = 30 + 220 * u, cx = 540 + 25 * Math.sin(t * 1.3);
-    const gg = outCtx.createRadialGradient(cx, 930, 0, cx, 930, r); gg.addColorStop(0, `rgba(235,240,255,${0.85 * u + 0.1})`); gg.addColorStop(1, 'rgba(120,140,220,0)');
-    outCtx.fillStyle = gg; outCtx.beginPath(); outCtx.arc(cx, 930, r, 0, 6.3); outCtx.fill();
-  }
+  // the alarm: red light pulsing through the hallway while the bell rings
+  if (t > ALARM0 && t < Ph(4).e + 0.4 && inHall) { outCtx.fillStyle = `rgba(255,20,30,${0.22 * (0.5 + 0.5 * Math.sin((t - ALARM0) * 14))})`; outCtx.fillRect(0, 0, W, H); }
+  if (sh.name === 'knock' || sh.name === 'jimmy') lockerMask(outCtx, 0);
+  if (sh.name === 'out') lockerMask(outCtx, clamp((t - C(3, 1).s + 0.2) / 0.9));
+  // flash on the third, screamed "JIMMY!"
+  if (sh.name === 'j3' && t - C(12, 2).s < 0.12 && t >= C(12, 2).s) { outCtx.fillStyle = 'rgba(255,255,255,0.5)'; outCtx.fillRect(0, 0, W, H); }
   if (t < 2.3) bigText(outCtx, ['IT KNOWS', 'MY NAME...'], 1010, t < 2.0 ? 1 : clamp((2.3 - t) / 0.3), 118);
   captions(outCtx, t);
   return outCv.toDataURL('image/jpeg', 0.93);

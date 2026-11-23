@@ -1,10 +1,14 @@
-"""Narration for 'I Stayed in School After Dark' (Part 3). Same narrator, same whisper treatment (whisper2.py with
-Part 2's reference EQ, work/whisper_eq.npy, pure whisper) and same chunk method as Part 2, plus two voices:
-  pa      = the school loudspeaker at midnight (the thing again): thin speaker band, soft clip, long hall echo,
-            and the mimic's octave-down shadow slipping in on the last word
-  momreal = Mom behind him in the corridor, sounding real this time (no shadow), a little far away
-Modes: v = soft voiced, e = stressed voiced, w = whisper, we = stressed whisper.
-Writes voice.wav + work/phrases.json (phrase and chunk start/end; the picture and captions lock to these)."""
+"""Narration for 'I Stayed in School After Dark' (Part 3, v2 after the owner's notes, 23 Nov 2026).
+Same narrator, same pure-whisper treatment (whisper2.py with Part 2's EQ, work/whisper_eq.npy) and chunk method as Part 2.
+Voices:
+  n        = Jimmy, the narrator (am_michael; v / e voiced, w / we pure whisper)
+  ent      = the thing at the locker vents whispering "Jimmy...": a deep, slow, pure whisper, doubled, very close
+  pa       = the school loudspeaker at midnight: thin speaker band, pushed, long hall echo; the mimic's octave-down
+             shadow slips in on the last words
+  teacher  = whatever is taking attendance in room 109: the guard-mimic voice (very low, doubled), heard from the door
+  chorus   = the faceless class answering "Present.": six flat young voices in unison, half whispered
+Writes voice.wav + work/phrases.json (phrase and chunk start/end; picture and captions lock to these).
+A chunk's caption can differ from its spoken text (CAP below, e.g. "one oh nine" is shown as 109)."""
 import json, os, sys
 import numpy as np, soundfile as sf, parselmouth
 from parselmouth.praat import call
@@ -20,23 +24,27 @@ NARR = 'am_michael'
 MODE = {'v': (0.12, 1.00), 'e': (0.10, 1.35), 'w': (0.95, 1.05), 'we': (0.95, 1.45)}
 # (gap before, [(text, mode, style, speed, gain, gap after)], who)
 L = [
- (1.55, [("Three knocks...", 'w', 'low', 0.82, 1.0, 0.35), ("then it whispered my name.", 'we', 'dramatic', 0.8, 1.0, 0)], 'n'),
- (0.9, [("Then it walked away.", 'w', 'low', 0.84, 0.95, 0)], 'n'),
- (1.3, [("When I opened the locker...", 'v', 'low', 0.9, 0.95, 0.25), ("its footprints circled me...", 'we', 'low', 0.82, 1.0, 0.2),
-        ("again and again.", 'w', 'low', 0.8, 0.95, 0)], 'n'),
- (0.6, [("My phone buzzed.", 'v', 'normal', 0.92, 0.95, 1.5), ("I typed: don't come in...", 'v', 'low', 0.9, 0.95, 0.3),
-        ("It wouldn't send.", 'we', 'dramatic', 0.8, 1.0, 0)], 'n'),
- (1.3, [("Then the school bell rang...", 'e', 'dramatic', 0.88, 1.05, 0.3), ("at midnight.", 'we', 'low', 0.78, 1.05, 0)], 'n'),
- (0.9, [("All students...", None, None, 0.78, 1.0, 0.45), ("return to your classrooms.", None, None, 0.76, 1.0, 0)], 'pa'),
- (0.8, [("Every classroom door opened...", 'v', 'low', 0.88, 0.95, 0.25), ("at the same time.", 'we', 'dramatic', 0.8, 1.05, 0)], 'n'),
- (1.2, [("Inside my classroom...", 'v', 'low', 0.9, 0.95, 0.25), ("every seat was taken.", 'we', 'low', 0.82, 1.0, 0)], 'n'),
- (1.0, [("Except one.", 'we', 'dramatic', 0.78, 1.1, 0)], 'n'),
- (1.5, [("Then behind me...", 'w', 'low', 0.84, 0.95, 0.3), ("I heard Mom.", 'we', 'low', 0.82, 1.0, 0)], 'n'),
- (0.8, [("Beta? Where are you?", None, None, 0.9, 1.0, 0)], 'momreal'),
- (1.1, [("So which Mom...", 'w', 'low', 0.82, 0.95, 0.25), ("was the real one?", 'we', 'question', 0.8, 1.05, 0)], 'n'),
+ (1.55, [("Three knocks...", 'w', 'low', 0.82, 1.0, 0.35), ("then a whisper.", 'we', 'dramatic', 0.8, 1.0, 0)], 'n'),
+ (0.7, [("Jimmy...", None, None, 0.7, 0.9, 1.0), ("Jimmy...", None, None, 0.66, 1.1, 0)], 'ent'),
+ (0.7, [("It knew my name.", 'we', 'dramatic', 0.8, 1.05, 0)], 'n'),
+ (0.8, [("When its footsteps faded...", 'v', 'low', 0.9, 0.95, 0.2), ("I slipped out.", 'w', 'low', 0.84, 0.95, 0)], 'n'),
+ (1.7, [("Then the school bell rang...", 'e', 'dramatic', 0.88, 1.05, 0.3), ("at midnight.", 'we', 'low', 0.78, 1.05, 0)], 'n'),
+ (1.0, [("Attention, students.", None, None, 0.8, 1.0, 0.4), ("Please return to room one oh nine.", None, None, 0.78, 1.0, 0)], 'pa'),
+ (0.8, [("Only one door opened...", 'v', 'low', 0.88, 0.95, 0.3), ("Room one oh nine.", 'we', 'dramatic', 0.8, 1.05, 0)], 'n'),
+ (0.8, [("Someone inside was taking attendance.", 'w', 'low', 0.86, 1.0, 0)], 'n'),
+ (0.7, [("Aarav.", None, None, 0.8, 1.0, 0)], 'teacher'),
+ (0.35, [("Present.", None, None, 0.85, 1.0, 0)], 'chorus'),
+ (0.5, [("Meera.", None, None, 0.8, 1.0, 0)], 'teacher'),
+ (0.35, [("Present.", None, None, 0.85, 1.0, 0)], 'chorus'),
+ (0.6, [("Jimmy.", None, None, 0.78, 1.0, 1.3), ("Jimmy.", None, None, 0.74, 1.15, 0.9), ("Jimmy!", None, None, 0.72, 1.45, 0)], 'teacher'),
+ (1.0, [("Then Mom texted...", 'v', 'low', 0.9, 0.95, 0.25), ("Don't answer anyone.", 'we', 'dramatic', 0.8, 1.05, 0)], 'n'),
+ (1.2, [("But an unknown number was calling...", 'v', 'low', 0.9, 0.95, 0.3), ("and it texted:", 'w', 'low', 0.84, 0.95, 0.2),
+        ("Answer it.", 'we', 'dramatic', 0.76, 1.1, 0)], 'n'),
+ (1.3, [("What will you do?", 'w', 'question', 0.8, 1.05, 0)], 'n'),
 ]
-BREATHS_AFTER = {0: [('shaky', 0.2, 1.0)], 1: [('out', 0.2, 0.9)], 2: [('shaky', 0.25, 1.0)], 4: [('in', 0.3, 0.9)],
-                 6: [('shaky', 0.3, 1.1)], 7: [('shaky', 0.25, 1.0)], 9: [('in', 0.15, 1.0)], 10: [('shaky', 0.3, 1.1)]}
+CAP = {"Please return to room one oh nine.": "Please return to room 109.", "Room one oh nine.": "Room 109."}
+BREATHS_AFTER = {0: [('shaky', 0.15, 1.0)], 2: [('shaky', 0.2, 1.1)], 3: [('in', 0.3, 0.9)], 6: [('shaky', 0.25, 1.0)],
+                 12: [('shaky', 0.3, 1.2)], 14: [('shaky', 0.3, 1.0)]}
 TAIL = 3.2   # end card hold after the last word
 
 def bpf(x, lo, hi): return sosfilt(butter(2, [lo, hi], 'bandpass', fs=SR, output='sos'), x)
@@ -78,15 +86,30 @@ def mom_voice(text, sp, last):
 def pa_voice(text, sp, last):
     s, sr = k.create(text, voice='bf_emma', speed=sp, lang='en-us'); s = _trim(s, sr)
     s = shape(s, sr, 'deadpan', 100, 600)
-    if last:                                            # the copy slips on "classrooms": an octave-down shadow
+    if last:                                            # the copy slips on the room number: an octave-down shadow
         sh = regender(s, 90, 0.82, 0.5); n = len(s); m = np.zeros(n); m[int(n * 0.55):] = 1
         m = np.convolve(m, np.hanning(4801) / np.hanning(4801).sum(), mode='same'); s = s + 0.6 * m * sh[:n]
     x = bpf(s, 450, 3400); x = np.tanh(3.0 * x / (np.abs(x).max() + 1e-9))   # small loudspeaker, pushed
     return verb(verb(x, 0.6), 0.5)                       # long empty-hallway echo
-def momreal_voice(text, sp):
-    s, sr = k.create(text, voice='af_bella', speed=sp, lang='en-us'); s = _trim(s, sr)
-    s = whisperize(shape(s, sr, 'question', 100, 600), 0.15)
-    return verb(lpf(s, 6000), 0.35)                      # a few metres behind him, in the corridor
+def ent_voice(text, sp):
+    s, sr = k.create(text, voice='am_onyx', speed=sp, lang='en-us'); s = _trim(s, sr)
+    a = regender(s, 70, 0.86, 0.4)
+    w1 = W2.apply_eq(W2.raw(a, SR, True), FIR)          # pure whisper, same treatment as the narrator's
+    w2 = W2.apply_eq(W2.raw(regender(s, 64, 0.8, 0.4), SR, True), FIR)
+    n = int(0.03 * SR); w2 = np.r_[np.zeros(n), w2][:len(w1)]
+    return w1 + 0.6 * w2                                 # two breaths, one name, right at the vents (dry, close)
+def teacher_voice(text, sp, g):
+    x = guard_voice(text, sp)
+    if g > 1.3: x = np.tanh(2.2 * x / (np.abs(x).max() + 1e-9))   # the third call cracks into a roar
+    return x
+def chorus_voice(text, sp):
+    parts = []
+    for j, (v, p) in enumerate((('af_sky', 1.0), ('am_puck', 1.0), ('af_nicole', 0.97), ('am_echo', 1.03), ('af_river', 1.0), ('am_liam', 0.98))):
+        y, sr = k.create(text, voice=v, speed=sp * p, lang='en-us'); y = _trim(y, sr)
+        y = whisperize(shape(y, sr, 'deadpan', 100, 600), 0.5); y = y / (rms(y) + 1e-9)
+        parts.append(np.r_[np.zeros(int(0.012 * j * SR)), y])
+    n = max(len(p) for p in parts); x = sum(np.pad(p, (0, n - len(p))) for p in parts)
+    return verb(lpf(x, 4500), 0.4)
 
 # EQ towards the owner's reference whisper, designed once from all the w / we lines
 EQ = 'work/whisper_eq.npy'
@@ -111,7 +134,9 @@ for li, (gap0, chunks, who) in enumerate(L):
         if who == 'guard': s = guard_voice(text, sp); s = s / rms(s) * 0.085 * g
         elif who == 'mom': s = mom_voice(text, sp, ci == len(chunks) - 1); s = s / rms(s) * 0.07 * g
         elif who == 'pa': s = pa_voice(text, sp, ci == len(chunks) - 1); s = s / rms(s) * 0.06 * g
-        elif who == 'momreal': s = momreal_voice(text, sp); s = s / rms(s) * 0.06 * g
+        elif who == 'ent': s = ent_voice(text, sp); s = s / rms(s) * 0.08 * g
+        elif who == 'teacher': s = teacher_voice(text, sp, g); s = s / rms(s) * 0.08 * g
+        elif who == 'chorus': s = chorus_voice(text, sp); s = s / rms(s) * 0.06 * g
         else:
             amt, mg = MODE[mode]
             s, sr = k.create(text, voice=NARR, speed=sp, lang='en-us')
@@ -124,11 +149,11 @@ for li, (gap0, chunks, who) in enumerate(L):
         i = int(t * SR); out[i:i + len(s)] += s
         # chunk end = where the speech energy ends (ignores reverb tails)
         e = env_rms(s); spoken = np.nonzero(e > 0.08 * e.max())[0]; dur = (spoken[-1] + 1) / SR if len(spoken) else len(s) / SR
-        ch_meta.append(LOCK['phrases'][li]['chunks'][ci] if LOCK else {"text": text, "s": round(t, 3), "e": round(t + dur, 3)})
+        ch_meta.append(LOCK['phrases'][li]['chunks'][ci] if LOCK else {"text": CAP.get(text, text), "s": round(t, 3), "e": round(t + dur, 3)})
         t += dur + gap
     if LOCK: t = LOCK['phrases'][li]['e']
     prev_end = t
-    meta.append({"text": " ".join(c[0] for c in chunks), "who": who, "s": round(t0, 3), "e": round(t, 3), "chunks": ch_meta})
+    meta.append({"text": " ".join(CAP.get(c[0], c[0]) for c in chunks), "who": who, "s": round(t0, 3), "e": round(t, 3), "chunks": ch_meta})
     for kind, off, lv in BREATHS_AFTER.get(li, []): breaths.append((t + off, kind, lv))
     print(f"{li:2d} {t0:6.2f} -> {t:6.2f}  [{who}] {' | '.join(c[0] for c in chunks)}")
 
